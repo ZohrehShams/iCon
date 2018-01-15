@@ -1,0 +1,15 @@
+.idea
+
+/devel/HyperblocksDiabelli/release/
+/devel/SpeedithLibraries/release/
+/devel/IsabellePureLibrary/release/
+/devel/DiabelliIsabelle/release/
+/devel/SpeedithDiabelli/release/
+*.iml
+
+**/.DS_Store
+**/target/
+
+# Tesseract data (for OCR)
+tessdata
+win32-x86*
