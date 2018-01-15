@@ -38,8 +38,26 @@ Use Maven to build Speedith (in the root directory of your cloned iCon repositor
 
 ## Running iCon
 
-Navigate to:
-speedith-master/Speedith.Gui/src/main/java/speedith/Main.java 
-and execute the script that best matches your platform.
+The build will result in a distributable package:
+
+    Speedith.Gui/target/speedith-gui-0.0.1-SNAPSHOT-bin.zip
+
+Unpack the archive and navigate into the unpacked `speedith/bin` folder.
+
+Once in `speedith/bin` folder, execute the script that best matches your platform.
+
+For example, on Windows you might want to execute either
+
+    speedith-win32.bat
+
+or
+
+    speedith-win64.bat
+
+and on Mac you might want to execute 
+
+	main-form-executable-wrapper
+
+
 
 
