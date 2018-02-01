@@ -157,13 +157,27 @@ public class ProofPanel extends javax.swing.JPanel implements Proof, AutomaticPr
         return applyRule(rule, null, type, typeSpecifier);
     }
 
+//    public <TRuleArg extends RuleArg> InferenceApplicationResult applyRule(Inference<? super TRuleArg,?> rule, TRuleArg args, RuleApplicationType type, String typeSpecifier) throws RuleApplicationException {
+//        InferenceApplicationResult appResult = proof.applyRule(rule, args, type, typeSpecifier);
+//        if (proof.isFinished()) {
+//            addProofFinished(rule, args, type, typeSpecifier);
+//        } else {
+//            addGoals(proof.getGoalsCount() - 1, appResult.getGoals(), rule, args, proof.getInferenceApplicationAt(proof.getInferenceApplicationCount()-1));
+//        }
+//        // Scroll the last component into view:
+//        scrlGoals.getVerticalScrollBar().setValue(scrlGoals.getVerticalScrollBar().getMaximum());
+//        return appResult;
+//    }
+    
+    //Zohreh
     public <TRuleArg extends RuleArg> InferenceApplicationResult applyRule(Inference<? super TRuleArg,?> rule, TRuleArg args, RuleApplicationType type, String typeSpecifier) throws RuleApplicationException {
         InferenceApplicationResult appResult = proof.applyRule(rule, args, type, typeSpecifier);
+        
+        addGoals(proof.getGoalsCount() - 1, appResult.getGoals(), rule, args, proof.getInferenceApplicationAt(proof.getInferenceApplicationCount()-1));
+       
         if (proof.isFinished()) {
             addProofFinished(rule, args, type, typeSpecifier);
-        } else {
-            addGoals(proof.getGoalsCount() - 1, appResult.getGoals(), rule, args, proof.getInferenceApplicationAt(proof.getInferenceApplicationCount()-1));
-        }
+        } 
         // Scroll the last component into view:
         scrlGoals.getVerticalScrollBar().setValue(scrlGoals.getVerticalScrollBar().getMaximum());
         return appResult;
@@ -447,13 +461,25 @@ public class ProofPanel extends javax.swing.JPanel implements Proof, AutomaticPr
         selected = null;
     }
 
+//    private <TRuleArg extends RuleArg> void addProofFinished(Inference<? super TRuleArg,?> rule, TRuleArg args, RuleApplicationType type, String typeSpecifier) {
+//        GridBagConstraints gbc = new java.awt.GridBagConstraints();
+//        gbc.fill = java.awt.GridBagConstraints.BOTH;
+//        gbc.gridx = 0;
+//        gbc.weightx = 1.0;
+//        gbc.weighty = 1.0;
+//        SubgoalsPanel sgp = new SubgoalsPanel(i18n("PROOF_PANEL_PROOF_FINISHED"), getStepDescription(rule, args, type, typeSpecifier), Color.GREEN);
+//        addSubgoal(gbc, sgp);
+//        validate();
+//    }
+    
+    //Zohreh
     private <TRuleArg extends RuleArg> void addProofFinished(Inference<? super TRuleArg,?> rule, TRuleArg args, RuleApplicationType type, String typeSpecifier) {
         GridBagConstraints gbc = new java.awt.GridBagConstraints();
         gbc.fill = java.awt.GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        SubgoalsPanel sgp = new SubgoalsPanel(i18n("PROOF_PANEL_PROOF_FINISHED"), getStepDescription(rule, args, type, typeSpecifier), Color.GREEN);
+        SubgoalsPanel sgp = new SubgoalsPanel(i18n("PROOF_PANEL_PROOF_FINISHED"), null, Color.GREEN);
         addSubgoal(gbc, sgp);
         validate();
     }

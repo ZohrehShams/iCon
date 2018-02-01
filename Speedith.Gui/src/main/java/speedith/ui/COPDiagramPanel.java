@@ -271,7 +271,21 @@ public class COPDiagramPanel extends javax.swing.JPanel {
                 nextSubdiagramIndex = addSpiderDiagramPanel(nextSubdiagramIndex, sdIter.next(), ++gridx);
             }
             //diagrams.add(registerSubdiagramClickListener(COPDiagramVisualisation.getSpiderDiagramPanel(cd), 0),gbc);
-            diagrams.add(registerSubdiagramClickListener(COPDiagramVisualisation.getSpiderDiagramPanel(cd), 0));
+            
+            //diagrams.add(registerSubdiagramClickListener(COPDiagramVisualisation.getSpiderDiagramPanel(cd), 0));
+            
+//            Window frame = SwingUtilities.windowForComponent(diagrams);
+//            JPanel glass = (JPanel) frame.getGlassPane(); 
+            JRootPane glass = diagrams.getRootPane();
+            JPanel arrows= (JPanel) glass.getGlassPane();
+            
+            arrows.setVisible(true);
+            //arrows.setLayout(diagrams.getLayout());
+            arrows.setLayout(new GridBagLayout());
+//            JButton glassButton = new JButton("Hide");
+//            arrows.add(glassButton);
+            arrows.add(registerSubdiagramClickListener(COPDiagramVisualisation.getSpiderDiagramPanel(cd), 0));
+
         } else {
             throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
         }
@@ -364,7 +378,7 @@ public class COPDiagramPanel extends javax.swing.JPanel {
                 }
             }); 
         } else if (diagramPanel instanceof COPDiagramPanel) {
-        	System.out.println("Do you ever use this?");
+        	//System.out.println("Do you ever use this?");
             COPDiagramPanel sdp = (COPDiagramPanel) diagramPanel;
             sdp.addSpiderDiagramClickListener(new SpiderDiagramClickListener() {
 

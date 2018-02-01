@@ -21,6 +21,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import org.apache.batik.dom.GenericDOMImplementation;
@@ -41,7 +42,6 @@ import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.icircles.util.ICirclesToSpeedith;
 
 public class ACirclesPanelEx extends JPanel{
-	
 	/**
      * This stroke is used to draw contours if no special stroke is specified
      * for them.
@@ -197,29 +197,16 @@ public class ACirclesPanelEx extends JPanel{
             
             // This centers the diagram onto the drawing area.
             g.translate(getCenteringTranslationX(), getCenteringTranslationY());
+            
+//            g.setColor(Color.black);
+//            Area az = new Area(conDiagram.getBox());
+//            g2d.setStroke(new BasicStroke(3F));
+//            Area naz = az.createTransformedArea(trans);
+//          g2d.draw(new Line2D.Double(naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY(), naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY()+naz.getBounds().getHeight()));
+//          g2d.draw( new Line2D.Double(naz.getBounds().getX(),  naz.getBounds().getY(), naz.getBounds().getX()+naz.getBounds().getWidth(),  naz.getBounds().getY()));
+//          g2d.draw(new Line2D.Double( naz.getBounds().getX(), naz.getBounds().getY(), naz.getBounds().getX(), naz.getBounds().getY()+naz.getBounds().getHeight()));
+//          g2d.draw(new Line2D.Double( naz.getBounds().getX(), naz.getBounds().getY()+naz.getBounds().getHeight(), naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY()+naz.getBounds().getHeight()));
 
-            
-            //Zohreh: This line adds a box around every primary diagram.
-//            g.setColor(Color.red);
-//            g2d.drawRect(0, 0, getWidth()-8, getHeight()-1);
-            
-            
-            g.setColor(Color.black);
-            Area az = new Area(conDiagram.getBox());
-            g2d.setStroke(new BasicStroke(3F));
-            Area naz = az.createTransformedArea(trans);
-          g2d.draw(new Line2D.Double(naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY(), naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY()+naz.getBounds().getHeight()));
-          g2d.draw( new Line2D.Double(naz.getBounds().getX(),  naz.getBounds().getY(), naz.getBounds().getX()+naz.getBounds().getWidth(),  naz.getBounds().getY()));
-          g2d.draw(new Line2D.Double( naz.getBounds().getX(), naz.getBounds().getY(), naz.getBounds().getX(), naz.getBounds().getY()+naz.getBounds().getHeight()));
-          g2d.draw(new Line2D.Double( naz.getBounds().getX(), naz.getBounds().getY()+naz.getBounds().getHeight(), naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY()+naz.getBounds().getHeight()));
-
-          
-//            g2d.drawLine((int)(naz.getBounds().getX()+naz.getBounds().getWidth()), (int) naz.getBounds().getY(), (int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()));
-//            g2d.drawLine((int) naz.getBounds().getX(), (int) naz.getBounds().getY(), (int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) naz.getBounds().getY());
-//            g2d.drawLine((int) naz.getBounds().getX(), (int) naz.getBounds().getY(), (int) naz.getBounds().getX(), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()));
-//            g2d.drawLine((int) naz.getBounds().getX(), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()), (int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()));
-//            g2d.draw(naz.getBounds());
-            
             
             // Draw shaded zones:
             g.setColor(Color.lightGray);
@@ -504,27 +491,6 @@ public class ACirclesPanelEx extends JPanel{
                     
                     // This centers the diagram onto the drawing area.
                     //g.translate(getCenteringTranslationX(), getCenteringTranslationY());
-
-                    
-                    //Zohreh: This line adds a box around every primary diagram.
-//                    g.setColor(Color.red);
-//                    g2d.drawRect(0, 0, getWidth()-8, getHeight()-1);
-                    
-                    g.setColor(Color.black);
-                    Area az = new Area(conDiagram.getBox());
-                    g2d.setStroke(new BasicStroke(3F));
-                    Area naz = az.createTransformedArea(trans);
-                  g2d.draw(new Line2D.Double(naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY(), naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY()+naz.getBounds().getHeight()));
-                  g2d.draw( new Line2D.Double(naz.getBounds().getX(),  naz.getBounds().getY(), naz.getBounds().getX()+naz.getBounds().getWidth(),  naz.getBounds().getY()));
-                  g2d.draw(new Line2D.Double( naz.getBounds().getX(), naz.getBounds().getY(), naz.getBounds().getX(), naz.getBounds().getY()+naz.getBounds().getHeight()));
-                  g2d.draw(new Line2D.Double( naz.getBounds().getX(), naz.getBounds().getY()+naz.getBounds().getHeight(), naz.getBounds().getX()+naz.getBounds().getWidth(), naz.getBounds().getY()+naz.getBounds().getHeight()));
-                  
-//                    g2d.drawLine((int)(naz.getBounds().getX()+naz.getBounds().getWidth()), (int) naz.getBounds().getY(), (int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()));
-//                    g2d.drawLine((int) naz.getBounds().getX(), (int) naz.getBounds().getY(), (int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) naz.getBounds().getY());
-//                    g2d.drawLine((int) naz.getBounds().getX(), (int) naz.getBounds().getY(), (int) naz.getBounds().getX(), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()));
-//                    g2d.drawLine((int) naz.getBounds().getX(), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()), (int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) (naz.getBounds().getY()+naz.getBounds().getHeight()));
-//                    g2d.draw(naz.getBounds());
-                    
                     
                     // Draw shaded zones:
                     g.setColor(Color.lightGray);
@@ -787,11 +753,11 @@ public class ACirclesPanelEx extends JPanel{
                             }
                         }
                         
-                        
-                        Rectangle space = new Rectangle(naz.getBounds());
-                        space.setLocation((int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) naz.getBounds().getY());
-                        g.setColor(Color.red);
-                        g2d.fill(space);
+                        //Inserting space between two primaries in  a CD.
+//                        Rectangle space = new Rectangle(naz.getBounds());
+//                        space.setLocation((int) (naz.getBounds().getX()+naz.getBounds().getWidth()), (int) naz.getBounds().getY());
+//                        g.setColor(Color.red);
+//                        g2d.fill(space);
                     
                 }
             		 
@@ -909,8 +875,8 @@ public class ACirclesPanelEx extends JPanel{
     }
 
     private void initComponents() {
-        setBackground(new java.awt.Color(255, 255, 255));
-        setLayout(null);
+    	setBackground(new java.awt.Color(255, 255, 255));
+    	setLayout(null);
     }
 
     protected ConcreteZone getHighlightedZone() {

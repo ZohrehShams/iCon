@@ -48,7 +48,9 @@ public class NullSpiderDiagramPanel extends javax.swing.JPanel {
     private boolean highlighting = false;
     private static final Color DefaultColor = new Color(0, 0, 0);
     private static final Color HighlightColor = new Color(0xff, 0, 0);
-    private static final String TopSymbol = "\u22A4";
+    //Zohreh: This shows a box (like end of proof) instead of the \top symbol.
+    private static final String TopSymbol = "\u2610";
+    //private static final String TopSymbol = "\u22A4";
     private Font defaultFont;
     private Font highlightFont;
     // </editor-fold>
@@ -91,6 +93,7 @@ public class NullSpiderDiagramPanel extends javax.swing.JPanel {
         lblNullSD.setForeground(DefaultColor);
         lblNullSD.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNullSD.setText(TopSymbol);
+        
         lblNullSD.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onLabelClicked(evt);

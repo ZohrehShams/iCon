@@ -307,6 +307,7 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     JLabel lblAppliedRules = new JLabel();
     JScrollPane scrlPnlAppliedRules = new JScrollPane();
     lstAppliedRules = new javax.swing.JList();
+    
     JLabel lblTactics = new JLabel();
     lstTactics = new javax.swing.JList<>();
     JScrollPane scrlPnlTactics = new JScrollPane();
@@ -363,7 +364,7 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
-    pnlRulesSidePane.add(lblAppliedRules, gridBagConstraints);
+//    pnlRulesSidePane.add(lblAppliedRules, gridBagConstraints);
 
     lstAppliedRules.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     lstAppliedRules.setModel(getRulesList());
@@ -381,7 +382,7 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
     gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-    pnlRulesSidePane.add(scrlPnlAppliedRules, gridBagConstraints);
+//    pnlRulesSidePane.add(scrlPnlAppliedRules, gridBagConstraints);
 
     lblTactics.setLabelFor(lstTactics);
     lblTactics.setText("Tactics:");
@@ -392,7 +393,7 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
-    pnlRulesSidePane.add(lblTactics, gridBagConstraints);
+//    pnlRulesSidePane.add(lblTactics, gridBagConstraints);
 
     lstTactics.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     lstTactics.setModel(getTacticsList());
@@ -412,13 +413,13 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
     gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-    pnlRulesSidePane.add(scrlPnlTactics,gridBagConstraints);
+//    pnlRulesSidePane.add(scrlPnlTactics,gridBagConstraints);
     
     
     
     //Zohreh
     lblAppliedRulesLUCOP.setLabelFor(lstAppliedRulesLUCOP);
-    lblAppliedRulesLUCOP.setText("My rules:");
+    lblAppliedRulesLUCOP.setText("Inference Rules:");
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 6;

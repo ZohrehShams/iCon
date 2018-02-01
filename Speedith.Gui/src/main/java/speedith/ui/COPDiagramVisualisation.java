@@ -360,10 +360,11 @@ public class COPDiagramVisualisation {
         	if(sd instanceof ConceptDiagram){
         		//Zohreh: Doesn't matter which one I use, the result is the same. 
         		return getSpiderDiagramPanel((ConceptDiagram) sd, size);
-        		//return new COPDiagramPanel(sd);
+        		//return new COPDiagramPanel((ConceptDiagram) sd);
         	} else
             if (sd instanceof PrimarySpiderDiagram) {
-                return getSpiderDiagramPanel((PrimarySpiderDiagram) sd, size);
+                //return getSpiderDiagramPanel((PrimarySpiderDiagram) sd, size);
+                return new COPDiagramPanel((PrimarySpiderDiagram) sd);
             } else if (sd instanceof CompoundSpiderDiagram) {
                 //return new SpiderDiagramPanel(sd);
             	return new COPDiagramPanel(sd);
@@ -406,8 +407,7 @@ public class COPDiagramVisualisation {
     
     //static SpeedithCirclesPanel getSpiderDiagramPanel(ConceptDiagram diagram, int size) throws CannotDrawException {
     static CDCirclesPanelEx getSpiderDiagramPanel(ConceptDiagram diagram, int size) throws CannotDrawException {
-    
-    	System.out.println("all should be fine now");
+    	//System.out.println("all should be fine now");
     	final CDAbstractDescription ad = getAbstractDescription(diagram);
         ConcreteCDiagram cd = ConcreteCDiagram.makeConcreteDiagram(ad, size);
         //return new SpeedithCirclesPanel(cd);
