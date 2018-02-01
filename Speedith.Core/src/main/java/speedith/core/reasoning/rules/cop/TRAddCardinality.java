@@ -33,9 +33,9 @@ implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, 
 	
 	public static final String InferenceRuleName = "add_cardinality";
 
-	//Zohreh: this is not applicable to LUCOP but because I want all these rules to appear in "My Rule" bar in the gui, 
+	//Zohreh: this is not applicable to LUCOP but because if I want all these rules to appear in "My Rule" bar in the gui, 
 	//I have to add it here.
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCarCOPDiagram,DiagramType.LUCOPDiagram);
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCarCOPDiagram);
     
     @Override
     public TRAddCardinality getInferenceRule() {

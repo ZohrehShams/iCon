@@ -25,7 +25,7 @@ implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, 
 
     public static final String InferenceRuleName = "Remove Shaded Zone";
 
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram);
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram,DiagramType.LUCOPDiagram);
     private static final long serialVersionUID = 7113122453070471789L;
 
     @Override

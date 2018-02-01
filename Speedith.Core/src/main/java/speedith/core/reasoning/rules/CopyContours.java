@@ -52,7 +52,8 @@ public class CopyContours extends SimpleInferenceRule<MultipleRuleArgs> implemen
      */
     public static final String InferenceRuleName = "copy_contours";
 
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram);
+    //Zohreh
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram, DiagramType.LUCOPDiagram);
     private static final long serialVersionUID = -3569161621056814002L;
 
 

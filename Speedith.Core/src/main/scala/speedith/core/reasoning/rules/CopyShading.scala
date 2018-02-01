@@ -16,7 +16,7 @@ class CopyShading extends SimpleInferenceRule[MultipleRuleArgs] with Serializabl
 
   def getInferenceName: String = "copy_shading"
 
-  def getApplicableTypes:  java.util.Set[DiagramType] = Set(DiagramType.EulerDiagram, DiagramType.SpiderDiagram)
+  def getApplicableTypes:  java.util.Set[DiagramType] = Set(DiagramType.EulerDiagram, DiagramType.SpiderDiagram, DiagramType.LUCOPDiagram)
 
   def getDescription(locale: Locale): String = Translations.i18n(locale, "COPY_SHADING_DESCRIPTION")
 

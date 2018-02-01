@@ -52,7 +52,8 @@ public class ConjunctionElimination extends SimpleInferenceRule<MultipleRuleArgs
      */
     public static final String InferenceRuleName = "conjunction_elimination";
 
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram);
+    //Zohreh
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram,DiagramType.LUCOPDiagram);
     private static final long serialVersionUID = -1908339958775714434L;
 
     @Override

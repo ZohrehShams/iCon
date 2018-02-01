@@ -55,7 +55,7 @@ public class RemoveContour extends SimpleInferenceRule<MultipleRuleArgs> impleme
      */
     public static final String InferenceRuleName = "remove_contour";
 
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.SpiderDiagram,DiagramType.EulerDiagram);
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.SpiderDiagram,DiagramType.EulerDiagram, DiagramType.LUCOPDiagram);
     private static final long serialVersionUID = -869717711275052747L;
     // </editor-fold>
 

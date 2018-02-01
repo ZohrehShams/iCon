@@ -57,7 +57,8 @@ public class ImplicationTautology extends SimpleInferenceRule<SubDiagramIndexArg
      */
     public static final String InferenceRuleName = "implication_tautology";
 
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram);
+    //Zohreh
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram,DiagramType.LUCOPDiagram);
     private static final long serialVersionUID = -2010650255991511505L;
 
     @Override

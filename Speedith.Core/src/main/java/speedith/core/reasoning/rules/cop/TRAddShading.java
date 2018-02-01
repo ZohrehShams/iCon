@@ -30,7 +30,10 @@ public class TRAddShading extends SimpleInferenceRule<MultipleRuleArgs>
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>{
 	
 	public static final String InferenceRuleName = "tr_add_shading";
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram);
+	
+	//Zohreh: In fact this should be DiagramType.LUCOPDiagram, but since TRs are not inference rules, I don't want them 
+    //to appear in the GUI. What appears in the GUI is LUCOPDiagram, so I change this to COPDiagram to make it hidden from the GUI.
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.COPDiagram);
     
  
     @Override

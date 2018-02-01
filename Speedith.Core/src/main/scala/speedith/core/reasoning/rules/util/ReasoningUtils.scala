@@ -64,8 +64,8 @@ object ReasoningUtils {
       SpiderDiagrams.createConceptDiagram(cd.get_cd_Arrows,extracted,true)
       
 //      Zohreh: if you want the visualisation of Null as prep.
-//      case nsd : NullSpiderDiagram =>
-//      SpiderDiagrams.createNullSD()
+      case nsd : NullSpiderDiagram =>
+      SpiderDiagrams.createNullSD()
   }
   
 

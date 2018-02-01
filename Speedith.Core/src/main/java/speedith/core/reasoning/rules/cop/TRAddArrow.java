@@ -27,8 +27,10 @@ public class TRAddArrow extends SimpleInferenceRule<ArrowArg>
 implements BasicInferenceRule<ArrowArg>, ForwardRule<ArrowArg>{
 	
     public static final String InferenceRuleName = "add_arrow";
-
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram);
+    
+    //Zohreh: In fact this should be DiagramType.LUCOPDiagram, but since TRs are not inference rules, I don't want them 
+    //to appear in the GUI. What appears in the GUI is LUCOPDiagram, so I change this to COPDiagram to make it hidden from the GUI.
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.COPDiagram);
     
     @Override
     public TRAddArrow getInferenceRule() {
