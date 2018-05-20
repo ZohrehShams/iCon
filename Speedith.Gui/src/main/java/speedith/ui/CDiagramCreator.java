@@ -1,5 +1,6 @@
 package speedith.ui;
 
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,14 @@ public class CDiagramCreator{
 		spiderAll = new ArrayList<ConcreteSpider>();
 	}
 	
+	public HashMap<AbstractCurve, CircleContour> getMapAll(){
+		return mapAll;
+	}
+	
+	public ArrayList<ConcreteSpider>  getSpiderAll(){
+		return spiderAll;
+	}
+	
 	public ConcreteCDiagram createDiagram(int size) throws CannotDrawException {
 		ConcreteCDiagram result = null;
 		ArrayList<ConcreteCOPDiagram> concretePrimaries = new ArrayList<ConcreteCOPDiagram>();
@@ -33,19 +42,25 @@ public class CDiagramCreator{
 			spiderAll.addAll(copc.createSpiders());
 		}
 		
-		result = new ConcreteCDiagram(concretePrimaries,createArrows()); 
+		//result = new ConcreteCDiagram(concretePrimaries,createArrows()); 
+		result = new ConcreteCDiagram(concretePrimaries,new ArrayList<ConcreteArrow>()); 
+		
 		return result;
 	}
-	
+
 	
     private ArrayList<ConcreteArrow> createArrows() throws CannotDrawException {
     	ArrayList<ConcreteArrow> arrows = new ArrayList<ConcreteArrow>();
+    	
+    	
     	Iterator<AbstractArrow> it = initial_diagram.getArrowIterator();
     	while (it.hasNext()){
     		AbstractArrow aa = it.next();
     		ConcreteArrow ca = makeConcreteArrow(aa);
     		arrows.add(ca);
     	}
+    	
+    	
     	return arrows;	
     }
     
@@ -77,13 +92,12 @@ public class CDiagramCreator{
     				break;
     			}
     		}
-    		
     		CircleContour cc= mapAll.get(acPrime);
     		xs = cc.get_cx();
     		ys = cc.get_cy()-cc.get_radius();
     	}else {if (aa.get_start() instanceof AbstractSpider){
     		
-    		System.out.println("You should come here for source.");
+    		//System.out.println("You should come here for source.");
     		AbstractSpider as = (AbstractSpider) aa.get_start();
     		
             for (ConcreteSpider concreteSpider : spiderAll){
@@ -119,7 +133,7 @@ public class CDiagramCreator{
     		xt = cc.get_cx();
     		yt = cc.get_cy()+cc.get_radius();
     	}else {if (aa.get_end() instanceof AbstractSpider){
-    		System.out.println("You should come here for target.");
+    		//System.out.println("You should come here for target.");
     		AbstractSpider as = (AbstractSpider) aa.get_end();
     		
             for (ConcreteSpider concreteSpider : spiderAll){

@@ -62,7 +62,8 @@ public class CopyContoursTransformer extends IdTransformer {
     private SpiderDiagram copyContours(PrimarySpiderDiagram diagramWithContour, PrimarySpiderDiagram diagramWithoutContour) {
         try {
             PrimarySpiderDiagram transformedDiagram = new ZoneTransfer(diagramWithContour, diagramWithoutContour).transferContour(getTargetContours().get(0));
-            return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, diagramWithContour, transformedDiagram, targetContours.get(0), indexOfParent);
+            //return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, diagramWithContour, transformedDiagram, targetContours.get(0), indexOfParent);
+            return transformedDiagram; 
         } catch (Exception e) {
             throw new TransformationException("Could not copy the contour. " + e.getMessage(), e);
         }

@@ -17,7 +17,8 @@ public enum DiagramType {
     EulerDiagram("euler_diagram", "Euler Diagrams"),
     COPDiagram("cop_diagram", "COP Diagrams"), 
     LUCOPDiagram("lu_cop_diagram", "LUCOP Diagrams"),
-	LUCarCOPDiagram("lu_car_cop_diagram", "LUCarCOP Diagrams");
+	LUCarCOPDiagram("lu_car_cop_diagram", "LUCarCOP Diagrams"),
+	ConceptDiagram("concept_diagram", "Concept Diagrams");
 
 
     private final String preferenceKey;

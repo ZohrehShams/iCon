@@ -30,11 +30,11 @@ public class DiagramTestPortfolio implements Serializable {
 
     public DiagramTestPortfolio(){
         this.spiderDiagrams = new ArrayList<>(asList(
-//                seven,
+                seven,
 //                four,
 //                ten,
 //                eleven,
-                DIAGRAM_SPEEDITH_PAPER_FIG7_1,
+//                DIAGRAM_SPEEDITH_PAPER_FIG7_1,
                 getSDExample3(),
 //                sixteen,
 //                twenty,
@@ -60,7 +60,10 @@ public class DiagramTestPortfolio implements Serializable {
 //                twoCD,
 //                threeCD,
 //                fourCD,
-                fourCarCD
+                tenComplete,
+                fourCarCD,
+                fiveCarCD,
+                getFalseDiagram()
         ));
         //loadFromTestFiles();
     }

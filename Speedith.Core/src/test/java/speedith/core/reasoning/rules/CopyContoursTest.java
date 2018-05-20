@@ -90,19 +90,19 @@ public class CopyContoursTest {
         );
     }
 
-    @Test
-    public void apply_on_the_speedith_D1_D2_example_should_return_D1Prime_D2() throws RuleApplicationException {
-        SpiderDiagram conjunctiveCompoundDiagram = SpiderDiagrams.createCompoundSD(Operator.Conjunction, DIAGRAM_SPEEDITH_PAPER_FIG2_D2, DIAGRAM_SPEEDITH_PAPER_FIG2_D1);
-        Goals targetOfInference = Goals.createGoalsFrom(conjunctiveCompoundDiagram);
-
-        SpiderDiagram expectedGoal = SpiderDiagrams.createCompoundSD(Operator.Conjunction, DIAGRAM_SPEEDITH_PAPER_FIG2_D2, DIAGRAM_SPEEDITH_PAPER_FIG2_D1Prime);
-
-        RuleApplicationResult applicationResult = copyContours.apply(new MultipleRuleArgs(new ContourArg(0, 1, "E")), targetOfInference);
-        assertThat(
-                applicationResult.getGoals().getGoalAt(0),
-                equalTo(expectedGoal)
-        );
-    }
+//    @Test
+//    public void apply_on_the_speedith_D1_D2_example_should_return_D1Prime_D2() throws RuleApplicationException {
+//        SpiderDiagram conjunctiveCompoundDiagram = SpiderDiagrams.createCompoundSD(Operator.Conjunction, DIAGRAM_SPEEDITH_PAPER_FIG2_D2, DIAGRAM_SPEEDITH_PAPER_FIG2_D1);
+//        Goals targetOfInference = Goals.createGoalsFrom(conjunctiveCompoundDiagram);
+//
+//        SpiderDiagram expectedGoal = SpiderDiagrams.createCompoundSD(Operator.Conjunction, DIAGRAM_SPEEDITH_PAPER_FIG2_D2, DIAGRAM_SPEEDITH_PAPER_FIG2_D1Prime);
+//
+//        RuleApplicationResult applicationResult = copyContours.apply(new MultipleRuleArgs(new ContourArg(0, 1, "E")), targetOfInference);
+//        assertThat(
+//                applicationResult.getGoals().getGoalAt(0),
+//                equalTo(expectedGoal)
+//        );
+//    }
 
     @Test
     public void getArgumentType_should_return_the_multiple_args_class() {

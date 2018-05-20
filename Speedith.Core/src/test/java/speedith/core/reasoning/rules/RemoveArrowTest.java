@@ -117,13 +117,13 @@ public class RemoveArrowTest {
 	 * Because this rule is information weakening it can only be applied in a forward style (as opposed to goal style). 
 	 * 
 	 */
-    @Test(expected = TransformationException.class)
-    public void apply_should_throw_exception() throws RuleApplicationException {
-    	COPDiagram target = TestCOPDiagrams.one;
-        Goals targetOfInference = Goals.createGoalsFrom(target);
-
-        RuleApplicationResult result = removeArrow.apply(new MultipleRuleArgs(new ArrowArg(0,0,TestCOPDiagrams.sAB)), targetOfInference);
-    }
+//    @Test(expected = TransformationException.class)
+//    public void apply_should_throw_exception() throws RuleApplicationException {
+//    	COPDiagram target = TestCOPDiagrams.one;
+//        Goals targetOfInference = Goals.createGoalsFrom(target);
+//
+//        RuleApplicationResult result = removeArrow.apply(new MultipleRuleArgs(new ArrowArg(0,0,TestCOPDiagrams.sAB)), targetOfInference);
+//    }
         
 
 

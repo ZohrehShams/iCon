@@ -437,11 +437,12 @@ public class ProofPanel extends javax.swing.JPanel implements Proof, AutomaticPr
         } else {
             spacer = ": ";
         }
-        if (args instanceof SubgoalIndexArg) {
-            return i18n("PROOF_PANEL_STEP_DESC_SUBGOAL", rule.getProvider().getPrettyName(), ((SubgoalIndexArg) args).getSubgoalIndex() + 1, type.getName()+spacer+typeSpecifier);
-        } else {
+//        if (args instanceof SubgoalIndexArg) {
+//            return i18n("PROOF_PANEL_STEP_DESC_SUBGOAL", rule.getProvider().getPrettyName(), ((SubgoalIndexArg) args).getSubgoalIndex() + 1, type.getName()+spacer+typeSpecifier);
+//        } else {
             return i18n("PROOF_PANEL_STEP_DESC_GENERAL", rule.getProvider().getPrettyName(), type.getName()+spacer+typeSpecifier);
-        }
+            //return i18n("PROOF_PANEL_STEP_DESC_GENERAL", rule.getProvider().getPrettyName());
+        //}
     }
 
 

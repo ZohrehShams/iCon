@@ -56,7 +56,10 @@ public class GoalsTitleLabel extends javax.swing.JPanel {
         setBackground(new java.awt.Color(158, 157, 157));
 
         lblTitle.setBackground(new java.awt.Color(153, 153, 153));
-        lblTitle.setFont(new java.awt.Font("Dialog", 3, 18)); // NOI18N
+        
+        lblTitle.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
+        
+        
         lblTitle.setForeground(new java.awt.Color(255, 255, 255));
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTitle.setText("Initial goal...");

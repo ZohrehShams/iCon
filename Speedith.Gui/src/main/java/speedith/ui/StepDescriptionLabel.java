@@ -53,7 +53,10 @@ public class StepDescriptionLabel extends javax.swing.JPanel {
         setBackground(new java.awt.Color(228, 227, 227));
 
         lblDescription.setBackground(new java.awt.Color(255, 255, 255));
-        lblDescription.setFont(new java.awt.Font("Dialog", 2, 12)); // NOI18N
+        
+        lblDescription.setFont(new java.awt.Font("Dialog", 2, 14)); // NOI18N
+        
+        
         lblDescription.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDescription.setText("Applied rule: split spiders");
 

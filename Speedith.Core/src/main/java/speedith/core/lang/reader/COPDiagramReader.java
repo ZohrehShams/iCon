@@ -18,6 +18,7 @@ import static speedith.core.i18n.Translations.i18n;
 import static speedith.core.lang.COPDiagram.SDTextArrowsAttribute;
 import static speedith.core.lang.LUCOPDiagram.*;
 import static speedith.core.lang.LUCarCOPDiagram.*;
+import static speedith.core.lang.CompleteCOPDiagram.*;
 import static speedith.core.lang.ConceptDiagram.*;
 import static speedith.core.lang.CarCDiagram.*;
 import static speedith.core.lang.ConceptDiagram.CDTextArrowsAttribute;
@@ -175,7 +176,7 @@ public final class COPDiagramReader{
         @Override
         public Arrow fromASTNode(CommonTree treeNode) throws ReadingException {
             ArrayList<String> arrowSTT = translator.fromASTNode(treeNode);
-            if (arrowSTT == null || arrowSTT.size() > 4 || arrowSTT.size() < 3) {
+            if ((arrowSTT == null) || (arrowSTT.size() > 4) || (arrowSTT.size() < 3)) {
                 throw new ReadingException(i18n("ERR_TRANSLATE_ARROW"), treeNode);
             }
             
@@ -183,6 +184,30 @@ public final class COPDiagramReader{
             	return new Arrow(arrowSTT.get(0), arrowSTT.get(1), arrowSTT.get(2));
             }else  return new Arrow(arrowSTT.get(0), arrowSTT.get(1), arrowSTT.get(2), arrowSTT.get(3));     
             
+        }
+    }
+    
+    
+    //Zohreh
+    private static class SpiderComparatorTranslator extends ElementTranslator<SpiderComparator> {
+
+        public static final SpiderComparatorTranslator Instance = new SpiderComparatorTranslator();
+        private ListTranslator<String> translator;
+
+        private SpiderComparatorTranslator() {
+            translator = new ListTranslator<>(SpiderDiagramsParser.SLIST, new StringTranslator());
+        }
+
+        @Override
+        public SpiderComparator fromASTNode(CommonTree treeNode) throws ReadingException {
+        	
+            ArrayList<String> spiderComparatorSTT = translator.fromASTNode(treeNode);
+            
+            if ((spiderComparatorSTT == null) || (spiderComparatorSTT.size() !=3)) {
+                throw new ReadingException(i18n("ERR_TRANSLATE_SPIDER_COMPARATOR"), treeNode);
+            }
+            
+            return new SpiderComparator(spiderComparatorSTT .get(0), spiderComparatorSTT .get(1), spiderComparatorSTT .get(2));          
         }
     }
     
@@ -565,12 +590,16 @@ public final class COPDiagramReader{
                     return PrimarySDTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.SD_NULL:
                     return NullSDTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.SD_FALSE:
+                    return FalseSDTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.COP:
                     return COPTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.LUCOP:
                     return LUCOPTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.LUCarCOP:
                     return LUCarCOPTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.CompleteCOP:
+                    return CompleteCOPTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.PD:
                     return PDTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.CD_BINARY:
@@ -643,6 +672,24 @@ public final class COPDiagramReader{
         }
     }
     
+    
+    
+    
+    //Zohreh
+    private static class FalseSDTranslator extends GeneralSDTranslator<FalseSpiderDiagram> {
+
+        public static final FalseSDTranslator Instance = new FalseSDTranslator();
+
+        private FalseSDTranslator() {
+            super(SpiderDiagramsParser.SD_FALSE);
+        }
+
+        @Override
+        FalseSpiderDiagram createSD(Map<String, Entry<Object, CommonTree>> attributes, CommonTree mainNode) throws ReadingException {
+            return FalseSpiderDiagram.getInstance();
+        }
+    }
+    
 
     private static class NullSDTranslator extends GeneralSDTranslator<NullSpiderDiagram> {
 
@@ -657,6 +704,9 @@ public final class COPDiagramReader{
             return NullSpiderDiagram.getInstance();
         }
     }
+    
+
+
     
     
     
@@ -755,6 +805,47 @@ public final class COPDiagramReader{
                     );
         }
     }
+    
+    
+    
+    //Zohreh
+    private static class CompleteCOPTranslator extends  GeneralSDTranslator<CompleteCOPDiagram>{
+    	
+        public static final CompleteCOPTranslator Instance = new CompleteCOPTranslator();
+
+        private CompleteCOPTranslator() {
+            super(SpiderDiagramsParser.CompleteCOP);
+            addMandatoryAttribute(SDTextSpidersAttribute, ListTranslator.StringListTranslator);
+            addMandatoryAttribute(SDTextHabitatsAttribute, HabitatTranslator.Instance);
+            addMandatoryAttribute(SDTextShadedZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
+            addOptionalAttribute(SDTextPresentZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
+            addMandatoryAttribute(SDTextArrowsAttribute,  new ListTranslator<>(ArrowTranslator.Instance));
+            addMandatoryAttribute(SDTextSpiderLabelsAttribute,  LabelTranslator.Instance);
+            addMandatoryAttribute(SDTextCurveLabelsAttribute,  LabelTranslator.Instance);
+            addMandatoryAttribute(SDTextArrowCardinalitiesAttribute,  ArrowCardinalityTranslator.Instance);
+            addMandatoryAttribute(SDTextSpiderComparatorAttribute,  
+            		new ListTranslator<>(SpiderComparatorTranslator.Instance));
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        CompleteCOPDiagram createSD(Map<String, Entry<Object, CommonTree>> attributes, CommonTree mainNode) throws ReadingException {
+            Entry<Object, CommonTree> presentZonesAttribute = attributes.get(SDTextPresentZonesAttribute);
+            return SpiderDiagrams.createCompleteCOPDiagram((Collection<String>) attributes.get(SDTextSpidersAttribute).getKey(),
+            		(Map<String, Region>) attributes.get(SDTextHabitatsAttribute).getKey(),
+                    (Collection<Zone>) attributes.get(SDTextShadedZonesAttribute).getKey(),
+                    presentZonesAttribute == null ? null : (Collection<Zone>) presentZonesAttribute.getKey(),
+                    (Collection<Arrow>) attributes.get(SDTextArrowsAttribute).getKey(),
+                    (Map<String, String>) attributes.get(SDTextSpiderLabelsAttribute).getKey(),
+                    (Map<String, String>) attributes.get(SDTextCurveLabelsAttribute).getKey(),
+                    (Map<Arrow, Cardinality>) attributes.get(SDTextArrowCardinalitiesAttribute).getKey(),
+                    (Collection<SpiderComparator>) attributes.get(SDTextSpiderComparatorAttribute).getKey()   
+                    );
+        }
+    }
+    
+    
+    
     
     
     

@@ -1,124 +1,121 @@
 package speedith.ui;
 
 import javax.swing.JPanel;
+import icircles.util.CannotDrawException;
+import java.awt.BasicStroke;
+import java.awt.GridBagConstraints;
 
-import icircles.concreteDiagram.ConcreteDiagrams;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.Line2D;
-
-public class CDCirclesPanelEx extends ACirclesPanelEx{
 	
-//public class CDCirclesPanelEx extends JPanel{
+public class CDCirclesPanelEx extends JPanel{
 	
-	//private ConcreteCDiagram diagram;
+    private javax.swing.JPanel diagrams; 
+	private ConcreteCDiagram diagram;
 	
+	final static float dash1[] = {10.0f};
+    final static BasicStroke dashed = new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER,
+    		10.0f, dash1, 0.0f);
+    
+    
     public CDCirclesPanelEx(ConcreteCDiagram diagram) {
-    	super(diagram);
-    	//super();
-    	//this.diagram =diagram;
-//    	for (ConcreteCOPDiagram cond: diagram.getPrimaries()){
-//    		ConcreteCOPDiagram conDiagram = (ConcreteCOPDiagram) cond;
-//    		this.add(new ACirclesPanelEx(conDiagram));
-    		//this.add(new SpeedithCirclesPanel(conDiagram));
-    		
-    	//}
-
+    	initComponents();
+    	this.diagram =diagram;
+    	try {
+			drawCD(diagram);
+		} catch (CannotDrawException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        validate();
+//        repaint();
     }
-
+    	
     public CDCirclesPanelEx() {
         this(null);
     }
     
-    @Override
-    public void paint(Graphics g){
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    
+    
+    protected void drawCD(ConcreteCDiagram diagram) throws CannotDrawException {
+        GridBagConstraints gridBagConstraints;
+        JPanel result;
         
-        ConcreteCDiagram cDiagram = (ConcreteCDiagram) diagram;
-        Line2D.Double tmpArrow = new Line2D.Double();
-        
-    	for (ConcreteArrow a : cDiagram.getArrows()){
+    	for (ConcreteCOPDiagram cond: diagram.getPrimaries()){
+    		System.out.println("are you cominf gere at akk?");
+    		ConcreteCOPDiagram conDiagram = (ConcreteCOPDiagram) cond;
+    		result =  new SpeedithCirclesPanel(conDiagram);
+//    		diagrams.add(result);
+//    		add(result);
+//    		this.add(result);
     		
-    		if(a.aa.get_type().equals("solid")){
-        		//Line2D.Double tmpArrow = new Line2D.Double();
-        		//g2d.setStroke(DEFAULT_CONTOUR_STROKE);
-    			
-        		g2d.setColor(Color.GREEN);  	                		
-        		//System.out.println("X1=" + a.x_s+ "Y1=" +a.y_s+ "X2=" + a.x_t + "Y2=" + a.y_t);
-
-        		
-        		tmpArrow = a.getScaledArrow(scaleFactor);
-        		g2d.draw(tmpArrow);
-        		
-        		//System.out.println("X1=" + tmpArrow.getX1() + "Y1=" +tmpArrow.getY1() + "X2=" + tmpArrow.getX2() + "Y2=" + tmpArrow.getY2());
-        		
-        		double dy = tmpArrow.y2  - tmpArrow.y1;
-        		double dx = tmpArrow.x2  - tmpArrow.x1;
-        		
-        		double phi = Math.toRadians(40);
-        		
-        		int barb = 20;
-        		
-        		double theta = Math.atan2(dy, dx);
-        		
-        		double x, y, rho = theta + phi;
-        		
-                for(int j = 0; j < 2; j++)
-                {
-                    x = tmpArrow.x2 - barb * Math.cos(rho);
-                    y = tmpArrow.y2 - barb * Math.sin(rho);
-                    g2d.draw(new Line2D.Double(tmpArrow.x2, tmpArrow.y2, x, y));
-                    rho = theta - phi;
-                }
-    		}
-    		
-    		if(a.aa.get_type().equals("dashed")){
-        		//Line2D.Double tmpArrow = new Line2D.Double();
-        		g2d.setStroke(dashed);
-        		g2d.setColor(Color.black);  	
-        		tmpArrow = a.getScaledArrow(scaleFactor);
-        		g2d.draw(tmpArrow);
-        		
-        		double dy = tmpArrow.y2  - tmpArrow.y1;
-        		double dx = tmpArrow.x2  - tmpArrow.x1;
-        		
-        		double phi = Math.toRadians(40);
-        		
-        		int barb = 20;
-        		
-        		double theta = Math.atan2(dy, dx);
-        		
-        		double x, y, rho = theta + phi;
-        		
-                for(int j = 0; j < 2; j++)
-                {
-                    x = tmpArrow.x2 - barb * Math.cos(rho);
-                    y = tmpArrow.y2 - barb * Math.sin(rho);
-                    g2d.draw(new Line2D.Double(tmpArrow.x2, tmpArrow.y2, x, y));
-                    rho = theta - phi;
-                }
-    		}
-    		
-    		
-    		
-            if (a.aa.getLabel() != null) {
-            	g.setFont(new Font("Helvetica", Font.BOLD,  12));
-            	if (a.aa.getCardinality() == null){
-                    g2d.drawString(a.aa.getLabel(),
-                            (int) (a.getLabelXPosition() * trans.getScaleX())+5,
-                            (int) (a.getLabelYPosition() * trans.getScaleY()));
-            	}else{
-                    g2d.drawString(a.aa.getLabel()+a.aa.getCardinality().toString(),
-                            (int) (a.getLabelXPosition() * trans.getScaleX())+5,
-                            (int) (a.getLabelYPosition() * trans.getScaleY()));
-            	}
-            }  		
+            gridBagConstraints = getSubdiagramLayoutConstraints(0, true, result.getPreferredSize().width, 1);
+    		diagrams.add(result,gridBagConstraints);
     	}
     }
+    
+    
+    private void initComponents() {
+        diagrams = new javax.swing.JPanel();
+
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        diagrams.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout diagramsLayout = new javax.swing.GroupLayout(diagrams);
+        diagrams.setLayout(diagramsLayout);
+        diagramsLayout.setHorizontalGroup(
+                diagramsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                              .addGap(0, 330, Short.MAX_VALUE)
+        );
+        diagramsLayout.setVerticalGroup(
+                diagramsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                              .addGap(0, 234, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                      .addComponent(diagrams, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                      .addComponent(diagrams, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+    }
+
+
+    
+    private GridBagConstraints getSubdiagramLayoutConstraints(int gridx, boolean fill, int weightx, int weighty) {
+        GridBagConstraints gridBagConstraints;
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = fill ? java.awt.GridBagConstraints.BOTH : GridBagConstraints.NONE;
+        gridBagConstraints.weightx = weightx;
+        gridBagConstraints.weighty = weighty;
+        gridBagConstraints.insets.set(3, 2, 3, 2);
+        return gridBagConstraints;
+    }
+    
+    
+//    private int addSpiderDiagramPanel(int nextSubdiagramIndex, ConceretSpiderDiagram curSD, int gridx) throws CannotDrawException {
+//        GridBagConstraints gridBagConstraints;
+//        JPanel result;
+//        try {
+//            result = COPDiagramVisualisation.getSpiderDiagramPanel(curSD);
+//            
+//        } catch (CannotDrawException e) {
+//            result = new SpiderDiagramPanel(curSD);
+//            result.setBorder(BorderFactory.createEmptyBorder());
+//        }
+//        JPanel sdp = registerSubdiagramClickListener(result, nextSubdiagramIndex);
+//        
+//        gridBagConstraints = getSubdiagramLayoutConstraints(gridx, true, sdp.getPreferredSize().width, 1);
+//        this.add(sdp, gridBagConstraints);
+//        return nextSubdiagramIndex + curSD.getSubDiagramCount();
+//    }
+    
+    
+    
 
 }

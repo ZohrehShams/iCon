@@ -53,8 +53,16 @@ public class ConcreteArrow {
     public Line2D.Double getScaledArrow(Double scale) {
         return makeArrow(x_s*scale, y_s*scale, x_t*scale, y_t*scale);
     }
-    
+
+
+//    public Line2D.Double getScaledArrow() {
+//        return makeArrow(x_s, y_s, x_t, y_t);
+//    }
    
+    public Line2D.Double getMyArrow(double x_s, double y_s, double x_t, double y_t) {
+        return makeArrow(x_s, y_s, x_t, y_t);
+    }
+    
     public double getLabelXPosition() {
         return (x_s + x_t)  / 2;
     }

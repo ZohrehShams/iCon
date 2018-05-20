@@ -238,5 +238,7 @@ public interface Transformer {
      * @return {@code true} if this transformer has no more transformations to
      * do.
      */
+    
+    
     public boolean isDone();
 }

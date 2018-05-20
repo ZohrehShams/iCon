@@ -34,6 +34,10 @@ public class ConcreteCDiagram implements ConcreteDiagrams{
         return dc.createDiagram(size);
     }
     
+    public void addConcreteArrows(ArrayList<ConcreteArrow> cdArrows){
+    	cd_arrows.addAll(cdArrows);
+    }
+    
     
     public ConcreteArrow getArrowAtPoint(Point p) {
         for (ConcreteArrow arrow : this.cd_arrows) {
@@ -51,9 +55,11 @@ public class ConcreteCDiagram implements ConcreteDiagrams{
     
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		//return (int) Math.ceil(box.height);
-		return 500;
+		int size =0;
+		for ( ConcreteCOPDiagram cop: this.cd_primaries){
+			size += cop.getSize();
+		}
+		return size;
 	}
 
 	@Override

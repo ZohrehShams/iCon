@@ -100,9 +100,11 @@ public class COPDiagramVisualisation {
         }
         
         AbstractDescription ad = new AbstractDescription(contours, allVisibleZones, shadedHabitatZones);
-        //ad.putContourMap(contourMap);
-        COPAbstractDescription copad = new COPAbstractDescription(contours, allVisibleZones, shadedHabitatZones);   
+        COPAbstractDescription copad = new COPAbstractDescription(contours, allVisibleZones, shadedHabitatZones);  
         copad.putContourMap(contourMap);
+        
+        CompleteCOPAbstractDescription cCopad = new CompleteCOPAbstractDescription(contours, allVisibleZones, shadedHabitatZones);   
+        cCopad.putContourMap(contourMap);
         
         if (psd.getHabitatsCount() > 0) {
             SortedMap<String, Region> habitats = psd.getHabitats();
@@ -115,7 +117,6 @@ public class COPDiagramVisualisation {
                 	LUCOPDiagram lucop = (LUCOPDiagram) psd;
                     final AbstractSpider abstractSpider = 
                     		new AbstractSpider(feet, habitat.getKey(), lucop.getSpiderLabels().get(habitat.getKey()));
-                    //new AbstractSpider(feet, habitat.getKey(), lucop.getSpiderLabels().get(habitat.getKey()));
                     
                     spiderMap.put(habitat.getKey(),abstractSpider);
                     
@@ -123,6 +124,8 @@ public class COPDiagramVisualisation {
                     
                     ad.addSpider(abstractSpider);
                     copad.addSpider(abstractSpider);  
+                    
+                    cCopad.addSpider(abstractSpider); 
                 	
                 }else{
                     final AbstractSpider abstractSpider = new AbstractSpider(feet, habitat.getKey());
@@ -131,30 +134,95 @@ public class COPDiagramVisualisation {
                     spiders.add(abstractSpider);
                     
                     ad.addSpider(abstractSpider);
-                    copad.addSpider(abstractSpider);  	
+                    copad.addSpider(abstractSpider);  
+                    
+                    cCopad.addSpider(abstractSpider); 
                 }
             }
         }
         
         copad.putSpiderMap(spiderMap);
-         
-        if (psd instanceof COPDiagram) {
-        	COPDiagram cop = (COPDiagram) psd;
-        	if (cop.getArrowsCount() > 0) {
-        		TreeSet<Arrow> arrows = cop.getArrowsMod();
+        
+        cCopad.putSpiderMap(spiderMap);
+        
+        if(psd instanceof CompleteCOPDiagram){
+			CompleteCOPDiagram cCop = (CompleteCOPDiagram) psd;
+			
+			if (cCop.getArrowsCount() > 0) {
+				TreeSet<Arrow> arrows = cCop.getArrowsMod();
         		TreeSet<AbstractArrow> allAbsArrows = new TreeSet<AbstractArrow>();
         		
-        		abstractArrowCreator(contourStrings, spiderStrings, spiderMap, contourMap, cop, arrows, allAbsArrows);
+        		abstractArrowCreator(contourStrings, spiderStrings, spiderMap, contourMap, cCop, arrows, allAbsArrows);
         		
-        		copad.addAllArrows(allAbsArrows);
+        		cCopad.addAllArrows(allAbsArrows);
+			}
+			
+			TreeSet<AbstractSpiderComparator> allAbsSpiderCompartor = new TreeSet<AbstractSpiderComparator>();
+			for(SpiderComparator sc : cCop.getSpiderComparators()){
+				AbstractSpider as1 = spiderMap.get(sc.getComparable1());
+				AbstractSpider as2 = spiderMap.get(sc.getComparable2());
+				AbstractSpiderComparator asc = new AbstractSpiderComparator(as1,as2,sc.getQuality());
+				allAbsSpiderCompartor.add(asc);
+			}
+			
+			cCopad.addAllSpiderComparators(allAbsSpiderCompartor);	
+			return cCopad;
+        }else{
+        	if (psd instanceof COPDiagram) {
+        		COPDiagram cop = (COPDiagram) psd;
+            	if (cop.getArrowsCount() > 0) {
+            		TreeSet<Arrow> arrows = cop.getArrowsMod();
+            		TreeSet<AbstractArrow> allAbsArrows = new TreeSet<AbstractArrow>();
+            		
+            		abstractArrowCreator(contourStrings, spiderStrings, spiderMap, contourMap, cop, arrows, allAbsArrows);
+            		
+            		copad.addAllArrows(allAbsArrows);
+            		
+            	}
+            	return copad;
+        		
         	}
         	
-        	
-        	return copad;
-        	} 
-        else{
-        	return ad;
         }
+        return ad;
+			
+
+        
+         
+         
+//        if (psd instanceof COPDiagram) {
+//        	COPDiagram cop = (COPDiagram) psd;
+//        	if (cop.getArrowsCount() > 0) {
+//        		TreeSet<Arrow> arrows = cop.getArrowsMod();
+//        		TreeSet<AbstractArrow> allAbsArrows = new TreeSet<AbstractArrow>();
+//        		
+//        		abstractArrowCreator(contourStrings, spiderStrings, spiderMap, contourMap, cop, arrows, allAbsArrows);
+//        		
+//        		copad.addAllArrows(allAbsArrows);
+//        		
+//        		cCopad.addAllArrows(allAbsArrows);
+//        		
+//        		if(psd instanceof CompleteCOPDiagram){
+//        			CompleteCOPDiagram cCop = (CompleteCOPDiagram) psd;
+//        			//CompleteCOPAbstractDescription cCopad = (CompleteCOPAbstractDescription) copad;        			
+//        			TreeSet<AbstractSpiderComparator> allAbsSpiderCompartor = new TreeSet<AbstractSpiderComparator>();
+//        			for(SpiderComparator sc : cCop.getSpiderComparators()){
+//        				AbstractSpider as1 = spiderMap.get(sc.getComparable1());
+//        				AbstractSpider as2 = spiderMap.get(sc.getComparable2());
+//        				AbstractSpiderComparator asc = new AbstractSpiderComparator(as1,as2,sc.getQuality());
+//        				allAbsSpiderCompartor.add(asc);
+//        			}
+//        			cCopad.addAllSpiderComparators(allAbsSpiderCompartor);
+//        			return cCopad;
+//        		}
+//        	}
+//        	return copad;
+//        	} 
+        
+        
+//        else{
+//        	return ad;
+//        }
         
     }
 
@@ -369,7 +437,11 @@ public class COPDiagramVisualisation {
                 //return new SpiderDiagramPanel(sd);
             	return new COPDiagramPanel(sd);
             } else if (sd instanceof NullSpiderDiagram) {
-                return new NullSpiderDiagramPanel();
+            	if(sd instanceof FalseSpiderDiagram){
+            		return new FalseSpiderDiagramPanel();
+            	}else{
+            		return new NullSpiderDiagramPanel();
+            	}
             } else {
                 throw new AssertionError(i18n("GERR_ILLEGAL_STATE"));
             }
@@ -407,9 +479,8 @@ public class COPDiagramVisualisation {
     
     //static SpeedithCirclesPanel getSpiderDiagramPanel(ConceptDiagram diagram, int size) throws CannotDrawException {
     static CDCirclesPanelEx getSpiderDiagramPanel(ConceptDiagram diagram, int size) throws CannotDrawException {
-    	//System.out.println("all should be fine now");
     	final CDAbstractDescription ad = getAbstractDescription(diagram);
-        ConcreteCDiagram cd = ConcreteCDiagram.makeConcreteDiagram(ad, size);
+        ConcreteCDiagram cd = ConcreteCDiagram.makeConcreteDiagram(ad, size);        
         //return new SpeedithCirclesPanel(cd);
         return new CDCirclesPanelEx(cd);
     }

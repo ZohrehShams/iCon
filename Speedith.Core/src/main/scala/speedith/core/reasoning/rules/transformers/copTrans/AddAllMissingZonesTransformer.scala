@@ -17,6 +17,25 @@ class AddAllMissingZonesTransformer (target:  SubDiagramIndexArg) extends IdTran
     
     if (diagramIndex == subDiagramIndex) {
       
+      if(psd.isInstanceOf[CompleteCOPDiagram]){
+        val cCop = psd.asInstanceOf[CompleteCOPDiagram]
+         
+         if ( (cCop.getShadedZones -- cCop.getPresentZones).isEmpty) {
+           throw new TransformationException("The diagram does not have any missing zones.")
+         }else{
+            SpiderDiagrams.createCompleteCOPDiagram(
+            cCop.getSpiders,
+            cCop.getHabitats, 
+            cCop.getShadedZones, 
+            cCop.getPresentZones ++ ( cCop.getShadedZones -- cCop.getPresentZones), 
+            cCop.getArrows,
+            cCop.getSpiderLabels, 
+            cCop.getCurveLabels,
+            cCop.getArrowCardinalities,
+            cCop.getSpiderComparators)
+         }
+      }
+      else{
        if(psd.isInstanceOf[LUCarCOPDiagram]){
          val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
          
@@ -38,7 +57,7 @@ class AddAllMissingZonesTransformer (target:  SubDiagramIndexArg) extends IdTran
              psd.getPresentZones ++  (psd.getShadedZones -- psd.getPresentZones))
        }
       
-    }else{
+    }}else{
       null
     }
     

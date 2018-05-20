@@ -20,9 +20,11 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
@@ -30,6 +32,7 @@ import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
+import icircles.abstractDescription.AbstractCurve;
 import icircles.concreteDiagram.CircleContour;
 import icircles.concreteDiagram.ConcreteDiagram;
 import icircles.concreteDiagram.ConcreteDiagrams;
@@ -93,6 +96,7 @@ public class ACirclesPanelEx extends JPanel{
     
     //Zohreh
     private ConcreteArrow highlightedArrow = null;
+    protected static HashMap<CircleContour,Ellipse2D.Double> concreteToCanvasCircles;
 
     /**
      * Creates new panel that will draw the given diagram.
@@ -103,6 +107,7 @@ public class ACirclesPanelEx extends JPanel{
         initComponents();
         resetDiagram(diagram);
         resizeContents();
+        //concreteToCanvasCircles = new HashMap<CircleContour,Ellipse2D.Double>();
     }
 
     /**
@@ -176,6 +181,15 @@ public class ACirclesPanelEx extends JPanel{
         p.y /= scaleFactor;
         return p;
     }
+    
+    
+//    public Point toPanelCoordinates(Point p) {
+//        p.x += getCenteringTranslationX();
+//        p.x *= scaleFactor;
+//        p.y += getCenteringTranslationY();
+//        p.y *= scaleFactor;
+//        return p;
+//    }
 
     @Override
     public void paint(Graphics g) {
@@ -240,14 +254,24 @@ public class ACirclesPanelEx extends JPanel{
             g2d.setStroke(DEFAULT_CONTOUR_STROKE);
             ArrayList<CircleContour> circles = conDiagram.getCircles();
             Ellipse2D.Double tmpCircle = new Ellipse2D.Double();
+         
             for (CircleContour cc : circles) {
                 Color col = cc.color();
+                
+                if(cc.ac.getLabel().startsWith("-")){
+                	col = Color.WHITE;
+                }
+                
                 if (col == null) {
                     col = Color.black;
                 }
                 g.setColor(col);
                 transformCircle(scaleFactor, cc.getCircle(), tmpCircle);
+                //concreteToCanvasCircles.put(cc,tmpCircle);             
                 g2d.draw(tmpCircle);
+                
+                
+                
                 if (cc.ac.getLabel() == null) {
                     continue;
                 }
@@ -283,6 +307,7 @@ public class ACirclesPanelEx extends JPanel{
                             (int) (cc.getLabelYPosition() * trans.getScaleY()) + 5);
                 }
             }
+            
 
             ConcreteSpider highlightedSpider = getHighlightedFoot() == null ? null : getHighlightedFoot().getSpider();
             g.setColor(Color.black);
@@ -343,7 +368,7 @@ public class ACirclesPanelEx extends JPanel{
               if (s.as.getLabel() != null) {
                   g2d.drawString(s.as.getLabel(),
                           (int) ((s.feet.get(0).getX()) * trans.getScaleX()) - 5,
-                          (int) ((s.feet.get(0).getY()) * trans.getScaleY()) - 10);
+                          (int) ((s.feet.get(0).getY()) * trans.getScaleY()) - 5);
               }
 
                 
@@ -386,7 +411,7 @@ public class ACirclesPanelEx extends JPanel{
                 		
                 		double phi = Math.toRadians(40);
                 		
-                		int barb = 20;
+                		int barb = 15;
                 		
                 		double theta = Math.atan2(dy, dx);
                 		
@@ -413,7 +438,7 @@ public class ACirclesPanelEx extends JPanel{
                 		
                 		double phi = Math.toRadians(40);
                 		
-                		int barb = 20;
+                		int barb = 15;
                 		
                 		double theta = Math.atan2(dy, dx);
                 		
@@ -431,14 +456,14 @@ public class ACirclesPanelEx extends JPanel{
             		
             		
                     if (a.aa.getLabel() != null) {
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  12));
+                    	g.setFont(new Font("Helvetica", Font.BOLD,  14));
                     	if (a.aa.getCardinality() == null){
                             g2d.drawString(a.aa.getLabel(),
-                                    (int) (a.getLabelXPosition() * trans.getScaleX())+5,
-                                    (int) (a.getLabelYPosition() * trans.getScaleY()));
+                                    (int) (a.getLabelXPosition() * trans.getScaleX())+3,
+                                    (int) (a.getLabelYPosition() * trans.getScaleY())-3);
                     	}else{
                             g2d.drawString(a.aa.getLabel()+a.aa.getCardinality().toString(),
-                                    (int) (a.getLabelXPosition() * trans.getScaleX())+5,
+                                    (int) (a.getLabelXPosition() * trans.getScaleX()),
                                     (int) (a.getLabelYPosition() * trans.getScaleY()));
                     	}
                     }  		
@@ -457,7 +482,7 @@ public class ACirclesPanelEx extends JPanel{
             		
             		double phi = Math.toRadians(40);
             		
-            		int barb = 20;
+            		int barb = 15;
             		
             		double theta = Math.atan2(dy, dx);
             		
@@ -471,13 +496,30 @@ public class ACirclesPanelEx extends JPanel{
                         rho = theta - phi;
                     }
                 }
+                if(copDiagram instanceof ConcreteCompleteCOPDiagram){
+                	ConcreteCompleteCOPDiagram cCopDiagram = (ConcreteCompleteCOPDiagram) copDiagram;
+                	for (ConcreteSpiderComparator csc : cCopDiagram.getConSpiderComparators()){
+                		if(csc.get_asc().getAbsQuality().equals("=")){
+                			g2d.drawString("=",
+                                    (int) (csc.getLabelXPosition() * trans.getScaleX())+5,
+                                    (int) (csc.getLabelYPosition() * trans.getScaleY()));
+                			}else if(csc.get_asc().getAbsQuality().equals("?")){
+                    			g2d.drawString("=",
+                                        (int) (csc.getLabelXPosition() * trans.getScaleX()),
+                                        (int) (csc.getLabelYPosition() * trans.getScaleY()));
+                    			g2d.drawString("?",
+                                        (int) (csc.getLabelXPosition() * trans.getScaleX()) + 2,
+                                        (int) (csc.getLabelYPosition() * trans.getScaleY()) - 8);
+                			}
+                		}
+                }
             	
             }
             
         }
             if (diagram instanceof ConcreteCDiagram){
+
             	ConcreteCDiagram cDiagram = (ConcreteCDiagram) diagram;
-            
             	Line2D.Double tmpArrow = new Line2D.Double();
             
             	
@@ -667,7 +709,7 @@ public class ACirclesPanelEx extends JPanel{
                         		
                         		double phi = Math.toRadians(40);
                         		
-                        		int barb = 20;
+                        		int barb = 15;
                         		
                         		double theta = Math.atan2(dy, dx);
                         		
@@ -694,7 +736,7 @@ public class ACirclesPanelEx extends JPanel{
                         		
                         		double phi = Math.toRadians(40);
                         		
-                        		int barb = 20;
+                        		int barb = 15;
                         		
                         		double theta = Math.atan2(dy, dx);
                         		
@@ -738,7 +780,7 @@ public class ACirclesPanelEx extends JPanel{
                     		
                     		double phi = Math.toRadians(40);
                     		
-                    		int barb = 20;
+                    		int barb = 15;
                     		
                     		double theta = Math.atan2(dy, dx);
                     		
@@ -789,7 +831,7 @@ public class ACirclesPanelEx extends JPanel{
                 		
                 		double phi = Math.toRadians(40);
                 		
-                		int barb = 20;
+                		int barb = 15;
                 		
                 		double theta = Math.atan2(dy, dx);
                 		
@@ -816,7 +858,7 @@ public class ACirclesPanelEx extends JPanel{
                 		
                 		double phi = Math.toRadians(40);
                 		
-                		int barb = 20;
+                		int barb = 15;
                 		
                 		double theta = Math.atan2(dy, dx);
                 		
@@ -852,7 +894,8 @@ public class ACirclesPanelEx extends JPanel{
         }
     }
 
-    @Override
+
+	@Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
         resizeContents();
@@ -990,6 +1033,7 @@ public class ACirclesPanelEx extends JPanel{
     protected static void transformCircle(double scaleFactor, Ellipse2D.Double inCircle, Ellipse2D.Double outCircle) {
         translateCircle(scaleFactor, inCircle, outCircle);
         scaleCircle(scaleFactor, inCircle, outCircle);
+
     }
     
     
@@ -1063,5 +1107,26 @@ public class ACirclesPanelEx extends JPanel{
     protected Graphics getComponentGraphics(Graphics g) {
         return svgGenerator;
     }
+    
+    //Zohreh
+    public HashMap<CircleContour,Ellipse2D.Double> getConcreteToCanvasCircleMap(){
+    	concreteToCanvasCircles = new HashMap<CircleContour,Ellipse2D.Double>();
+    	if(diagram instanceof ConcreteDiagram){
+    		ConcreteDiagram conDiagram = (ConcreteDiagram) diagram;
+    		ArrayList<CircleContour> circles = conDiagram.getCircles();
+    		
+    		Ellipse2D.Double tmpCircle = new Ellipse2D.Double();
+    		
+    		for (CircleContour cc : circles) {
+    			transformCircle(scaleFactor, cc.getCircle(), tmpCircle);
+    			concreteToCanvasCircles.put(cc,tmpCircle); 
+    		}
+    		
+    	}
+    	return concreteToCanvasCircles;
+    }
+    
+
+
 
 }

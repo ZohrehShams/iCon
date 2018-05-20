@@ -11,10 +11,6 @@ import speedith.core.reasoning.args.selection.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Sven Linker
- * Created by sl542 on 10/11/15.
- */
 public class SelectSourceAndTargetInstruction implements RuleApplicationInstruction<MultipleRuleArgs> {
 
     @Override

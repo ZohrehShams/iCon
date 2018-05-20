@@ -25,7 +25,8 @@ case class CopySpiderTransformer(compoundDiagramIndex: Int, spiderArg: SpiderArg
   private def copySpider(sourceDiagram: PrimarySpiderDiagram, targetDiagram: PrimarySpiderDiagram): SpiderDiagram = {
     try {
       val transformedDiagram = new SpiderTransfer(sourceDiagram, targetDiagram).transferSpider(spiderArg.getSpider)
-      InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, sourceDiagram, transformedDiagram, spiderArg, compoundDiagramIndex)
+      return transformedDiagram
+      //InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, sourceDiagram, transformedDiagram, spiderArg, compoundDiagramIndex)
     }
     catch {
       case e: Exception =>

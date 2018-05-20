@@ -59,6 +59,13 @@ public class SpiderDiagrams {
   public static NullSpiderDiagram createNullSD() {
     return NullSpiderDiagram.getInstance();
   }
+  
+  
+  public static FalseSpiderDiagram createFalseSD() {
+	return FalseSpiderDiagram.getInstance();
+  }
+  
+  
 
   public static CompoundSpiderDiagram bottom() {
     return createCompoundSD(Operator.Negation, createNullSD());
@@ -358,6 +365,48 @@ public class SpiderDiagrams {
   }
   
   //Zohreh
+  public static CompleteCOPDiagram createCompleteCOPDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones,
+				Collection<Zone> presentZones, Collection<Arrow> arrows, Map<String,String> spiderLabels, Map<String,String> curveLabels,
+				Map<Arrow,Cardinality> arrowCardinalities, Collection<SpiderComparator> spiderComparators){
+		    if ((spiders == null || spiders instanceof TreeSet)
+		        && (habitats == null || habitats instanceof TreeMap)
+		        && (shadedZones == null || shadedZones instanceof TreeSet)
+		        && (presentZones == null || presentZones instanceof TreeSet)
+		        && (arrows == null || arrows instanceof TreeSet)
+		        && (spiderLabels == null || spiderLabels instanceof TreeMap)
+		        && (curveLabels == null || curveLabels instanceof TreeMap)
+		        && (arrowCardinalities == null || arrowCardinalities instanceof TreeMap)
+		        && (spiderComparators == null || spiderComparators instanceof TreeSet)) {
+		      return new CompleteCOPDiagram(spiders == null ? null : (TreeSet<String>) spiders,
+		                             habitats == null ? null : (TreeMap<String, Region>) habitats,
+		                             shadedZones == null ? null : (TreeSet<Zone>) shadedZones,
+		                             presentZones == null ? null : (TreeSet<Zone>) presentZones,
+		                             arrows == null ? null : (TreeSet<Arrow>) arrows,
+		                             spiderLabels == null ? null : (TreeMap<String, String>) spiderLabels,
+		                             curveLabels == null ? null : (TreeMap<String, String>) curveLabels,
+		                             arrowCardinalities == null ? null : (TreeMap<Arrow,Cardinality>) arrowCardinalities,
+		                             spiderComparators == null ? null : (TreeSet<SpiderComparator>) spiderComparators);
+		    } else {
+		      TreeSet<String> spidersCopy = spiders == null ? null : new TreeSet<>(spiders);
+		      TreeMap<String, Region> habitatsCopy = habitats == null ? null : new TreeMap<>(habitats);
+		      TreeSet<Zone> shadedZonesCopy = shadedZones == null ? null : new TreeSet<>(shadedZones);
+		      TreeSet<Zone> presentZonesCopy = presentZones == null ? null : new TreeSet<>(presentZones);
+		      TreeSet<Arrow> arrowsCopy = arrows == null ? null : new TreeSet<>(arrows);
+		      TreeMap<String,String> spiderLabelsCopy = spiderLabels == null ? null : new TreeMap<>(spiderLabels);
+		      TreeMap<String,String> curveLabelsCopy = curveLabels == null ? null : new TreeMap<>(curveLabels);
+		      TreeMap<Arrow,Cardinality> arrowCardinalitiesCopy = arrowCardinalities == null ? null : new TreeMap<>(arrowCardinalities);
+		      TreeSet<SpiderComparator> spiderComparatorsCopy = spiderComparators == null ? null : new TreeSet<>(spiderComparators );
+		      return new CompleteCOPDiagram(spidersCopy, habitatsCopy, shadedZonesCopy, presentZonesCopy, arrowsCopy, 
+		    		  spiderLabelsCopy, curveLabelsCopy, arrowCardinalitiesCopy,spiderComparatorsCopy );
+		    }
+		  }
+  
+  
+  
+  
+  
+  
+  
   public static ConceptDiagram createConceptDiagram(Collection<Arrow> arrows,Collection<PrimarySpiderDiagram> primaries){
 	  if ((arrows == null || arrows instanceof TreeSet)  && (primaries instanceof ArrayList) ) {
 		  return new ConceptDiagram((ArrayList<PrimarySpiderDiagram>) primaries, arrows == null ? null : (TreeSet<Arrow>) arrows); 
@@ -393,10 +442,12 @@ public class SpiderDiagrams {
 	  }
   }
   
+  
   public static CarCDiagram createCarCDiagramNoText(Collection<Arrow> arrows,Map<Arrow,Cardinality> arrowCardinalities,PrimarySpiderDiagram... primaries) {
 	  ArrayList<PrimarySpiderDiagram> primariesTmp = new ArrayList<>(Arrays.asList(primaries));
 	  return createCarCDiagram(arrows,arrowCardinalities,primariesTmp);
   }
+  
 
   public static CarCDiagram createCarCDiagram( Collection<Arrow> arrows,Map<Arrow,Cardinality> arrowCardinalities,ArrayList<PrimarySpiderDiagram> primaries, boolean copy) {
 	  if(copy){

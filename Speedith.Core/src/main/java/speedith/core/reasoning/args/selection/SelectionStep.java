@@ -105,6 +105,7 @@ public abstract class SelectionStep {
     
     //Zohreh
     public static final int SpidersContours = Spiders | Contours;
+    public static final int SpidersContoursArrows = Spiders | Contours | Arrows;
     
     /**
      * This object may be used to reject a click in {@link SelectionStep#acceptSelection(speedith.core.reasoning.args.RuleArg, speedith.core.reasoning.args.selection.SelectionSequence, int)

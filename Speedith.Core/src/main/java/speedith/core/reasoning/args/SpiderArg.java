@@ -27,6 +27,9 @@
 package speedith.core.reasoning.args;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import speedith.core.reasoning.RuleApplicationException;
 
 /**
  *
@@ -56,6 +59,25 @@ public class SpiderArg extends SubDiagramIndexArg implements Serializable {
         this.spider = spider;
     }
     //</editor-fold>
+    
+    
+    //Zohreh
+    public static SpiderArg getSpiderArgFrom(RuleArg ruleArg) throws RuleApplicationException {
+        if (!(ruleArg instanceof SpiderArg)) {
+            throw new RuleApplicationException("The rule only takes curves as arguments.");
+        }
+        return (SpiderArg) ruleArg;
+    }
+    
+    //Zohreh
+    public static int assertSameSubDiagramIndices(int previousSubDiagramIndex, SpiderArg spiderArg) throws RuleApplicationException {
+        if (previousSubDiagramIndex != -1 && previousSubDiagramIndex != spiderArg.getSubDiagramIndex()) {
+            throw new RuleApplicationException("The spiders must be from the same unitary diagram.");
+        } else {
+            previousSubDiagramIndex = spiderArg.getSubDiagramIndex();
+        }
+        return previousSubDiagramIndex;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
     /**

@@ -10,6 +10,19 @@ import java.util.Locale;
  * @author Zohreh Shams [zs315@cam.ac.uk]
  * */
 public class ArrowsSelectionStep extends SelectionStep {
+	protected final boolean skippable;
+
+    public ArrowsSelectionStep(boolean skippable) {
+        this.skippable = skippable;
+    }
+    
+    /**
+     * Creates an unskippable arrow selection step.
+     */
+    public ArrowsSelectionStep() {
+        this(false);
+    }
+
 	
     @Override
     public SelectionRejectionExplanation init(SelectionSequence selection, int thisIndex) {

@@ -187,33 +187,37 @@ public class ZoneTransferTest {
         );
     }
 
-    @Test
-    public void transferContour_should_create_replicate_the_example_in_Fig2() throws ReadingException, IOException {
-        ZoneTransfer zoneTransfer = new ZoneTransfer(DIAGRAM_SPEEDITH_PAPER_FIG7_2,
-                                                     DIAGRAM_SPEEDITH_PAPER_FIG7_1);
-
-        PrimarySpiderDiagram expectedDiagram = DIAGRAM_SPEEDITH_PAPER_FIG7_3;
-
-        PrimarySpiderDiagram diagramWithTransferredContour = zoneTransfer.transferContour("D");
-
-        assertThat(
-                diagramWithTransferredContour.getShadedZones(),
-                equalTo(expectedDiagram.getShadedZones())
-        );
-        assertThat(
-                diagramWithTransferredContour.getHabitats(),
-                equalTo(expectedDiagram.getHabitats())
-        );
-        assertThat(
-                diagramWithTransferredContour.getPresentZones(),
-                contains(
-                        Zone.fromOutContours("A","B","C","D"),
-                        Zone.fromInContours("C").withOutContours("A", "B", "D"),
-                        Zone.fromInContours("C", "D").withOutContours("A", "B")
-
-                )
-        );
-    }
+    
+    
+//    @Test
+//    public void transferContour_should_create_replicate_the_example_in_Fig2() throws ReadingException, IOException {
+//        ZoneTransfer zoneTransfer = new ZoneTransfer(DIAGRAM_SPEEDITH_PAPER_FIG7_2,
+//                                                     DIAGRAM_SPEEDITH_PAPER_FIG7_1);
+//
+//        PrimarySpiderDiagram expectedDiagram = DIAGRAM_SPEEDITH_PAPER_FIG7_3;
+//
+//        PrimarySpiderDiagram diagramWithTransferredContour = zoneTransfer.transferContour("D");
+//
+//        assertThat(
+//                diagramWithTransferredContour.getShadedZones(),
+//                equalTo(expectedDiagram.getShadedZones())
+//        );
+//        assertThat(
+//                diagramWithTransferredContour.getHabitats(),
+//                equalTo(expectedDiagram.getHabitats())
+//        );
+//        assertThat(
+//                diagramWithTransferredContour.getPresentZones(),
+//                contains(
+//                        Zone.fromOutContours("A","B","C","D"),
+//                        Zone.fromInContours("C").withOutContours("A", "B", "D"),
+//                        Zone.fromInContours("C", "D").withOutContours("A", "B")
+//
+//                )
+//        );
+//    }
+    
+    
 
     @Test
     public void transferContour_should_replicate_the_first_step_in_Fig2_of_the_Speedith_paper() {

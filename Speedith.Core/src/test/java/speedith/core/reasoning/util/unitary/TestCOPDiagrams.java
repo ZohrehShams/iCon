@@ -2,7 +2,6 @@ package speedith.core.reasoning.util.unitary;
 
 import speedith.core.lang.*;
 import speedith.core.lang.Comparator;
-import speedith.core.lang.reader.COPDiagramReader;
 
 //import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.test;
 
@@ -403,12 +402,27 @@ public class TestCOPDiagrams {
 		return spiderLabels;
 	}
 	
+	public static TreeMap<String,String> settingSpiderLabels_t1_t1_t2_t2_t3_t3(){
+		TreeMap<String, String> spiderLabels = new TreeMap<>();
+		spiderLabels.put("t1","t1");
+		spiderLabels.put("t2","t2");
+		spiderLabels.put("t3","t3");
+		return spiderLabels;
+	}
+	
 	
 	
 	public static TreeMap<String,String> settingCurveLabels_A_First_B_Second(){
 		TreeMap<String, String> curveLabels = new TreeMap<>();
 		curveLabels.put("A","First");
 		curveLabels.put("B","Second");
+		return curveLabels;
+	}
+	
+	public static TreeMap<String,String> settingCurveLabels_A_A_B_B(){
+		TreeMap<String, String> curveLabels = new TreeMap<>();
+		curveLabels.put("A","A");
+		curveLabels.put("B","B");
 		return curveLabels;
 	}
 	
@@ -454,6 +468,13 @@ public class TestCOPDiagrams {
 	public static TreeMap<Arrow,Cardinality> settingArrowCardinalities_empty(){
 		TreeMap<Arrow,Cardinality> arrowCardinalities = new TreeMap<>();
 		return arrowCardinalities;
+	}
+	
+	public static TreeSet<SpiderComparator> settingSpiderEquality_t2_t3_unknown(){
+		TreeSet<SpiderComparator> spiderComparators = new TreeSet<SpiderComparator>();
+		SpiderComparator sc = new SpiderComparator("t2","t3","?");
+		spiderComparators.add(sc);
+		return spiderComparators;
 	}
 	
 	
@@ -516,6 +537,10 @@ public class TestCOPDiagrams {
 	
 	public static COPDiagram ten = COPDiagram.createCOPDiagram(settingSpiderst1t2t3(), settingHabitats_t1BA_t2AB_t3AB(), 
 			settingShadedZones_A_B(), settingPresentZones_B_A_A_B__AB(), settingArrows_sAB_dt1t2());
+	public static CompleteCOPDiagram tenComplete = SpiderDiagrams.createCompleteCOPDiagram(settingSpiderst1t2t3(),
+			settingHabitats_t1BA_t2AB_t3AB(), settingShadedZones_A_B(), settingPresentZones_B_A_A_B__AB(), 
+			settingArrows_sAB_dt1t2(), settingSpiderLabels_t1_t1_t2_t2_t3_t3(), settingCurveLabels_A_A_B_B(), 
+			null, settingSpiderEquality_t2_t3_unknown());
 	
 	public static COPDiagram eleven = COPDiagram.createCOPDiagram(settingSpiderst1t2t3(), settingHabitats_t1BA_t2AB_t3AB(), 
 			settingShadedZones_A_B(), settingPresentZones_B_A_A_B__AB(), settingArrows_dt1t2());

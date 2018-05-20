@@ -158,6 +158,7 @@ public class DiagramCreator {
         result = new ConcreteDiagram(new Rectangle2D.Double(0, 0, size, size),
                 circles, shadedZones, unshadedZones, spiders);
         result.setFont(new Font("Helvetica", Font.BOLD,  16));
+        //result.setFont(new Font("Helvetica", Font.BOLD,  32));
         }
         catch(CannotDrawException x)
         {
@@ -227,10 +228,12 @@ public class DiagramCreator {
         // build some feet
         Rectangle2D.Double box = CircleContour.makeBigOuterBox(circles);
         RecompositionStep last_step = null;
+              
         if (r_steps != null && r_steps.size() > 0) {
             last_step = r_steps.get(r_steps.size() - 1);
         }
         AbstractDescription last_diag = null;
+ 
         if (last_step != null) {
             last_diag = last_step.to();
         }

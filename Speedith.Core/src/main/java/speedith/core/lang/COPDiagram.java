@@ -218,7 +218,6 @@ public class COPDiagram extends PrimarySpiderDiagram {
   }
   
   
-  
   protected void printArrows(Appendable sb) {
       try {
           sb.append(SDTextArrowsAttribute).append(" = ");
@@ -227,6 +226,7 @@ public class COPDiagram extends PrimarySpiderDiagram {
           throw new RuntimeException(ex);
       }
   }
+  
   
   private void printArrowList(Appendable sb, Collection<Arrow> arrows) throws IOException {
       sb.append('[');
@@ -241,6 +241,7 @@ public class COPDiagram extends PrimarySpiderDiagram {
       }
       sb.append(']');
   }
+  
   
   @Override
   public void toString(Appendable sb) throws IOException {
@@ -261,6 +262,8 @@ public class COPDiagram extends PrimarySpiderDiagram {
       printArrows(sb);
       sb.append('}');
   }
+  
+
   
 
 	/** 

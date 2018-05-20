@@ -471,18 +471,15 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
 
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     private static SpiderDiagram transform(Transformer t, CompoundSpiderDiagram curSD, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices) {
-    	System.out.println("hello" + subDiagramIndex);
     	// Try to transform this sub-diagram.
         SpiderDiagram transformedSD = t.transform(curSD, subDiagramIndex, parents, childIndices);
         // What did the transformer return? Is it done yet?
         if (transformedSD != null) {
-        	System.out.println("A");
             // The transformer either changed the diagram, or it indicated that
             // we should not descend into it. In this case the transformed
             // diagram has to be returned:
             return transformedSD;
         } else if (t.isDone()) {
-        	System.out.println("B");
             // The transformer doesn't want to do anything anymore and the
             // transformed diagram is null. So, we have to return the unchanged
             // spider diagram.
@@ -504,9 +501,7 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
                 // If the child was actually transformed, put it into the list
                 // of transformed children.
                 if (transformedSD != null && !transformedSD.equals(childSD)) {
-                	System.out.println("D");
                     if (transformedChildren == null) {
-                    	System.out.println("E");
                         transformedChildren = new ArrayList<>(curSD.operands);
                     }
                     transformedChildren.set(childIndex, transformedSD);

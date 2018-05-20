@@ -14,6 +14,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import javax.swing.JOptionPane;
+
 /**
  *LUCOPDiagrams didn't allow cardinality for arrows. LUCarCOPDiagram stands for a COP diagram that accommodate
  *both labelled/unlabelled spiders/curves and arrows with cardinality.
@@ -129,6 +131,45 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	              getCurveLabels(),
 	              arrowCardinalities);
 	  }
+	  
+	  
+	  @Override
+	  public LUCOPDiagram addLUSpider(String spiderName, Region habitat, String spiderLabel) {
+		  if (spiderName == null || spiderName.isEmpty()){
+        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
+		  }
+		
+	      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
+	      newHabitats.put(spiderName, habitat);
+	      
+	      TreeMap<String, String> spiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
+	      spiderLabels.put(spiderName, spiderLabel);
+	      
+	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
+	      
+	      if (getSpidersMod() != null) {
+	          if (getSpidersMod().contains(spiderName)) {
+	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
+	          } else {
+	              newSpiders.add(spiderName);
+	          }
+	      } else {
+	          newSpiders = new TreeSet<>();
+	          newSpiders.add(spiderName);
+	      }
+	      return new LUCarCOPDiagram(
+	              newSpiders,
+	              newHabitats,
+	              getShadedZones(),
+	              getPresentZones(),
+	              getArrows(),
+	              spiderLabels,
+	              getCurveLabels(),
+	              arrowCardinalities);
+	  }
+	  
+	  
+
 	  
 	  
 	  public PrimarySpiderDiagram addCardinality(Arrow arrow,Cardinality cardinality){
@@ -287,32 +328,7 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	}
 
 
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = super.hashCode();
-//		result = prime * result + ((arrowCardinalities == null) ? 0 : arrowCardinalities.hashCode());
-//		return result;
-//	}
-//
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//		if (!super.equals(obj))
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		LUCarCOPDiagram other = (LUCarCOPDiagram) obj;
-//		if (arrowCardinalities == null) {
-//			if (other.arrowCardinalities != null)
-//				return false;
-//		} else if (!arrowCardinalities.equals(other.arrowCardinalities))
-//			return false;
-//		return true;
-//	}
-//	
+
 
 }
 

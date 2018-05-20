@@ -703,6 +703,7 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
     //Zohreh: I had to change this from private to protected to be able to override it in COP and LUCOP.
     protected boolean checkValid() {
         SortedSet<String> contours = getContours();
+      //System.out.println("habitats:"+ areHabitatZonesValid(contours) + "; present:"+ arePresentZonesValid(contours)+"; shaded:"+ areShadedZonesValid(contours));
         return areHabitatZonesValid(contours)
                && areShadedZonesValid(contours)
                && arePresentZonesValid(contours);

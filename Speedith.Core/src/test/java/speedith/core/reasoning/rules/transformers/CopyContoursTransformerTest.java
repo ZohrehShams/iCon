@@ -87,20 +87,20 @@ public class CopyContoursTransformerTest {
         );
     }
 
-    @Test
-    public void should_not_copy_the_contour_to_the_empty_primary_diagram() {
-        Set<Zone> present = new HashSet<>();
-        present.add(new Zone());
-        CompoundSpiderDiagram nestedConjunction = createConjunction(createPrimarySD(null, null, null,present ), diagramWithContourA);
-        CompoundSpiderDiagram outerConjunction = createConjunction(conjunctiveNullDiagrams, createConjunction(nestedConjunction, nestedConjunction));
-        String contourToCopy = "A";
-        CompoundSpiderDiagram expectedResult = createConjunction(conjunctiveNullDiagrams, createConjunction(nestedConjunction, createConjunction(diagramWithContourA, diagramWithContourA)));
-
-        assertEquals(
-                expectedResult,
-                applyCopyContoursTransform(outerConjunction, new ContourArg(0, 10, contourToCopy))
-        );
-    }
+//    @Test
+//    public void should_not_copy_the_contour_to_the_empty_primary_diagram() {
+//        Set<Zone> present = new HashSet<>();
+//        present.add(new Zone());
+//        CompoundSpiderDiagram nestedConjunction = createConjunction(createPrimarySD(null, null, null,present ), diagramWithContourA);
+//        CompoundSpiderDiagram outerConjunction = createConjunction(conjunctiveNullDiagrams, createConjunction(nestedConjunction, nestedConjunction));
+//        String contourToCopy = "A";
+//        CompoundSpiderDiagram expectedResult = createConjunction(conjunctiveNullDiagrams, createConjunction(nestedConjunction, createConjunction(diagramWithContourA, diagramWithContourA)));
+//
+//        assertEquals(
+//                expectedResult,
+//                applyCopyContoursTransform(outerConjunction, new ContourArg(0, 10, contourToCopy))
+//        );
+//    }
 
     private static Map<String, Region> getSpiderInRegion(String spider, Region habitat) {
         HashMap<String, Region> spiderToHabitatMap = new HashMap<>();

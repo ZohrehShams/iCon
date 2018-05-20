@@ -22,30 +22,6 @@ public class TRAddUnCurveTransformer extends IdTransformer{
         this.applyForward = applyForward;
     }
 	
-	
-//    @Override
-//    public SpiderDiagram transform(PrimarySpiderDiagram psd,
-//                                   int diagramIndex,
-//                                   ArrayList<CompoundSpiderDiagram> parents,
-//                                   ArrayList<Integer> childIndices) {
-//       	COPDiagram cop = (COPDiagram) psd;
-//    	
-//    	if (diagramIndex == arg.getSubDiagramIndex()){
-//    		
-//        PrimarySpiderDiagram transformedDiagram = new 
-//        		ZoneTransferSingle(psd).transferContour("",arg.getZonesIn(),arg.getZonesOut());
-//        
-//    	return COPDiagram.createCOPDiagram(
-//    			transformedDiagram.getSpidersMod(), 
-//    			transformedDiagram.getHabitatsMod(), 
-//    			transformedDiagram.getShadedZonesMod(), 
-//    			transformedDiagram.getPresentZonesMod(),  
-//        		cop.getArrowsMod());
-//    		
-//    	}
-//    	return null;	
-//    
-//    }
     
     @Override
     public SpiderDiagram transform(PrimarySpiderDiagram psd,

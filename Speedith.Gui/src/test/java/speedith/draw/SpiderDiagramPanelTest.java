@@ -35,6 +35,7 @@ package speedith.draw;
 import org.junit.Ignore;
 import org.junit.Test;
 import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.FalseSpiderDiagram;
 import speedith.core.lang.NullSpiderDiagram;
 import speedith.core.lang.Operator;
 import speedith.core.lang.PrimarySpiderDiagram;
@@ -164,6 +165,13 @@ public class SpiderDiagramPanelTest extends javax.swing.JFrame {
     public static NullSpiderDiagram getSDExample3() {
         return SpiderDiagrams.createNullSD();
     }
+    
+    
+    public static FalseSpiderDiagram getFalseDiagram() {
+        return SpiderDiagrams.createFalseSD();
+    }
+    
+    
 
     /**
      * Test of main method, of class Main.

@@ -103,6 +103,12 @@ public class InferenceRules {
         registerProvider(AddAllMissingZones.class);
         registerProvider(GeneraliseEqualityCardinality.class);
         registerProvider(IncoherenceCurve.class);
+        registerProvider(ZoneContrastHabitat.class);
+        registerProvider(RemoveSpider.class);
+        registerProvider(AddSpiderArrow.class);
+        registerProvider(RemoveArrow.class);
+        registerProvider(AddSpiderToSolidArrowImage.class);
+        registerProvider(DeleteSyntax.class);
     }
 
     /**

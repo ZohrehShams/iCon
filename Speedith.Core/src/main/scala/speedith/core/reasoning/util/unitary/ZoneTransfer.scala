@@ -20,13 +20,19 @@ class ZoneTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: Prim
     val zonesIn = zonesInDestinationInsideContour(contourFromSource)
     val zonesOut = zonesInDestinationOutsideContour(contourFromSource)
     val splitZones = allVisibleZonesInDestinationDiagram -- (zonesOut ++ zonesIn)
-
-    val spiderHabitats = destinationDiagram.getHabitats.map {
+    
+        val spiderHabitats = destinationDiagram.getHabitats.map {
       case (spider, habitat) => (spider, new Region(
-        (zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource)) ++
-        (zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
+        (habitat.zones).map(addInContourToZone(_, contourFromSource))
       ))
     }
+
+//    val spiderHabitats = destinationDiagram.getHabitats.map {
+//      case (spider, habitat) => (spider, new Region(
+//        (zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource)) ++
+//        (zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
+//      ))
+//    }
 
     val shadedZones = Zones.sameRegionWithNewContours(destinationDiagram.getShadedZones, contourFromSource) ++
       zonesOut.map(addInContourToZone(_, contourFromSource)) ++

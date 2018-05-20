@@ -14,6 +14,7 @@ public class TestConceptDiagrams {
 	
 	public static TreeSet<Arrow> oneArrows = new TreeSet<Arrow>();
 	public static final Arrow st1s1R = new Arrow("t1","s1","solid","R");
+	public static final Arrow sAXR = new Arrow("A","X","solid","R");
 	
 	public static TreeSet<Arrow> setArrowsOne(){
 		TreeSet<Arrow> arrows = new TreeSet<Arrow>();
@@ -38,10 +39,23 @@ public class TestConceptDiagrams {
 		return arrows;
 	}
 	
+	public static TreeSet<Arrow> setArrowsFour(){
+		TreeSet<Arrow> arrows = new TreeSet<Arrow>();
+		arrows.add(new Arrow("A","X","solid","R"));
+		return arrows;
+	}
+	
 	public static TreeMap<Arrow,Cardinality> settingArrowCardinalities_st1s1R_geq0(){
 		TreeMap<Arrow,Cardinality> arrowCardinalities = new TreeMap<>();
 		Cardinality cardinality = new Cardinality(Comparator.Geq, 0);
 		arrowCardinalities.put(st1s1R, cardinality);
+		return arrowCardinalities;
+	}
+	
+	public static TreeMap<Arrow,Cardinality> settingArrowCardinalities_sAXR_geq0(){
+		TreeMap<Arrow,Cardinality> arrowCardinalities = new TreeMap<>();
+		Cardinality cardinality = new Cardinality(Comparator.Geq, 0);
+		arrowCardinalities.put(sAXR, cardinality);
 		return arrowCardinalities;
 	}
 	
@@ -50,6 +64,8 @@ public class TestConceptDiagrams {
 	public static ConceptDiagram threeCD = SpiderDiagrams.createConceptDiagramNoText(setArrowsTwo(), sevenLabArrowLUCarCOP,threeColLUCarCOP);
 	public static ConceptDiagram fourCD = SpiderDiagrams.createConceptDiagramNoText(setArrowsThree(), sevenLabArrowLUCarCOP,threeColSpLUCarCOP);
 	public static ConceptDiagram fourCarCD = SpiderDiagrams.createCarCDiagramNoText(setArrowsThree(), settingArrowCardinalities_st1s1R_geq0(),
+			sevenLabArrowLUCarCOP,threeColSpLUCarCOP);
+	public static ConceptDiagram fiveCarCD = SpiderDiagrams.createCarCDiagramNoText(setArrowsFour(), settingArrowCardinalities_sAXR_geq0(),
 			sevenLabArrowLUCarCOP,threeColSpLUCarCOP);
 
 	

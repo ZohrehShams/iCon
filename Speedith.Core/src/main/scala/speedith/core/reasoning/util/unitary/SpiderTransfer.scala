@@ -1,6 +1,6 @@
 package speedith.core.reasoning.util.unitary
 
-import speedith.core.lang.PrimarySpiderDiagram
+import speedith.core.lang._
 
 class SpiderTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: PrimarySpiderDiagram) {
 
@@ -10,8 +10,15 @@ class SpiderTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: Pr
 
     val sourceSpiderHabitat = sourceDiagram.getSpiderHabitat(spider)
     val destinationSpiderHabitat = CorrespondingRegions(sourceDiagram, destinationDiagram).correspondingRegion(sourceSpiderHabitat)
-
-    destinationDiagram.addSpider(spider, destinationSpiderHabitat)
+    
+    if ((sourceDiagram.isInstanceOf[LUCarCOPDiagram]) && (destinationDiagram.isInstanceOf[LUCarCOPDiagram])){
+      val lucarcopSource = sourceDiagram.asInstanceOf[LUCarCOPDiagram]
+      val lucarcopDestination = destinationDiagram.asInstanceOf[LUCarCOPDiagram]
+      val spiderLabel = lucarcopSource.getSpiderLabels().get(spider)
+      lucarcopDestination.addLUSpider(spider,destinationSpiderHabitat,spiderLabel)
+    }else{
+      destinationDiagram.addSpider(spider, destinationSpiderHabitat)
+    }
   }
 
   private def assertSpiderNotInDestinationDiagram(spider: String) {

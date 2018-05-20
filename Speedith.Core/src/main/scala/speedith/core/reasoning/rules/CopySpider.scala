@@ -20,7 +20,7 @@ class CopySpider extends SimpleInferenceRule[SpiderArg] with Serializable {
 
   def getInferenceName: String = "copy_spider"
 
-  def getApplicableTypes: java.util.Set[DiagramType] = Set(DiagramType.SpiderDiagram)
+  def getApplicableTypes: java.util.Set[DiagramType] = Set(DiagramType.SpiderDiagram,DiagramType.LUCOPDiagram)
 
   def getDescription(locale: Locale): String = Translations.i18n(locale, "COPY_SPIDER_DESCRIPTION")
 

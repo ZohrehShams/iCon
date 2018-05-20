@@ -84,14 +84,6 @@ implements BasicInferenceRule<ZonesInOutArg>, ForwardRule<ZonesInOutArg>{
         return apply(args, goals,true);
     }
     
-//    @Override
-//    public RuleApplicationResult apply(RuleArg args, Goals goals) throws RuleApplicationException {
-//        ZonesInOutArg ruleArgs = getTypedRuleArgs(args);
-//        //MultipleRuleArgs.assertArgumentsNotEmpty(ruleArgs);
-//        ArrayList<ZoneArg> zones = ZoneArg.getZoneArgsFrom(ruleArgs);
-//        SubDiagramIndexArg target = getTargetDiagramArg(ruleArgs);
-//        return apply(target, zones, goals );
-//    }
     
     private RuleApplicationResult apply(final RuleArg args, Goals goals, boolean applyForward) throws RuleApplicationException {
         ZonesInOutArg arg = getTypedRuleArgs(args);
@@ -100,15 +92,6 @@ implements BasicInferenceRule<ZonesInOutArg>, ForwardRule<ZonesInOutArg>{
        // System.out.println(">>>>>>"+ arg.getSubgoalIndex());
         return createRuleApplicationResult(newSubgoals);
     }
-    
-    
-//    private RuleApplicationResult apply(SubDiagramIndexArg target, ArrayList<ZoneArg> targetZones, Goals goals) throws RuleApplicationException {
-//        SpiderDiagram[] newSubgoals = goals.getGoals().toArray(new SpiderDiagram[goals.getGoalsCount()]);
-//        SpiderDiagram targetSubgoal = getSubgoal(target, goals);
-//        newSubgoals[target.getSubgoalIndex()] = targetSubgoal.transform(new TRAddUnCurveTransformer(target, zonesIn, zonesOut));
-//        return createRuleApplicationResult(newSubgoals);
-//        return null;
-//    }
     
  
 

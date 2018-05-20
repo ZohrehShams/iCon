@@ -9,8 +9,6 @@ import speedith.core.reasoning.ApplyStyle;
 import speedith.core.reasoning.RuleApplicationException;
 
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -29,22 +27,50 @@ public class RemoveArrowsTransformer extends IdTransformer {
     
     
     @Override
-    public SpiderDiagram transform(PrimarySpiderDiagram cop,
+    public SpiderDiagram transform(PrimarySpiderDiagram psd,
                                    int diagramIndex,
                                    ArrayList<CompoundSpiderDiagram> parents,
                                    ArrayList<Integer> childIndices) {
-    	COPDiagram cop1 = (COPDiagram) cop;
-    	TreeSet<Arrow> newArrows = new TreeSet<>();
-        int subDiagramIndex = targetArrows.get(0).getSubDiagramIndex();
-    	if (diagramIndex == subDiagramIndex) {
-    		if (!cop1.getArrowsMod().containsAll(getTargetArrows())) {
-    			throw new TransformationException("The arrows to be removed do not exist in the target diagram");
-    			}
-    		cop1.getArrowsMod().removeAll(getTargetArrows());
-    		newArrows = (TreeSet<Arrow>) cop1.getArrowsMod();
-    		return COPDiagram.createCOPDiagram( cop1.getSpidersMod(), cop1.getHabitatsMod(), cop1.getShadedZonesMod(), cop1.getPresentZonesMod(), newArrows);
-    	}
-    	return cop;	
+    	
+    	  int subDiagramIndex = targetArrows.get(0).getSubDiagramIndex();
+    	  TreeSet<Arrow> newArrows = new TreeSet<>();
+    	  
+    	  if (diagramIndex == subDiagramIndex){
+    	    	if(psd instanceof CompleteCOPDiagram){
+    	    		CompleteCOPDiagram compCop = (CompleteCOPDiagram) psd;
+    	    		
+    	    		if (! compCop.getArrows().containsAll(getTargetArrows())) {
+    	    			throw new TransformationException("The arrows to be removed do not exist in the target diagram");
+    	    			}
+    	    		
+    	    		newArrows.addAll(compCop.getArrows());
+    	    		newArrows.removeAll(getTargetArrows());
+    	    		
+                	TreeMap<Arrow,Cardinality> newCardinalities = new TreeMap<Arrow,Cardinality>();
+                	newCardinalities.putAll(compCop.getArrowCardinalities());
+                	
+                	for (Arrow arrow : getTargetArrows()){
+                		newCardinalities.remove(arrow);
+                	}
+                	
+    	    		return SpiderDiagrams.createCompleteCOPDiagram(compCop.getSpiders(), compCop.getHabitats(), 
+    	    				compCop.getShadedZones(), compCop.getPresentZones(), newArrows, compCop.getSpiderLabels(), 
+    	    				compCop.getCurveLabels(), newCardinalities, compCop.getSpiderComparators());
+    	    	}else{
+    	    		COPDiagram cop = (COPDiagram) psd;
+    	    		
+    	    		if (! cop.getArrows().containsAll(getTargetArrows())) {
+    	    			throw new TransformationException("The arrows to be removed do not exist in the target diagram");
+    	    			}
+    	    		newArrows.addAll(cop.getArrows());
+    	    		newArrows.removeAll(getTargetArrows());
+    	    		
+    	    		return COPDiagram.createCOPDiagram(cop.getSpiders(), cop.getHabitats(), 
+    	    				cop.getShadedZones(), cop.getPresentZones(), newArrows);
+    	    	}
+    		  
+    	  }
+    		return psd;
     }
     
     	

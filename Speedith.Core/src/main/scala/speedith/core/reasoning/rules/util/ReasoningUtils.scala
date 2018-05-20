@@ -34,6 +34,13 @@ object ReasoningUtils {
 
   //Zohreh: lucop and cop are added
   def normalize (sd : SpiderDiagram): SpiderDiagram= sd match {
+    case completeCop: CompleteCOPDiagram =>
+      val allContours = completeCop.getAllContours.toSeq.asJava
+      val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet
+      SpiderDiagrams.createCompleteCOPDiagram(completeCop.getSpidersMod, completeCop.getHabitatsMod, 
+          completeCop.getShadedZonesMod, possibleZones -- (completeCop.getShadedZones -- completeCop.getPresentZones), 
+          completeCop.getArrowsMod,completeCop.getSpiderLabels,completeCop.getCurveLabels,
+          completeCop.getArrowCardinalities, completeCop.getSpiderComparators)
     case luCarcop: LUCarCOPDiagram =>
       val allContours = luCarcop.getAllContours.toSeq.asJava
       val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet
@@ -63,7 +70,10 @@ object ReasoningUtils {
       val extracted = new java.util.ArrayList[PrimarySpiderDiagram](cd.getPrimaries.map(p=>normalize(p).asInstanceOf[PrimarySpiderDiagram]))
       SpiderDiagrams.createConceptDiagram(cd.get_cd_Arrows,extracted,true)
       
-//      Zohreh: if you want the visualisation of Null as prep.
+//      Zohreh: if you want the visualisation of these, you need to add them here.
+      case fsd : FalseSpiderDiagram =>
+      SpiderDiagrams.createFalseSD()
+      
       case nsd : NullSpiderDiagram =>
       SpiderDiagrams.createNullSD()
   }

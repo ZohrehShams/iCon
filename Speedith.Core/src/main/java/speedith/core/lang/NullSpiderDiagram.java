@@ -119,8 +119,9 @@ public class NullSpiderDiagram extends SpiderDiagram {
     }
     // </editor-fold>
 
+    //Zohreh: Privae to protected
     // <editor-fold defaultstate="collapsed" desc="Private Constructor">
-    private NullSpiderDiagram() {
+    protected NullSpiderDiagram() {
     }
     // </editor-fold>
 

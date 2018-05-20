@@ -11,10 +11,6 @@ import speedith.core.lang.Cardinality;
 
 public class AbstractArrow implements Comparable<AbstractArrow>{
 	
-//	private AbstractCurve ac_source;
-//	private AbstractCurve ac_target;	
-//	private AbstractSpider as_source;
-//	private AbstractSpider as_target;
 	
 	private AbstractShape m_source;
 	private AbstractShape m_target;
@@ -38,50 +34,6 @@ public class AbstractArrow implements Comparable<AbstractArrow>{
 		m_type = type;
 		m_label = label;
     }
-    
-//	public AbstractArrow(AbstractCurve source, AbstractCurve target, String type, String label){
-//		ac_source = source;
-//		ac_target = target;
-//		m_type = type;
-//		m_label = label;
-//		
-//		start = source;
-//		end = target;
-//	}
-//	
-//	
-//	public AbstractArrow(AbstractSpider source, AbstractSpider target, String type, String label){
-//		as_source = source;
-//		as_target = target;
-//		m_type = type;
-//		m_label = label;
-//		
-//		start = source;
-//		end = target;
-//	}
-//	
-//	
-//	public AbstractArrow(AbstractCurve source, AbstractSpider target, String type, String label){
-//		ac_source = source;
-//		as_target = target;
-//		m_type = type;
-//		m_label = label;
-//		
-//		start = source;
-//		end = target;
-//	}
-//	
-//	
-//	public AbstractArrow(AbstractSpider source, AbstractCurve target, String type, String label){
-//		as_source = source;
-//		ac_target = target;
-//		m_type = type;
-//		m_label = label;
-//		
-//		start = source;
-//		end = target;
-//	}
-	
 	
 
 
