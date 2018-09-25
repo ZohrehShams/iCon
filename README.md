@@ -24,7 +24,7 @@ these, you can build Speedith at any time.
 
 *   Maven (see [installation instructions](https://maven.apache.org/))
 
-*   Java 7: Currently, the project does not build against Java 8.
+*   Java 8
 
 --------------------------------------------------------------------------------
 
