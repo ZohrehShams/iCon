@@ -49,30 +49,15 @@ public class LUCOPDiagram extends COPDiagram {
 	LUCOPDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones, 
 		  Collection<Zone> presentZones, Collection<Arrow> arrows, Map<String,String> spiderLabels, 
 		  Map<String,String> curveLabels){
-	      super(spiders == null ? null : new TreeSet<>(spiders),
+		
+	      this(spiders == null ? null : new TreeSet<>(spiders),
 	              habitats == null ? null : new TreeMap<>(habitats),
 	              shadedZones == null ? null : new TreeSet<>(shadedZones),
 	              presentZones == null ? null : new TreeSet<>(presentZones),
-	              arrows == null ? null : new TreeSet<>(arrows));
-	      
-	      this.spiderLabels = spiderLabels == null ? null : new TreeMap<String,String>(spiderLabels);	
-	      this.curveLabels = curveLabels == null ? null : new TreeMap<String,String>(curveLabels);	
-
+	              arrows == null ? null : new TreeSet<>(arrows),
+	              spiderLabels == null ? null : new TreeMap<String,String>(spiderLabels),
+	              curveLabels == null ? null : new TreeMap<String,String>(curveLabels)	  );
 	}
-	
-	
-//	public static LUCOPDiagram createLUCOPDiagram(TreeSet<String> spiders, TreeMap<String, Region> habitats, TreeSet<Zone> shadedZones,
-//				TreeSet<Zone> presentZones, TreeSet<Arrow> arrows, TreeMap<String,String> spiderLabels,TreeMap<String,String> curveLabels){
-//		return new LUCOPDiagram(spiders, habitats, shadedZones,presentZones, arrows, spiderLabels, curveLabels);
-//	}
-			
-			
-	
-//	public static LUCOPDiagram createLUCOPDiagramNOCopy(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones,
-//			Collection<Zone> presentZones, Collection<Arrow> arrows, Map<String,String> spiderLabels, Map<String,String> curveLabels){
-//		return new LUCOPDiagram(spiders, habitats, shadedZones,presentZones, arrows, spiderLabels,curveLabels);
-//	}
-	
 	
 	
     public static LUCOPDiagram createLUCOPDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones,
@@ -176,6 +161,33 @@ public class LUCOPDiagram extends COPDiagram {
 	              curveLabels);
 	  }
 	
+	
+	
+	@Override
+	public COPDiagram deleteSpider(String spider) {
+		  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
+		  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+		  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
+		  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
+		  
+		  newSpiders.remove(spider);
+		  newHabitats.remove(spider);
+	      for (Arrow arrow : getArrows()){
+	          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+	      		newArrows.remove(arrow);
+	          }
+	        }
+	      newSpiderLabels.remove(spider);
+
+	      return new LUCOPDiagram(
+	              newSpiders,
+	              newHabitats,
+	              getShadedZones(),
+	              getPresentZones(),
+	              newArrows,
+	              newSpiderLabels,
+	              curveLabels);
+	  }
 	
 	
 	  @Override

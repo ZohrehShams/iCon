@@ -14,11 +14,11 @@ import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.RuleApplicationResult;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.instructions.TRAddArrowInstruction;
-import speedith.core.reasoning.rules.transformers.TRAddArrowTransformer;
+import speedith.core.reasoning.rules.instructions.copIns.TRAddArrowInstruction;
+import speedith.core.reasoning.rules.transformers.copTrans.TRAddArrowTransformer;
 /**
  * This class implements a transformation function that adds an arrow to a diagram.
  * @author Zohreh Shams [zs315@cam.ac.uk]

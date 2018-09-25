@@ -87,13 +87,7 @@ implements BasicInferenceRule<SubDiagramIndexArg>, ForwardRule<SubDiagramIndexAr
 
     @Override
     public RuleApplicationResult apply(RuleArg arg, Goals goals) throws RuleApplicationException {
-//        MultipleRuleArgs ruleArgs = getTypedRuleArgs(args);
         RuleArg ruleArg = (SubDiagramIndexArg) arg;
-        //Zohreh: see BasicTactics for this
-        //assert(isPrimaryAndContainsMissingZones);
-//        ArrayList<ZoneArg> zones = ZoneArg.getZoneArgsFrom(ruleArgs);
-        //ArrayList<ZoneArg> zones = ZoneArg.getZoneArgsFrom(ruleArgs);
-
         SubDiagramIndexArg target = (SubDiagramIndexArg) ruleArg;
         return apply(target, goals );
     }

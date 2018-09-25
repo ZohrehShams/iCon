@@ -19,12 +19,13 @@ import speedith.core.lang.Zone;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationResult;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.ZoneArg;
-import speedith.core.reasoning.rules.instructions.SelectArrowsInstruction;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
+import speedith.core.reasoning.rules.cop.RemoveArrow;
 import speedith.core.reasoning.rules.instructions.SelectContoursInstruction;
+import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
 import speedith.core.reasoning.util.unitary.TestCOPDiagrams;
 import speedith.core.reasoning.util.unitary.TestSpiderDiagrams;
 

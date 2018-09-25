@@ -8,7 +8,9 @@ import java.util.Set;
 
 import speedith.core.i18n.Translations;
 import speedith.core.lang.DiagramType;
+import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.TransformationException;
 import speedith.core.reasoning.ApplyStyle;
 import speedith.core.reasoning.ForwardRule;
 import speedith.core.reasoning.Goals;
@@ -20,10 +22,13 @@ import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SpiderArg;
+import speedith.core.reasoning.args.SubgoalIndexArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.copIns.DeleteSyntaxInstruction;
 import speedith.core.reasoning.rules.transformers.RemoveContoursTransformer;
-import speedith.core.reasoning.rules.transformers.copTrans.RemoveSpiderTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.RemoveArrowsTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.RemoveSpidersTransformer;
 
 /**
  * This rule allows deleting multiple curves, spiders and arrows at the same time.
@@ -88,18 +93,43 @@ public class DeleteSyntax extends SimpleInferenceRule<MultipleRuleArgs> implemen
     protected RuleApplicationResult apply(final RuleArg args, Goals goals, ApplyStyle applyStyle) throws RuleApplicationException {
     	ArrayList<ContourArg> contourArgs = getContourArgsFrom(getTypedRuleArgs(args));
     	ArrayList<SpiderArg> spiderArgs = getSpiderArgsFrom(getTypedRuleArgs(args));
-        SpiderDiagram[] newSubgoals = goals.getGoals().toArray(new SpiderDiagram[goals.getGoalsCount()]);
+    	ArrayList<ArrowArg> arrowArgs = getArrowArgsFrom(getTypedRuleArgs(args));
+    	
+    	
+    	int cIndex = -2;
+    	int sIndex = -2;
+    	int aIndex = -2; 
+    	
+        if(! contourArgs.isEmpty()){
+        	cIndex = contourArgs.get(0).getSubDiagramIndex();}
+        if(! spiderArgs.isEmpty()){
+        	sIndex = spiderArgs.get(0).getSubDiagramIndex();}
+        if(! arrowArgs.isEmpty()){
+        	aIndex = arrowArgs.get(0).getSubDiagramIndex();}
+    	
 
-        //getSubgoal(contourArgs.get(0), goals).transform(new RemoveContoursTransformer(contourArgs, applyStyle));
-      //newSubgoals[spiderArgs.get(0).getSubgoalIndex()] = 
-		//getSubgoal(target.get, goals).transform(new RemoveSpiderTransformer(spiderArgs.get(0),true));
+    	
+        SpiderDiagram[] newSubgoals = goals.getGoals().toArray(new SpiderDiagram[goals.getGoalsCount()]);
         
-        newSubgoals[contourArgs.get(0).getSubgoalIndex()] = 
-        	//	getSubgoal(contourArgs.get(0), goals).transform(new RemoveContoursTransformer(contourArgs, applyStyle));
-        (getSubgoal(contourArgs.get(0), goals).transform(new RemoveContoursTransformer(contourArgs, applyStyle))).transform(new RemoveSpiderTransformer(spiderArgs.get(0),true));
-//        newSubgoals[spiderArgs.get(0).getSubgoalIndex()] = 
-//        		getSubgoal(spiderArgs.get(0), goals).transform(new RemoveSpiderTransformer(spiderArgs.get(0),true));
-        return createRuleApplicationResult(newSubgoals);
+        if(! contourArgs.isEmpty()){
+        	newSubgoals[contourArgs.get(0).getSubgoalIndex()] = 
+        	        ((getSubgoal(contourArgs.get(0), goals).transform(new RemoveArrowsTransformer(arrowArgs,applyStyle))).
+        	        transform(new RemoveSpidersTransformer(spiderArgs,applyStyle))).transform(new RemoveContoursTransformer(contourArgs, applyStyle));	
+        }else if(! spiderArgs.isEmpty()){
+        	newSubgoals[spiderArgs.get(0).getSubgoalIndex()] = 
+        	        (getSubgoal(spiderArgs.get(0), goals).transform(new RemoveArrowsTransformer(arrowArgs,applyStyle))).
+        	        transform(new RemoveSpidersTransformer(spiderArgs,applyStyle));
+        }else if(! arrowArgs.isEmpty()){
+            	newSubgoals[arrowArgs.get(0).getSubgoalIndex()] = 
+            	        getSubgoal(arrowArgs.get(0), goals).transform(new RemoveArrowsTransformer(arrowArgs,applyStyle));
+        }else{
+        	throw new TransformationException("There has to be at least one syntactic argument as input.");
+        }
+        
+        if((assertSameDiagram(cIndex,sIndex)&&(assertSameDiagram(sIndex,aIndex))&&(assertSameDiagram(cIndex,aIndex)))){
+        	return createRuleApplicationResult(newSubgoals);
+        }else{throw new TransformationException("All elements should be from the same diagram.");}
+        
     }
     
     
@@ -127,9 +157,34 @@ public class DeleteSyntax extends SimpleInferenceRule<MultipleRuleArgs> implemen
         		SpiderArg spiderArg = SpiderArg.getSpiderArgFrom(ruleArg);
                 subDiagramIndex = SpiderArg.assertSameSubDiagramIndices(subDiagramIndex, spiderArg);
                 goalIndex = SpiderArg.assertSameGoalIndices(goalIndex, spiderArg);
-                spiderArgs .add(spiderArg);
+                spiderArgs.add(spiderArg);
         	}
         }
         return spiderArgs;
     }
+    
+    public static ArrayList<ArrowArg> getArrowArgsFrom(MultipleRuleArgs multipleRuleArgs) throws RuleApplicationException {
+        ArrayList<ArrowArg> arrowArgs = new ArrayList<>();
+        int subDiagramIndex = -1;
+        int goalIndex = -1;
+        for (RuleArg ruleArg : multipleRuleArgs) {
+        	if(ruleArg instanceof ArrowArg){
+        		ArrowArg arrowArg = ArrowArg.getArrowArgFrom(ruleArg);
+                subDiagramIndex = ArrowArg.assertSameSubDiagramIndices(subDiagramIndex, arrowArg);
+                goalIndex = ArrowArg.assertSameGoalIndices(goalIndex, arrowArg);
+                arrowArgs.add(arrowArg);
+        	}
+        }
+        return arrowArgs;
+    }
+    
+    
+    public Boolean assertSameDiagram(int index1, int index2){
+    	if ((index1 == -2) || (index2 == -2) || (index1 == index2)){
+    		return true;
+    	}else
+    		return false;
+    }
+    
+    
 }

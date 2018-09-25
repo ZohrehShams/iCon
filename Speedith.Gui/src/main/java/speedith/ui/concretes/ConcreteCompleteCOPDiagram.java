@@ -1,18 +1,17 @@
-package speedith.ui;
+package speedith.ui.concretes;
 
+import java.awt.Point;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
-
-import icircles.abstractDescription.AbstractDescription;
 import icircles.concreteDiagram.CircleContour;
-import icircles.concreteDiagram.ConcreteDiagram;
 import icircles.concreteDiagram.ConcreteSpider;
 import icircles.concreteDiagram.ConcreteZone;
-import icircles.util.CannotDrawException;
 
 public class ConcreteCompleteCOPDiagram extends ConcreteCOPDiagram {
 	
 	ArrayList<ConcreteSpiderComparator> spiderComparators;
+	private int id;
 
 	public ConcreteCompleteCOPDiagram(Double box, ArrayList<CircleContour> circles, ArrayList<ConcreteZone> shadedZones,
 			ArrayList<ConcreteZone> unshadedZones, ArrayList<ConcreteSpider> spiders, ArrayList<ConcreteArrow> arrows,
@@ -22,18 +21,34 @@ public class ConcreteCompleteCOPDiagram extends ConcreteCOPDiagram {
 	}
 	
 	
+	public ConcreteCompleteCOPDiagram(int id, Double box, ArrayList<CircleContour> circles, ArrayList<ConcreteZone> shadedZones,
+			ArrayList<ConcreteZone> unshadedZones, ArrayList<ConcreteSpider> spiders, ArrayList<ConcreteArrow> arrows,
+			ArrayList<ConcreteSpiderComparator> spiderComparators) {
+		super(box, circles, shadedZones, unshadedZones, spiders, arrows);
+		this.id =id;
+		this.spiderComparators=spiderComparators;
+	}
+	
     public ArrayList<ConcreteSpiderComparator> getConSpiderComparators() {
         return spiderComparators;
     }
     
-//    public static ConcreteDiagram makeConcreteDiagram(AbstractDescription ad, int size) throws CannotDrawException {
-//        // TODO
-//        if (!ad.checksOk()) {
-//            // not drawable
-//            throw new CannotDrawException("badly formed diagram spec");
-//        }
-//        COPDiagramCreator dc = new COPDiagramCreator(ad);
-//        return dc.createDiagram(size);
-//    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public ConcreteSpiderComparator getSpiderComparatorAtPoint(Point p) {
+        for (ConcreteSpiderComparator spiderComparator : this.spiderComparators) {
+        	double ptSeg = Line2D.ptLineDist(spiderComparator.get_xs(), spiderComparator.get_ys(), spiderComparator.get_xt(),spiderComparator.get_yt(), p.getX() , p.getY());
+        	  if ( Math.abs(ptSeg) < 4.0){
+        		return spiderComparator;
+        	}
+        }
+        return null;
+    }
 
 }

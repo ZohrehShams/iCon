@@ -1,7 +1,11 @@
-package speedith.core.reasoning.args;
+package speedith.core.reasoning.args.copArgs;
 
 import speedith.core.lang.Arrow;
 import speedith.core.reasoning.RuleApplicationException;
+import speedith.core.reasoning.args.MultipleRuleArgs;
+import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.SubDiagramIndexArg;
+
 import java.util.ArrayList;
 import java.util.List;
 

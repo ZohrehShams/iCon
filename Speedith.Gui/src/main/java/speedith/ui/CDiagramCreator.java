@@ -11,6 +11,12 @@ import icircles.concreteDiagram.CircleContour;
 import icircles.concreteDiagram.ConcreteSpider;
 import icircles.concreteDiagram.ConcreteSpiderFoot;
 import icircles.util.CannotDrawException;
+import speedith.ui.abstracts.AbstractArrow;
+import speedith.ui.abstracts.CDAbstractDescription;
+import speedith.ui.abstracts.COPAbstractDescription;
+import speedith.ui.concretes.ConcreteArrow;
+import speedith.ui.concretes.ConcreteCDiagram;
+import speedith.ui.concretes.ConcreteCOPDiagram;
 
 public class CDiagramCreator{
 
@@ -42,8 +48,8 @@ public class CDiagramCreator{
 			spiderAll.addAll(copc.createSpiders());
 		}
 		
-		//result = new ConcreteCDiagram(concretePrimaries,createArrows()); 
-		result = new ConcreteCDiagram(concretePrimaries,new ArrayList<ConcreteArrow>()); 
+		result = new ConcreteCDiagram(concretePrimaries,createArrows()); 
+		//result = new ConcreteCDiagram(concretePrimaries,new ArrayList<ConcreteArrow>()); 
 		
 		return result;
 	}

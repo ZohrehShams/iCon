@@ -62,6 +62,10 @@ public class AbstractCurve implements Comparable<AbstractShape>, AbstractShape {
 	}
     
  
+	public void setName(String name) {
+        this.m_name = name;
+	}
+
 
     public String getLabel() {
         return m_label;

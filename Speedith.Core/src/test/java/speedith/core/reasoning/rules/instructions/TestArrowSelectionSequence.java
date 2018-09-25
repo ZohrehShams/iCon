@@ -2,10 +2,10 @@ package speedith.core.reasoning.rules.instructions;
 
 
 import speedith.core.lang.NullSpiderDiagram;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.RuleArg;
-import speedith.core.reasoning.args.selection.ArrowsSelectionStep;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.selection.SelectionSequence;
+import speedith.core.reasoning.args.selection.copSelection.ArrowsSelectionStep;
 
 import java.util.ArrayList;
 import java.util.Collections;

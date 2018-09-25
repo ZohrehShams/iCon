@@ -10,16 +10,16 @@ import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SpiderArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.selection.SelectionSequence;
 import speedith.core.reasoning.args.selection.SelectionStep;
-import speedith.core.reasoning.args.selection.SelectionStepSpiderOrContour;
-import speedith.core.reasoning.args.selection.SelectionStepSyntax;
+import speedith.core.reasoning.args.selection.copSelection.SelectionStepSpiderOrContour;
+import speedith.core.reasoning.args.selection.copSelection.SelectionStepSyntax;
 
 public class DeleteSyntaxInstruction implements RuleApplicationInstruction<MultipleRuleArgs> {
 	
     @Override
     public List<? extends SelectionStep> getSelectionSteps() {
-        //return asList(new SelectionStepSpiderOrContour(false));
     	return asList(new SelectionStepSyntax());
     }
 
@@ -35,6 +35,10 @@ public class DeleteSyntaxInstruction implements RuleApplicationInstruction<Multi
             if (ruleArg instanceof SpiderArg) {
             	SpiderArg spiderArg = (SpiderArg) ruleArg;
                 ruleArgs.add(new SpiderArg(subgoalIndex, spiderArg.getSubDiagramIndex(), spiderArg.getSpider()));
+            }
+            if (ruleArg instanceof ArrowArg) {
+            	ArrowArg arrowArg = (ArrowArg) ruleArg;
+                ruleArgs.add(new ArrowArg(subgoalIndex, arrowArg.getSubDiagramIndex(), arrowArg.getArrow()));
             }
         }
         return new MultipleRuleArgs(ruleArgs);

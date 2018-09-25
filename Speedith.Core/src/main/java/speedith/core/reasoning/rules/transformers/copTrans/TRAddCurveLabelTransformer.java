@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.transformers;
+package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
 import java.util.Collection;

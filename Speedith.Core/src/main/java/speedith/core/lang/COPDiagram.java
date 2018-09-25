@@ -18,16 +18,11 @@ import static speedith.core.i18n.Translations.i18n;
  */
 public class COPDiagram extends PrimarySpiderDiagram {
 
-	//private static final long serialVersionUID = 1145630942814290523L;
 	private static final long serialVersionUID = 4312432316981735454L;
 	public static final String SDTextArrowsAttribute = "arrows";
 	public static final String TextCOPId = "COP";
 	private  TreeSet<Arrow> arrows;
 	
-//    private boolean hashInvalid = true;
-//    private int hash;
-    
-    
 
   COPDiagram(TreeSet<String> spiders, TreeMap<String, Region> habitats, TreeSet<Zone> shadedZones,
 	TreeSet<Zone> presentZones, TreeSet<Arrow> arrows){
@@ -39,12 +34,12 @@ public class COPDiagram extends PrimarySpiderDiagram {
   COPDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones, 
 		  Collection<Zone> presentZones, Collection<Arrow> arrows){
 	  
-      super(spiders == null ? null : new TreeSet<>(spiders),
+	  
+      this(spiders == null ? null : new TreeSet<>(spiders),
               habitats == null ? null : new TreeMap<>(habitats),
               shadedZones == null ? null : new TreeSet<>(shadedZones),
-              presentZones == null ? null : new TreeSet<>(presentZones));
-      
-	  this.arrows = arrows == null ? null : new TreeSet<>(arrows);				
+              presentZones == null ? null : new TreeSet<>(presentZones),
+              arrows == null ? null : new TreeSet<>(arrows)  );				
 	}
   
   
@@ -174,6 +169,29 @@ public class COPDiagram extends PrimarySpiderDiagram {
 	  } else return addSpider(spider,habitat); 
   }
   
+  
+  public COPDiagram deleteSpider(String spider) {
+	  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
+	  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+	  TreeSet<Arrow> newArrows = new TreeSet<>(arrows);
+	  
+	  newSpiders.remove(spider);
+	  newHabitats.remove(spider);
+      for (Arrow arrow : arrows){
+          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+      		newArrows.remove(arrow);
+          }
+        }
+
+      return new COPDiagram(
+              newSpiders,
+              newHabitats,
+              getShadedZones(),
+              getPresentZones(),
+              newArrows);
+  }
+  
+  
  
   public COPDiagram addArrow(Arrow arrow) {
   	TreeSet<Arrow> newArrows = getArrowsMod();
@@ -209,12 +227,7 @@ public class COPDiagram extends PrimarySpiderDiagram {
   
   @Override
   protected boolean checkValid() {
-//      SortedSet<String> contours = getContours();
       return (super.checkValid() && areArrowsValid());
-//      return areHabitatZonesValid(contours)
-//             && areShadedZonesValid(contours)
-//             && arePresentZonesValid(contours)
-//             && areArrowsValid();
   }
   
   

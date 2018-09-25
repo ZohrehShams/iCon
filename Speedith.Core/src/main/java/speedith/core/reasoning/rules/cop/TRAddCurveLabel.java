@@ -20,7 +20,7 @@ import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.SelectContoursInstruction;
-import speedith.core.reasoning.rules.transformers.TRAddCurveLabelTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.TRAddCurveLabelTransformer;
 /**
  * This class implements a transformation function that adds a label to an unlabelled curve.
  * @author Zohreh Shams [zs315@cam.ac.uk]

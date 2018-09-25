@@ -1,7 +1,8 @@
 package speedith.core.reasoning.util.unitary
 
 import speedith.core.lang.SpiderDiagrams.createPrimarySD
-import speedith.core.lang.{PrimarySpiderDiagram, Region, Zone, Zones}
+import speedith.core.lang.SpiderDiagrams.createCompleteCOPDiagram
+import speedith.core.lang.{PrimarySpiderDiagram, Region, Zone, Zones,CompleteCOPDiagram}
 import javax.swing.JOptionPane
 
 import scala.collection.JavaConversions._
@@ -40,8 +41,14 @@ class ZoneTransferSingle(destinationDiagram: PrimarySpiderDiagram) {
 
     val presentZones = (zonesOut.intersect(allVisibleZonesInDestinationDiagram) ++ splitZones).map(zone => addOutContourToZone(zone, contourFromSource)) ++
       (zonesIn.intersect(allVisibleZonesInDestinationDiagram) ++ splitZones).map(zone => addInContourToZone(zone, contourFromSource))
+      
 
-    createPrimarySD(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones)
+      if(destinationDiagram.isInstanceOf[CompleteCOPDiagram]){
+        val compDes = destinationDiagram.asInstanceOf[CompleteCOPDiagram]
+        createCompleteCOPDiagram(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones,
+            compDes.getArrows, compDes.getSpiderLabels,compDes.getCurveLabels,compDes.getArrowCardinalities,compDes.getSpiderComparators)
+      }
+      else{createPrimarySD(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones)}
   }
 
   

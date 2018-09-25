@@ -26,17 +26,24 @@
  */
 package speedith.ui;
 
-import icircles.concreteDiagram.ConcreteZone;
-import speedith.core.lang.PrimarySpiderDiagram;
-import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.Zone;
-import speedith.core.reasoning.args.*;
-import speedith.icircles.util.ICirclesToSpeedith;
+import static speedith.core.i18n.Translations.i18n;
 
 import java.util.ArrayList;
 import java.util.EventObject;
 
-import static speedith.core.i18n.Translations.i18n;
+import icircles.concreteDiagram.ConcreteZone;
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.Zone;
+import speedith.core.reasoning.args.ContourArg;
+import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.SpiderZoneArg;
+import speedith.core.reasoning.args.SubDiagramIndexArg;
+import speedith.core.reasoning.args.SubgoalIndexArg;
+import speedith.core.reasoning.args.ZoneArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
+import speedith.core.reasoning.args.copArgs.SpiderComparatorArg;
+import speedith.icircles.util.ICirclesToSpeedith;
 
 /**
  * @author Matej Urbas [matej.urbas@gmail.com]
@@ -138,6 +145,9 @@ public class SpiderDiagramClickEvent extends EventObject {
         } else if(event instanceof ArrowClickedEvent){
             //sb.append("Arrow: ").append(((ArrowClickedEvent) event).getArrow().aa.getLabel());
             ICirclesToSpeedith.convertArrow(((ArrowClickedEvent) event).getArrow()).toString(sb.append("Arrow: "));
+        }else if(event instanceof SpiderComparatorClickedEvent){
+            //sb.append("Arrow: ").append(((ArrowClickedEvent) event).getArrow().aa.getLabel());
+            ICirclesToSpeedith.convertSpiderComparator(((SpiderComparatorClickedEvent) event).getSpiderComparator()).toString(sb.append("SpiderComparator: "));
         }else if (event != null) {
             throw new IllegalStateException(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
         }
@@ -205,6 +215,9 @@ public class SpiderDiagramClickEvent extends EventObject {
             } else if(getDetailedEvent() instanceof ArrowClickedEvent){
                 ArrowClickedEvent arrowClickedEvent = (ArrowClickedEvent) getDetailedEvent();
                 ruleArg = new ArrowArg(-1, getSubDiagramIndex(), ICirclesToSpeedith.convertArrow(arrowClickedEvent.getArrow()));
+            }else if(getDetailedEvent() instanceof SpiderComparatorClickedEvent){
+            	SpiderComparatorClickedEvent spiderComparatorClickedEvent = (SpiderComparatorClickedEvent) getDetailedEvent();
+                ruleArg = new SpiderComparatorArg(-1, getSubDiagramIndex(), ICirclesToSpeedith.convertSpiderComparator(spiderComparatorClickedEvent.getSpiderComparator()));
             }else if (getDetailedEvent() != null) {
                 throw new IllegalStateException(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
             } else {

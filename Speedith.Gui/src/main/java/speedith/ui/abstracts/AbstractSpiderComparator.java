@@ -1,4 +1,4 @@
-package speedith.ui;
+package speedith.ui.abstracts;
 
 import icircles.abstractDescription.AbstractSpider;
 

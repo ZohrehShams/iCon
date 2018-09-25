@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
  */
 public class LUCarCOPDiagram extends LUCOPDiagram{
 
-	//private static final long serialVersionUID = 1431781814954466411L;
 	private static final long serialVersionUID = -3191414047260849707L;
 	public static final String TextLUCarCOPId = "LUCarCOP";
 	public static final String SDTextArrowCardinalitiesAttribute = "arrowCar";
@@ -32,29 +31,31 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	//A map from arrows to their cardinalities
 	private  TreeMap<Arrow,Cardinality>  arrowCardinalities;
 
-	
-	
 	LUCarCOPDiagram(TreeSet<String> spiders, TreeMap<String, Region> habitats, TreeSet<Zone> shadedZones,
 	TreeSet<Zone> presentZones, TreeSet<Arrow> arrows, TreeMap<String,String> spiderLabels, 
 	TreeMap<String,String> curveLabels, TreeMap<Arrow,Cardinality> arrowCardinalities){
 		super(spiders, habitats, shadedZones, presentZones,arrows, spiderLabels, curveLabels);
 		this.arrowCardinalities  = arrowCardinalities  == null ? new TreeMap<Arrow,Cardinality>() : arrowCardinalities;
-	
+		for (Arrow arrow : getArrows()){
+			if(this.arrowCardinalities.get(arrow) != null){
+				arrow.setCardinality(this.arrowCardinalities.get(arrow));
+			}
+		}
 	}
 	
 	
 	LUCarCOPDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones, 
 		  Collection<Zone> presentZones, Collection<Arrow> arrows, Map<String,String> spiderLabels, 
 		  Map<String,String> curveLabels,Map<Arrow,Cardinality> arrowCardinalities){
-	      super(spiders == null ? null : new TreeSet<>(spiders),
-	              habitats == null ? null : new TreeMap<>(habitats),
+		
+		this(spiders == null ? null : new TreeSet<>(spiders),
+				  habitats == null ? null : new TreeMap<>(habitats),
 	              shadedZones == null ? null : new TreeSet<>(shadedZones),
 	              presentZones == null ? null : new TreeSet<>(presentZones),
 	              arrows == null ? null : new TreeSet<>(arrows),
 	              spiderLabels == null ? null : new TreeMap<>(spiderLabels),
-	              curveLabels == null ? null : new TreeMap<>(curveLabels));
-	      
-	      this.arrowCardinalities  = arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities );	
+	              curveLabels == null ? null : new TreeMap<>(curveLabels),
+	              arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities));	
 	}
 	
 	
@@ -101,14 +102,7 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
     }
 	
 	
-	public LUCarCOPDiagram addArrowCardinality(Arrow arrow, Cardinality cardinality) {
-	    	TreeMap<Arrow,Cardinality> newArrowCardinalities = getArrowCardinalitiesMod();
-	    	if (arrow != null){
-	    		newArrowCardinalities.put(arrow, cardinality);
-	    	}
-	    	return new LUCarCOPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), getArrows(),
-	    			getSpiderLabels(),getCurveLabels(),newArrowCardinalities);
-	    }
+
 	
 	
 	
@@ -170,13 +164,67 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	  
 	  
 
-	  
-	  
-	  public PrimarySpiderDiagram addCardinality(Arrow arrow,Cardinality cardinality){
+		@Override
+		public COPDiagram deleteSpider(String spider) {
+			  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
+			  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+			  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
+			  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
+			  TreeMap<Arrow,Cardinality> newArrowCardinalities = new TreeMap<>(arrowCardinalities);
+			  
+			  newSpiders.remove(spider);
+			  newHabitats.remove(spider);
+		      for (Arrow arrow : getArrows()){
+		          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+		      		newArrows.remove(arrow);
+		      		newArrowCardinalities.remove(arrow);
+		          }
+		        }
+		      newSpiderLabels.remove(spider);
+
+		      return new LUCarCOPDiagram(
+		              newSpiders,
+		              newHabitats,
+		              getShadedZones(),
+		              getPresentZones(),
+		              newArrows,
+		              newSpiderLabels,
+		              getCurveLabels(),
+		              newArrowCardinalities);
+		  }
+		
+		
+		
+		@Override
+		public COPDiagram addArrow(Arrow arrow) {
+		    	TreeSet<Arrow> newArrows = getArrowsMod();
+		    	if (arrow != null){
+		    		if ((! containsArrow(arrow)) && (validArrow(arrow))) {
+		    			newArrows.add(arrow);
+		    		}
+		    	}
+		    	return new LUCarCOPDiagram(getSpiders(), getHabitats(), 
+		    			getShadedZones(), getPresentZones(), newArrows,getSpiderLabels(),getCurveLabels(),getArrowCardinalities());
+		    }
+		
+		
+		
+		public LUCarCOPDiagram addArrowCardinality(Arrow arrow, Cardinality cardinality) {
+	    	TreeMap<Arrow,Cardinality> newArrowCardinalities = getArrowCardinalitiesMod();
+	    	if (arrow != null){
+	    		newArrowCardinalities.put(arrow, cardinality);
+	    	}
+	    	return new LUCarCOPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), getArrows(),
+	    			getSpiderLabels(),getCurveLabels(),newArrowCardinalities);
+	    }
+		
+		
+		
+	  public LUCarCOPDiagram addCardinality(Arrow arrow,Cardinality cardinality){
 		  TreeMap<Arrow,Cardinality>  newArrowCardinalities = new TreeMap<>(getArrowCardinalities());
 		  
 		  if (! getArrows().contains(arrow)){
-              throw new IllegalArgumentException("The arrow does not exists in the diagram.");
+              throw new IllegalArgumentException("The arrow does not exist in the diagram.");
 		  }
 		  
 		  if (getArrowCardinalities().containsKey(arrow)){
@@ -198,11 +246,11 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	              newArrowCardinalities);  
 	  }
 	  
-	  public PrimarySpiderDiagram deleteCardinality(Arrow arrow){
+	  public LUCarCOPDiagram deleteCardinality(Arrow arrow){
 		  TreeMap<Arrow,Cardinality>  newArrowCardinalities = new TreeMap<>(getArrowCardinalities());
 		  
 		  if (! getArrows().contains(arrow)){
-              throw new IllegalArgumentException("The arrow does not exists in the diagram.");
+              throw new IllegalArgumentException("The arrow does not exist in the diagram.");
 		  }
 		  
 		  if (! getArrowCardinalities().containsKey(arrow)){
@@ -223,7 +271,6 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	              newArrowCardinalities);  
 	  }
 	  
-	
 	
 	protected boolean areArrowCardinalitiesValid(){
 		if (arrowCardinalities == null || arrowCardinalities.size() == 0){

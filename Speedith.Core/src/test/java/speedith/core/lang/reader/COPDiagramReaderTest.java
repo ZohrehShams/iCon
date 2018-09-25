@@ -92,11 +92,11 @@ public class COPDiagramReaderTest {
 	    public void testReadSpiderDiagram_Reader() throws Exception {
 	    	
 	    	
-	        COPDiagram sd = (COPDiagram) COPDiagramReader.readSpiderDiagram(SD_EXAMPLE_3b);
+	        COPDiagram sd = (COPDiagram) SpiderDiagramsReader.readSpiderDiagram(SD_EXAMPLE_3b);
 	        
 	        
 	        String str1 = sd.toString();
-	        COPDiagram sd2 = (COPDiagram) COPDiagramReader.readSpiderDiagram(str1);
+	        COPDiagram sd2 = (COPDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
 	        assertEquals(str1, sd2.toString());
 	        
 	        assertEquals(sd, sd2);
@@ -111,11 +111,11 @@ public class COPDiagramReaderTest {
 	    public void testReadSpiderDiagram_Reader_LUCOP() throws Exception {
 	    	
 	    	
-	        LUCOPDiagram sd = (LUCOPDiagram) COPDiagramReader.readSpiderDiagram(SD_EXAMPLE_6);
+	        LUCOPDiagram sd = (LUCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(SD_EXAMPLE_6);
 	        
 	        
 	        String str1 = sd.toString();
-	        LUCOPDiagram sd2 = (LUCOPDiagram) COPDiagramReader.readSpiderDiagram(str1);
+	        LUCOPDiagram sd2 = (LUCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
 	        assertEquals(str1, sd2.toString());
 	        
 	        assertEquals(sd, sd2);
@@ -126,11 +126,11 @@ public class COPDiagramReaderTest {
 	    public void testReadSpiderDiagram_Reader_LUCOP_order() throws Exception {
 	    	
 	    	
-	        LUCOPDiagram sd = (LUCOPDiagram) COPDiagramReader.readSpiderDiagram(SD_EXAMPLE_6_order);
+	        LUCOPDiagram sd = (LUCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(SD_EXAMPLE_6_order);
 	        
 	        
 	        String str1 = sd.toString();
-	        LUCOPDiagram sd2 = (LUCOPDiagram) COPDiagramReader.readSpiderDiagram(str1);
+	        LUCOPDiagram sd2 = (LUCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
 	        assertEquals(str1, sd2.toString());
 	        
 	        assertEquals(sd, sd2);
@@ -142,11 +142,11 @@ public class COPDiagramReaderTest {
 	    public void testReadSpiderDiagram_Reader_LUCOP_Empty_SpiderLabels() throws Exception {
 	    	
 	    	
-	        LUCOPDiagram sd = (LUCOPDiagram) COPDiagramReader.readSpiderDiagram(SD_EXAMPLE_7);
+	        LUCOPDiagram sd = (LUCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(SD_EXAMPLE_7);
 	        //assertTrue(sd.isValid());
 	        
 	        String str1 = sd.toString();
-	        LUCOPDiagram sd2 = (LUCOPDiagram) COPDiagramReader.readSpiderDiagram(str1);
+	        LUCOPDiagram sd2 = (LUCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
 	        assertEquals(str1, sd2.toString());
 	        
 	        assertEquals(sd, sd2);
@@ -157,10 +157,10 @@ public class COPDiagramReaderTest {
 	    @Test
 	    public void testReadSpiderDiagram_Reader_LUCarCOP() throws Exception {
 	    		    	
-	        LUCarCOPDiagram sd = (LUCarCOPDiagram) COPDiagramReader.readSpiderDiagram(SD_EXAMPLE_6_order_car);
+	        LUCarCOPDiagram sd = (LUCarCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(SD_EXAMPLE_6_order_car);
 	        
 	        String str1 = sd.toString();
-	        LUCarCOPDiagram sd2 = (LUCarCOPDiagram) COPDiagramReader.readSpiderDiagram(str1);
+	        LUCarCOPDiagram sd2 = (LUCarCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
 	        assertEquals(str1, sd2.toString());
 	        
 	        sd.equals(sd2);
@@ -172,10 +172,10 @@ public class COPDiagramReaderTest {
 	    @Test
 	    public void testRead() throws Exception {
 	    		    	
-	        LUCarCOPDiagram sd = (LUCarCOPDiagram) COPDiagramReader.readSpiderDiagram(fourty);
+	        LUCarCOPDiagram sd = (LUCarCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(fourty);
 	        
 	        String str1 = sd.toString();
-	        LUCarCOPDiagram sd2 = (LUCarCOPDiagram) COPDiagramReader.readSpiderDiagram(str1);
+	        LUCarCOPDiagram sd2 = (LUCarCOPDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
 	        assertEquals(str1, sd2.toString());
 	        
 	        sd.equals(sd2);

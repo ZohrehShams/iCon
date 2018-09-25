@@ -3,7 +3,6 @@ package speedith.draw;
 import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.reader.COPDiagramReader;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.reasoning.rules.transformers.CopyContoursTransformerTest;
 import speedith.core.reasoning.util.unitary.TestSpiderDiagrams;
@@ -60,8 +59,10 @@ public class DiagramTestPortfolio implements Serializable {
 //                twoCD,
 //                threeCD,
 //                fourCD,
+                //sevenLabArrowLUCarCOP,
+                //threeColSpLUCarCOP,
                 tenComplete,
-                fourCarCD,
+                //fourCarCD,
                 fiveCarCD,
                 getFalseDiagram()
         ));

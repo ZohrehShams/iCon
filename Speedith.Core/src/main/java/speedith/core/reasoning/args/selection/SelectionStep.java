@@ -71,6 +71,7 @@ public abstract class SelectionStep {
     
     public static final int Arrows = 0x20;
     
+    public static final int SpiderComparators = 0X40;
     
     
     /**
@@ -79,7 +80,7 @@ public abstract class SelectionStep {
      * <span style="font-style:italic;">all elements of primary spider
      * diagrams</span> should be selectable.</p>
      */
-    public static final int AllPrimaryElements = Spiders | Zones | Contours | Arrows;
+    public static final int AllPrimaryElements = Spiders | Zones | Contours | Arrows | SpiderComparators;
     /**
      * This flag is used in {@link SelectionStep#getSelectableElements()} to
      * indicate which diagram elements should be selectable. <p>In this case
@@ -100,7 +101,7 @@ public abstract class SelectionStep {
      * <span style="font-style:italic;">everything</span> should be
      * selectable.</p>
      */
-    public static final int All = Spiders | Zones | Contours | Operators | NullSpiderDiagrams | Arrows;
+    public static final int All = Spiders | Zones | Contours | Operators | NullSpiderDiagrams | Arrows | SpiderComparators;
     
     
     //Zohreh

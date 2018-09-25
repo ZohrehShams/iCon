@@ -1,4 +1,4 @@
-package speedith.ui;
+package speedith.ui.concretes;
 
 import java.awt.Color;
 import java.awt.Stroke;
@@ -7,8 +7,11 @@ import java.awt.geom.Line2D;
 import java.awt.Point;
 import org.apache.log4j.Logger;
 
+import speedith.ui.abstracts.AbstractArrow;
 
-public class ConcreteArrow {
+
+
+public class ConcreteArrow implements Cloneable{
 	
     static Logger logger = Logger.getLogger(ConcreteArrow.class.getName());
 
@@ -43,6 +46,10 @@ public class ConcreteArrow {
     
     private Line2D.Double makeArrow(double xs, double ys, double xt, double yt) {
         return new Line2D.Double(xs, ys, xt, yt);
+    }
+    
+    public Line2D.Double initArrow() {
+        return new Line2D.Double(x_s, y_s, x_t, y_t);
     }
     
 
@@ -87,5 +94,15 @@ public class ConcreteArrow {
     	return y_t;
     }
     
-
+    
+    @Override
+    public ConcreteArrow clone() {
+        ConcreteArrow clone;
+        try {
+            clone = (ConcreteArrow) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        return clone;
+    }
 }

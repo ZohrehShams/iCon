@@ -233,10 +233,11 @@ public class DiagramCreator {
             last_step = r_steps.get(r_steps.size() - 1);
         }
         AbstractDescription last_diag = null;
- 
+        
         if (last_step != null) {
             last_diag = last_step.to();
         }
+        
         HashMap<AbstractBasicRegion, ArrayList<ConcreteSpiderFoot>> drawnFeet =
                 new HashMap<AbstractBasicRegion, ArrayList<ConcreteSpiderFoot>>();
         for (AbstractBasicRegion abr : footCount.keySet()) {
@@ -247,7 +248,7 @@ public class DiagramCreator {
             for (int i = 0; i < num_required.intValue(); i++) {
                 acs.add(new AbstractCurve(null));
             }
-
+            
             AbstractBasicRegion zone_in_last_diag = last_diag.getLabelEquivalentZone(abr);
             if (zone_in_last_diag == null) {
                 throw new CannotDrawException("problem with spider habitat");

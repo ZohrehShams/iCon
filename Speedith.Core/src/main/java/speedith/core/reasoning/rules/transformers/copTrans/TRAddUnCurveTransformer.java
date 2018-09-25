@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.transformers;
+package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -8,7 +8,7 @@ import speedith.core.lang.IdTransformer;
 import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.reasoning.args.ZonesInOutArg;
+import speedith.core.reasoning.args.copArgs.ZonesInOutArg;
 import speedith.core.reasoning.util.unitary.ZoneTransferSingle;
 
 

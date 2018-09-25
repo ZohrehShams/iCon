@@ -18,8 +18,8 @@ import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.args.ZoneArg;
 import speedith.core.reasoning.rules.instructions.SelectZonesInstruction;
+import speedith.core.reasoning.rules.transformers.copTrans.TRAddShadingTransformer;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.transformers.TRAddShadingTransformer;
 
 import static speedith.core.i18n.Translations.i18n;
 /**

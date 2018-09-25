@@ -71,8 +71,11 @@ public class OperatorPanel extends javax.swing.JPanel {
 
     if (f == null) { f = getFont(); }
 
-    defaultFont = f.deriveFont(24f);
-    highlightFont = f.deriveFont(Font.BOLD, 26);
+//    defaultFont = f.deriveFont(24f);
+//    highlightFont = f.deriveFont(Font.BOLD, 26);
+    
+    defaultFont = f.deriveFont(34f);
+    highlightFont = f.deriveFont(Font.BOLD, 36);
     lblOperator.setFont(defaultFont);
   }
 

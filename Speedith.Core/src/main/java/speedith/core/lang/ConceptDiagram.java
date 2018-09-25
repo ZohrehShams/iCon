@@ -34,11 +34,7 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
 	private boolean hashInvalid = true;
 	private int hash;
 	
-    ConceptDiagram(Collection<PrimarySpiderDiagram> primaries, Collection<Arrow> arrows) {
-    	this(primaries == null ? null : new ArrayList<>(primaries),arrows == null ? null : new TreeSet<>(arrows));
-    }
 	
-    
     ConceptDiagram(ArrayList<PrimarySpiderDiagram> primaries, TreeSet<Arrow> arrows) {
         if (primaries == null) {
             throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "diagrmas"));
@@ -50,6 +46,12 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
         this.cd_arrows = arrows== null ? new TreeSet<Arrow>() : arrows;
     }
     
+    
+    ConceptDiagram(Collection<PrimarySpiderDiagram> primaries, Collection<Arrow> arrows) {
+    	this(primaries == null ? null : new ArrayList<>(primaries),
+    			arrows == null ? null : new TreeSet<>(arrows));
+    }
+	
     
     public List<PrimarySpiderDiagram> getPrimaries() {
         return Collections.unmodifiableList(primaries);

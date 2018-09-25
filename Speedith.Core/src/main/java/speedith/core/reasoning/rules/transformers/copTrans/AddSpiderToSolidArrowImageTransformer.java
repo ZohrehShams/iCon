@@ -12,7 +12,7 @@ import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
 import speedith.core.lang.Zones;
-import speedith.core.reasoning.args.ArrowArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetChecks;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetExtraction;
 
@@ -76,11 +76,11 @@ public class AddSpiderToSolidArrowImageTransformer extends IdTransformer{
     	    	
     	    	Region regionInsideArrowTarget = new Region(zonesIniseArrowTarget);
     	    	
+    	    	
     	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(destinationArrow.getArrow().arrowTarget(), regionInsideArrowTarget, 
     	    			compSpiderDiagram.getSpiderLabels().get(destinationArrow.getArrow().arrowTarget()));
     	    	
-    	    	return transformedArrowDiagram;
-                //return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, spiderDiagram, targetArrow, indexOfParent);
+                return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, spiderDiagram, targetArrow, indexOfParent);
     	    }else return currentDiagram;
     		
     	}else return null;
@@ -109,9 +109,9 @@ public class AddSpiderToSolidArrowImageTransformer extends IdTransformer{
     		throw new TransformationException("The target of arrow must be a contour.");
     	}
     	
-    	if (targetArrow.getArrow().getCardinality() != null ){
-    		throw new TransformationException("The arrow cannot have cardinality.");
-    	}
+//    	if (targetArrow.getArrow().getCardinality() != null ){
+//    		throw new TransformationException("The arrow cannot have cardinality.");
+//    	}
     }
     
     

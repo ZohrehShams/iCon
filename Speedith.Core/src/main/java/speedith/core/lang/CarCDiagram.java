@@ -33,8 +33,12 @@ public class CarCDiagram extends ConceptDiagram{
 	
 	
     CarCDiagram(Collection<PrimarySpiderDiagram> primaries, Collection<Arrow> arrows, Map<Arrow,Cardinality> arrowCardinalities) {
-		super(primaries, arrows);
-		this.cd_arrowCardinalities  = arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities );	
+    	this(primaries == null ? null : new ArrayList<>(primaries),
+    			arrows == null ? null : new TreeSet<>(arrows),
+    			arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities));
+    	
+//    	super(primaries, arrows);
+//		this.cd_arrowCardinalities  = arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities );	
     }
     
 	public SortedMap<Arrow,Cardinality> get_cd_ArrowCardinalities() {

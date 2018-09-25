@@ -12,7 +12,7 @@ import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
 import speedith.core.lang.Zones;
-import speedith.core.reasoning.args.ArrowArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 
 public class PropagateTargetShadingTransformer extends IdTransformer{
 	private ArrowArg arrowArg;
@@ -35,66 +35,42 @@ public class PropagateTargetShadingTransformer extends IdTransformer{
     	
     	
     	if (diagramIndex == subDiagramIndex) {
+    		 
+    		if (! (psd instanceof LUCarCOPDiagram)){
+    			throw new TransformationException("The rule does not operate on this type of diagram.");
+    		}
     		
-        	if(psd instanceof LUCarCOPDiagram){
-        		LUCarCOPDiagram lucop = (LUCarCOPDiagram) psd;
-        		assertDiagramContainTargetArrows(lucop);
-        		
-        		if (! lucop.arrowSourceContour(arrowArg.getArrow())){
-        			throw new TransformationException("The source of arrow must be a curve.");
-        		}
-        		
-        		if (! lucop.arrowTargetContour(arrowArg.getArrow())){
-        			throw new TransformationException("The target of arrow must be a curve.");
-        		}
-        		
-          		if((lucop.getArrowCardinalities().get(arrowArg.getArrow()) == null) || 
-          				(lucop.getArrowCardinalities().get(arrowArg.getArrow()).getComparator().equals("<=")) ||
-          				(lucop.getArrowCardinalities().get(arrowArg.getArrow()).getNumber() < 1 )){
-        			throw new TransformationException("The arrow has to have the cardinality of greater or equal to 1 or greater.");
-        		}
-        		
-        		for (Zone zone : Zones.getZonesInsideAnyContour(lucop.getPresentZones(),arrowArg.getArrow().arrowTarget())){
-        			if (! lucop.getShadedZones().contains(zone)){
-        				throw new TransformationException("The target of arrow should be fully shaded.");
-        			}
-        		}
-        		
-        		
-        		for (Zone zone : Zones.getZonesInsideAnyContour(lucop.getPresentZones(),arrowArg.getArrow().arrowSource())){
-        			if (lucop.getSpiderCountInZone(zone) != 0){
-        				throw new TransformationException("The source of arrow should not conatin any spiders.");
-        			}
-        		}
-        	   return lucop.addShading(Zones.getZonesInsideAnyContour(lucop.getPresentZones(),arrowArg.getArrow().arrowSource()));
-
-        	}else{
-        		LUCOPDiagram lucop = (LUCOPDiagram) psd;
-        		assertDiagramContainTargetArrows(lucop);
-        		
-        		if (! lucop.arrowSourceContour(arrowArg.getArrow())){
-        			throw new TransformationException("The source of arrow must be a curve.");
-        		}
-        		
-        		if (! lucop.arrowTargetContour(arrowArg.getArrow())){
-        			throw new TransformationException("The target of arrow must be a curve.");
-        		}
-        		
-        		
-        		for (Zone zone : Zones.getZonesInsideAnyContour(lucop.getPresentZones(),arrowArg.getArrow().arrowTarget())){
-        			if (! lucop.getShadedZones().contains(zone)){
-        				throw new TransformationException("The target of arrow should be fully shaded.");
-        			}
-        		}
-        		
-        		
-        		for (Zone zone : Zones.getZonesInsideAnyContour(lucop.getPresentZones(),arrowArg.getArrow().arrowSource())){
-        			if (lucop.getSpiderCountInZone(zone) != 0){
-        				throw new TransformationException("The source of arrow should not conatin any spiders.");
-        			}
-        		}
-        	   return lucop.addShading(Zones.getZonesInsideAnyContour(lucop.getPresentZones(),arrowArg.getArrow().arrowSource()));
-        	}	
+    		LUCarCOPDiagram luCarCop = (LUCarCOPDiagram) psd;
+    		
+    		assertDiagramContainTargetArrows(luCarCop);
+    		
+    		if (! luCarCop.arrowSourceContour(arrowArg.getArrow())){
+    			throw new TransformationException("The source of arrow must be a curve.");
+    		}
+    		
+    		if (! luCarCop.arrowTargetContour(arrowArg.getArrow())){
+    			throw new TransformationException("The target of arrow must be a curve.");
+    		}
+    		
+      		if((luCarCop.getArrowCardinalities().get(arrowArg.getArrow()) == null) || 
+      				(luCarCop.getArrowCardinalities().get(arrowArg.getArrow()).getComparator().equals("<=")) ||
+      				(luCarCop.getArrowCardinalities().get(arrowArg.getArrow()).getNumber() < 1 )){
+    			throw new TransformationException("The arrow has to have the cardinality of greater or equal to 1 or grrater than 1.");
+    		}
+    		
+    		for (Zone zone : Zones.getZonesInsideAnyContour(luCarCop.getPresentZones(),arrowArg.getArrow().arrowTarget())){
+    			if (! luCarCop.getShadedZones().contains(zone)){
+    				throw new TransformationException("The target of arrow should be fully shaded.");
+    			}
+    		}
+    		
+    		for (Zone zone : Zones.getZonesInsideAnyContour(luCarCop.getPresentZones(),arrowArg.getArrow().arrowSource())){
+    			if (luCarCop.getSpiderCountInZone(zone) != 0){
+    				throw new TransformationException("The source of arrow should not conatin any spiders.");
+    			}
+    		}
+    		
+    		return psd.addShading(Zones.getZonesInsideAnyContour(psd.getPresentZones(),arrowArg.getArrow().arrowSource()));
     	}
     	return psd;
     }

@@ -33,6 +33,8 @@ import java.util.Map.Entry;
 import java.util.*;
 import javax.swing.JPanel;
 import speedith.core.lang.*;
+import speedith.ui.concretes.ConcreteCOPDiagram;
+
 import static speedith.i18n.Translations.i18n;
 
 /**
@@ -46,9 +48,6 @@ public class DiagramVisualisation {
     //<editor-fold defaultstate="collapsed" desc="Constants">
     private static final int DefaultDiagramSize = 500;
     //</editor-fold>
-
-    //Zohreh
-    //protected HashMap<String, AbstractCurve> contourMap = new HashMap<>();
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     public DiagramVisualisation() {
@@ -210,15 +209,21 @@ public class DiagramVisualisation {
      * @throws CannotDrawException this exception is thrown if the diagram cannot
      * be drawn for any reason.
      */
+    //Zohreh: This now accommodates FalseDiagram.
     public static JPanel getSpiderDiagramPanel(SpiderDiagram sd, int size) throws CannotDrawException {
         if (sd == null) {
             throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "sd"));
         } else {
             if (sd instanceof PrimarySpiderDiagram) {
-                return getSpiderDiagramPanel((PrimarySpiderDiagram) sd, size);
+                //return getSpiderDiagramPanel((PrimarySpiderDiagram) sd, size);
+                return new COPDiagramPanel((PrimarySpiderDiagram) sd);
             } else if (sd instanceof CompoundSpiderDiagram) {
-                return new SpiderDiagramPanel(sd);
+//                return new SpiderDiagramPanel(sd);
+                return new COPDiagramPanel(sd);
             } else if (sd instanceof NullSpiderDiagram) {
+            	if(sd instanceof FalseSpiderDiagram){
+            		return new FalseSpiderDiagramPanel();
+            	}
                 return new NullSpiderDiagramPanel();
             } else {
                 throw new AssertionError(i18n("GERR_ILLEGAL_STATE"));
@@ -233,7 +238,7 @@ public class DiagramVisualisation {
      * array.
      * <p>This method effectively flags the zone with the given code.</p>
      */
-    private static void markZone(byte[] allZones, String[] allContours, Zone zone, byte code) {
+    protected static void markZone(byte[] allZones, String[] allContours, Zone zone, byte code) {
         // We have to mark the zone with the given code. But how do we determine
         // the index of the zone?
         // Well, say we have N contours. Then a zone is specified with N bits,
@@ -242,17 +247,29 @@ public class DiagramVisualisation {
         // The resulting number is the index of the zone.
         allZones[getZoneInMask(allContours, zone)] |= code;
     }
+    
+    
 
     static SpeedithCirclesPanel getSpiderDiagramPanel(AbstractDescription ad, int size) throws CannotDrawException {
         ConcreteDiagram cd = ConcreteDiagram.makeConcreteDiagram(ad, size);
         return new SpeedithCirclesPanel(cd);
     }
 
+    //Zohreh: This now copes with COP 
     static SpeedithCirclesPanel getSpiderDiagramPanel(PrimarySpiderDiagram diagram, int size) throws CannotDrawException {
-        final AbstractDescription ad = getAbstractDescription(diagram);
-        ConcreteDiagram cd = ConcreteDiagram.makeConcreteDiagram(ad, size);
+    	AbstractDescription ad = null;
+    	ConcreteDiagram cd = null;
+    	if (diagram instanceof COPDiagram){
+    		ad= COPDiagramVisualisation.getAbstractDescription(diagram);
+    		cd = ConcreteCOPDiagram.makeConcreteDiagram(ad, size);;
+    	}else{
+    		ad = getAbstractDescription(diagram);
+    		cd = ConcreteDiagram.makeConcreteDiagram(ad, size);
+    	}
         return new SpeedithCirclesPanel(cd);
     }
+    
+    
 
     private static int getZoneInMask(String[] allContours, Zone zone) {
         int mask = 0;
@@ -265,7 +282,7 @@ public class DiagramVisualisation {
         return mask;
     }
 
-    private static AbstractBasicRegion constructABR(String[] allContours, int zoneIndex, HashMap<String, AbstractCurve> contourMap) {
+    protected static AbstractBasicRegion constructABR(String[] allContours, int zoneIndex, HashMap<String, AbstractCurve> contourMap) {
         TreeSet<AbstractCurve> inContours = new TreeSet<>();
         for (int i = 0; i < allContours.length; i++) {
             if ((zoneIndex & (1 << i)) != 0) {
@@ -285,7 +302,6 @@ public class DiagramVisualisation {
         return AbstractBasicRegion.get(inContours);
     }
 
-    //Zohreh: Private to protected
     protected static void addFeetForZone(TreeSet<AbstractBasicRegion> feet, HashMap<String, AbstractCurve> contourMap, Zone foot) {
         feet.add(constructABR(foot, contourMap));
     }

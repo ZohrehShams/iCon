@@ -9,8 +9,6 @@ public class Cardinality implements Serializable{
 	
 	private  Comparator comparator;
 	private  int number;
-	
-	
  
 	public Cardinality(String  comparator, String number) {
 		this(Comparator.fromString(comparator), Integer.parseInt(number));
@@ -34,12 +32,19 @@ public class Cardinality implements Serializable{
 	}
 	
 	
+	public void setComparator(Comparator compar){
+		comparator = compar;
+	}
+	
+	public void setNumber(int num){
+		number = num;
+	}
+	
+	
 	
 	@Override
 	public String toString(){
 		return comparator.toString() + Integer.toString(number);
-//		return comparator.toString() + number;
-
 	}
 	
 

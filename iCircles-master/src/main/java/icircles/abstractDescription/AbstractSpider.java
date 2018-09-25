@@ -71,7 +71,9 @@ public class AbstractSpider  implements Comparable<AbstractShape>, AbstractShape
 		return m_label;
 	}
 
-	
+	public void setLabel(String label) {
+        this.m_label = label;
+}
 
 	public SortedSet<AbstractBasicRegion> get_feet() {
 		return Collections.unmodifiableSortedSet(m_feet);
@@ -82,13 +84,15 @@ public class AbstractSpider  implements Comparable<AbstractShape>, AbstractShape
 	}
 	
 	
-	public void setName(String name) {
-            this.m_name = name;
-    }
+
 
 	@Override
 	public int compareTo(AbstractShape s) {
 		AbstractSpider other = (AbstractSpider) s;
+		
+		if(! other.m_name.equals(m_name)){
+			return 1;
+		}
 		
 	    if (other.m_feet.size() < m_feet.size()) {
 		return 1;

@@ -15,10 +15,10 @@ import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.RuleApplicationResult;
 import speedith.core.reasoning.args.RuleArg;
-import speedith.core.reasoning.args.ZonesInOutArg;
+import speedith.core.reasoning.args.copArgs.ZonesInOutArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.instructions.TRAddUnCurveInstruction;
-import speedith.core.reasoning.rules.transformers.TRAddUnCurveTransformer;
+import speedith.core.reasoning.rules.instructions.copIns.TRAddUnCurveInstruction;
+import speedith.core.reasoning.rules.transformers.copTrans.TRAddUnCurveTransformer;
 /**
  * This class implements a transformation function that adds an unlabelled curve to a diagram.
  * @author Zohreh Shams [zs315@cam.ac.uk]
@@ -89,7 +89,6 @@ implements BasicInferenceRule<ZonesInOutArg>, ForwardRule<ZonesInOutArg>{
         ZonesInOutArg arg = getTypedRuleArgs(args);
         SpiderDiagram[] newSubgoals = goals.getGoals().toArray(new SpiderDiagram[goals.getGoalsCount()]);
         newSubgoals[arg.getSubgoalIndex()] = getSubgoal(arg, goals).transform(new TRAddUnCurveTransformer(arg, applyForward));
-       // System.out.println(">>>>>>"+ arg.getSubgoalIndex());
         return createRuleApplicationResult(newSubgoals);
     }
     

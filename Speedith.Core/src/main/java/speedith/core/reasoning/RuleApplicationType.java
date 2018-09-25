@@ -9,7 +9,9 @@ import java.awt.*;
  */
 public enum RuleApplicationType {
 
-    INTERACTIVE("Interactive", new Color(0xEE5555)),
+	//Zohreh: Changed the color
+    //INTERACTIVE("Interactive", new Color(0xEE5555)),
+    INTERACTIVE("Interactive", new Color(0xF49292)),
     AUTOMATIC("Automatic",new Color(0x9999FF)),
     TACTIC("InferenceTactic", new Color(0x55AA55));
 

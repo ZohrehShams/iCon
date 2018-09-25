@@ -2,6 +2,9 @@ package speedith.ui;
 
 import javax.swing.JPanel;
 import icircles.util.CannotDrawException;
+import speedith.ui.concretes.ConcreteCDiagram;
+import speedith.ui.concretes.ConcreteCOPDiagram;
+
 import java.awt.BasicStroke;
 import java.awt.GridBagConstraints;
 

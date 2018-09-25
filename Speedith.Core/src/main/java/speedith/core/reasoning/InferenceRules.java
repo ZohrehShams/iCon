@@ -109,6 +109,15 @@ public class InferenceRules {
         registerProvider(RemoveArrow.class);
         registerProvider(AddSpiderToSolidArrowImage.class);
         registerProvider(DeleteSyntax.class);
+        registerProvider(ArrowTargetInconsistencyShading.class);
+        registerProvider(DeleteQuestionMark.class);
+        registerProvider(CopyArrow.class);
+        registerProvider(ArrowCardinalityIncons.class);
+        registerProvider(AddSpiderToDashedArrowImage.class);
+        registerProvider(SwapSpiderWithCardinalityCurve.class);
+        registerProvider(SwapSpiderWithCardinality.class);
+        registerProvider(InverseToDashedArrow.class);
+        registerProvider(DashedToInverseArrow.class);
     }
 
     /**

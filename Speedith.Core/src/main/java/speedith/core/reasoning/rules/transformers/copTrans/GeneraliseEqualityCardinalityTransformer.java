@@ -6,14 +6,16 @@ import javax.swing.JOptionPane;
 
 import speedith.core.lang.Cardinality;
 import speedith.core.lang.Comparator;
+import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
-import speedith.core.reasoning.args.ArrowArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 
 public class GeneraliseEqualityCardinalityTransformer extends IdTransformer{
 	
@@ -34,8 +36,10 @@ public class GeneraliseEqualityCardinalityTransformer extends IdTransformer{
                                    ArrayList<Integer> childIndices) {
     	
     	int subDiagramIndex = arrowArg.getSubDiagramIndex();
-    	LUCarCOPDiagram luCarCop = (LUCarCOPDiagram) psd;
     	
+    	PrimarySpiderDiagram temp = psd;
+    	LUCarCOPDiagram luCarCop = (LUCarCOPDiagram) psd;
+    
     	
     	if (diagramIndex == subDiagramIndex) {
  
@@ -57,14 +61,6 @@ public class GeneraliseEqualityCardinalityTransformer extends IdTransformer{
         			throw new TransformationException("The type of comparator has to be eqality.");
         		}
            		
-        		
-//        		String comparator; 
-//        		comparator = JOptionPane.showInputDialog(null,"Enter one of the following three comparators: >= = <= ");
-//            	if (! comparator.equals(">=")){
-//                	JOptionPane.showMessageDialog(null,"The generalisation from equality .","Input error",JOptionPane.ERROR_MESSAGE);
-//        			throw new TransformationException("The type of comparator has to be one of the following three "
-//                			+ "comparators: >= = <= .");
-//            	}
             	
             	String number;
         		number = JOptionPane.showInputDialog(null,"Enter a natural number:");
@@ -77,8 +73,15 @@ public class GeneraliseEqualityCardinalityTransformer extends IdTransformer{
         			throw new TransformationException("New cardinality has to be smaller than the original one.");
             	}
         		
-        		LUCarCOPDiagram newluCarCop = (LUCarCOPDiagram) luCarCop.deleteCardinality(arrowArg.getArrow());
-        		return newluCarCop.addCardinality(arrowArg.getArrow(),new Cardinality(">=",number));
+        		LUCarCOPDiagram newluCarCop = luCarCop.deleteCardinality(arrowArg.getArrow());
+
+        		if (temp instanceof CompleteCOPDiagram){
+        			CompleteCOPDiagram compCop = (CompleteCOPDiagram) temp;
+        			CompleteCOPDiagram newcompCop = (CompleteCOPDiagram) compCop.deleteCardinality(arrowArg.getArrow());
+        			return newcompCop.addCardinality(arrowArg.getArrow(),new Cardinality(">=",number));
+        		}else{
+        			return newluCarCop.addCardinality(arrowArg.getArrow(),new Cardinality(">=",number));
+        		}
     	}
     	return psd;
     }

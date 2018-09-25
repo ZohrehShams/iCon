@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.instructions;
+package speedith.core.reasoning.rules.instructions.copIns;
 
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.args.ContourArg;

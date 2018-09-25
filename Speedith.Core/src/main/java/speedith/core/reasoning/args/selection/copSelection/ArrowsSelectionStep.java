@@ -1,7 +1,11 @@
-package speedith.core.reasoning.args.selection;
+package speedith.core.reasoning.args.selection.copSelection;
 
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
+import speedith.core.reasoning.args.selection.SelectionSequence;
+import speedith.core.reasoning.args.selection.SelectionStep;
+import speedith.core.reasoning.args.selection.SelectionStep.I18NSelectionRejectionExplanation;
+import speedith.core.reasoning.args.selection.SelectionStep.SelectionRejectionExplanation;
 
 import java.util.Locale;
 

@@ -20,7 +20,7 @@ import speedith.core.reasoning.InferenceRules;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationResult;
 import speedith.core.reasoning.args.SpiderRegionArg;
-import speedith.core.reasoning.args.ZonesInOutArg;
+import speedith.core.reasoning.args.copArgs.ZonesInOutArg;
 import speedith.core.reasoning.util.unitary.TestCOPDiagrams;
 
 public class TRAddUnCurveTest {

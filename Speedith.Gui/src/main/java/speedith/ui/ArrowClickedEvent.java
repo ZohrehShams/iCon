@@ -3,6 +3,7 @@ package speedith.ui;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import icircles.concreteDiagram.ConcreteDiagram;
+import speedith.ui.concretes.ConcreteArrow;
 
 /**
  * This is the event descriptor of the {@link DiagramClickListener#arrowClicked(icircles.gui.ContourClickedEvent)
@@ -13,9 +14,7 @@ import icircles.concreteDiagram.ConcreteDiagram;
  */
 public class ArrowClickedEvent extends DiagramClickEvent{
 	
-	 /**
-     * The clicked arrow.
-     */
+	private static final long serialVersionUID = -7959491404486631523L;
     private final ConcreteArrow arrow;
 
 

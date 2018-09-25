@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.transformers;
+package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -12,13 +12,13 @@ import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SpiderArg;
 import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.args.ZoneArg;
-import speedith.core.reasoning.args.ZonesInOutArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
+import speedith.core.reasoning.args.copArgs.ZonesInOutArg;
 
 public class TRAddArrowTransformer extends IdTransformer{
 	//private final SubDiagramIndexArg target;

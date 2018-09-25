@@ -1,39 +1,39 @@
 package speedith.ui;
 
-import icircles.abstractDescription.AbstractCurve;
-import icircles.abstractDescription.AbstractSpider;
-import icircles.concreteDiagram.CircleContour;
-import icircles.concreteDiagram.ConcreteSpider;
-import icircles.concreteDiagram.ConcreteSpiderFoot;
+import static speedith.i18n.Translations.i18n;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import icircles.util.CannotDrawException;
-import speedith.core.lang.COPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.FalseSpiderDiagram;
-import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.NullSpiderDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.reader.COPDiagramReader;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.core.reasoning.args.selection.SelectionStep;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import static speedith.i18n.Translations.i18n;
+import speedith.ui.concretes.ConcreteCOPDiagram;
 
 public class COPDiagramPanel extends javax.swing.JPanel {
 
-    private static final Dimension PrimaryDiagramSize = new Dimension(150, 150);
+	private static final long serialVersionUID = 7433451537628686019L;
+
+	private static final Dimension PrimaryDiagramSize = new Dimension(150, 150);
 
     private javax.swing.JPanel diagrams;
 
@@ -82,13 +82,11 @@ public class COPDiagramPanel extends javax.swing.JPanel {
         return this.diagram == null ? "" : this.diagram.toString();
     }
     
-    //Zohreh: I'm using COPDiagramReader instead of Spider's one
     public void setDiagramString(String diagram) throws ReadingException {
         if (diagram == null || diagram.isEmpty()) {
             setDiagram(null);
         } else {
-            //setDiagram(SpiderDiagramsReader.readSpiderDiagram(diagram));
-            setDiagram(COPDiagramReader.readSpiderDiagram(diagram));
+            setDiagram(SpiderDiagramsReader.readSpiderDiagram(diagram));
         }
     }
 
@@ -209,11 +207,11 @@ public class COPDiagramPanel extends javax.swing.JPanel {
                         throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
                 }
             } else if (diagram instanceof PrimarySpiderDiagram) {
-            	if (diagram instanceof COPDiagram){
-            		drawCOPDiagram((COPDiagram) diagram);
-            	} else {
+//            	if (diagram instanceof COPDiagram){
+//            		drawCOPDiagram((COPDiagram) diagram);
+//            	} else {
             		drawPrimaryDiagram((PrimarySpiderDiagram) diagram);
-            	}
+//            	}
             } else if (diagram instanceof NullSpiderDiagram) {
             	if(diagram instanceof FalseSpiderDiagram){
             		drawFalseSpiderDiagram();
@@ -288,178 +286,210 @@ public class COPDiagramPanel extends javax.swing.JPanel {
 //        }
 //    }
     
-    private void drawConceptDiagram(ConceptDiagram cd) throws CannotDrawException {
-        if (cd != null && cd.getPrimaryCount() > 0) {
 
-            diagrams.setLayout(new GridBagLayout());
-            
-            JFrame f1 = (JFrame) SwingUtilities.windowForComponent(diagrams);
-            
-            
-            GridBagConstraints c = new GridBagConstraints();
-            JPanel  result;
-            
-            ArrayList<JPanel> primariesPanels  = new ArrayList<JPanel>();
-            
-    		final CDAbstractDescription ad = COPDiagramVisualisation.getAbstractDescription(cd);
-            CDiagramCreator dc = new CDiagramCreator(ad);
-            ConcreteCDiagram conCd = dc.createDiagram(500);
-            
-            
-            int xgrid = 0;
-            
-            for (ConcreteCOPDiagram cond: conCd.getPrimaries()){
-            	c.gridx=xgrid;
-                c.gridy = 0;
-                c.fill = true ? java.awt.GridBagConstraints.BOTH : GridBagConstraints.NONE;
-                c.weightx = 1;
-                c.weighty = 1;
-                c.insets.set(3, 2, 3, 2);
-                result =  new SpeedithCirclesPanel(cond);
-                primariesPanels.add(result);
-       		    diagrams.add(result,c);
-         		xgrid ++;	  
-            }
-            
-            ConcreteCDArrowMaker(ad,dc,conCd,primariesPanels);
-            
-            if(cd.getArrowCount() > 0){
-            	c.gridx=0;
-                c.gridy = 0;
-                c.fill = true ? java.awt.GridBagConstraints.BOTH : GridBagConstraints.NONE;
-                c.weightx = 1;
-                c.weighty = 1;
-                c.insets.set(3, 2, 3, 2);
-                c.gridwidth=cd.getPrimaryCount();
-                result = new CDCirclesPanelEx2(conCd);
-                diagrams.add(result,c);
-                result.revalidate();
-                result.repaint();
-            }
-            
-        } else {
-            throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
-        }
+	private CDCirclesPanelEx3 theCOPsPanel;
+	private ArrowPanel theArrowsPanel;
+	//private JFrame frame = (JFrame)SwingUtilities.getWindowAncestor(this);
+	//private JFrame frame = new JFrame();
+	
+    private void drawConceptDiagram(ConceptDiagram cd) throws CannotDrawException {
+    	
+
+    	
+    	theCOPsPanel = new CDCirclesPanelEx3();
+    	theArrowsPanel = new ArrowPanel();
+
+    	//JFrame frame2 = (JFrame)SwingUtilities.getWindowAncestor(this);
+    	JFrame frame = (JFrame)SwingUtilities.getWindowAncestor(diagrams);
+    	
+    	
+    	frame.setContentPane(theCOPsPanel);
+    	frame.setGlassPane(theArrowsPanel);
+    	frame.getGlassPane().setVisible(true);
+    	
+        theCOPsPanel.setDiagram(cd);
+
+            frame.remove(theArrowsPanel);
+            SwingUtilities.invokeLater(() -> {
+            	theArrowsPanel = theCOPsPanel.getArrowGlassPanel();
+                    frame.setGlassPane(theArrowsPanel);
+                    frame.getGlassPane().setVisible(true);
+                    frame.pack();
+            });
+            validate();
+            repaint();
+        
+        
+    	
+//      diagrams.setLayout(new GridBagLayout());
+//      
+//      
+//      
+//      GridBagConstraints c = new GridBagConstraints();
+//      JPanel  result;
+//      
+//      result = new CDCirclesPanelEx3(cd);
+//      diagrams.add(result,c);
+//      result.revalidate();
+//      result.repaint();
+      
+    	
+//    	if (cd != null && cd.getPrimaryCount() > 0) {
+//
+//            diagrams.setLayout(new GridBagLayout());
+//            
+//            
+//            
+//            GridBagConstraints c = new GridBagConstraints();
+//            JPanel  result;
+//            
+//            ArrayList<JPanel> primariesPanels  = new ArrayList<JPanel>();
+//            
+//    		final CDAbstractDescription ad = COPDiagramVisualisation.getAbstractDescription(cd);
+//            CDiagramCreator dc = new CDiagramCreator(ad);
+//            ConcreteCDiagram conCd = dc.createDiagram(500);
+//            
+//            
+//            int xgrid = 0;
+//            
+//            for (ConcreteCOPDiagram cond: conCd.getPrimaries()){
+//            	c.gridx=xgrid;
+//                c.gridy = 0;
+//                c.fill = true ? java.awt.GridBagConstraints.BOTH : GridBagConstraints.NONE;
+//                c.weightx = 1;
+//                c.weighty = 1;
+//                c.insets.set(3, 2, 3, 2);
+//                result =  new SpeedithCirclesPanel(cond);
+//                primariesPanels.add(result);
+//       		    diagrams.add(result,c);
+//         		xgrid ++;	  
+//            }
+//            
+//            ConcreteCDArrowMaker(ad,dc,conCd,primariesPanels);
+//            
+//            if(cd.getArrowCount() > 0){
+//            	c.gridx=0;
+//                c.gridy = 0;
+//                c.fill = true ? java.awt.GridBagConstraints.BOTH : GridBagConstraints.NONE;
+//                c.weightx = 1;
+//                c.weighty = 1;
+//                c.insets.set(3, 2, 3, 2);
+//                c.gridwidth=cd.getPrimaryCount();
+//                result = new CDCirclesPanelEx2(conCd);
+//                diagrams.add(result,c);
+//                result.revalidate();
+//                result.repaint();
+//            }
+//            
+//        } else {
+//            throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
+//        }
     }
     
     
-    public static void ConcreteCDArrowMaker(CDAbstractDescription ad,CDiagramCreator cdCreator, ConcreteCDiagram conCd,ArrayList<JPanel> primariesPanels){
-    	ArrayList<ConcreteArrow> arrows = new ArrayList<ConcreteArrow>();
-    	Iterator<AbstractArrow> it = ad.getArrowIterator();
-    	while (it.hasNext()){
-    		AbstractArrow aa = it.next();
-    		ConcreteArrow ca = makeConcreteArrow(aa,cdCreator,conCd,primariesPanels);
-    		arrows.add(ca);
-    	}
-    	conCd.addConcreteArrows(arrows);
-    }
+//    public static void ConcreteCDArrowMaker(CDAbstractDescription ad,CDiagramCreator cdCreator, ConcreteCDiagram conCd,ArrayList<JPanel> primariesPanels){
+//    	ArrayList<ConcreteArrow> arrows = new ArrayList<ConcreteArrow>();
+//    	Iterator<AbstractArrow> it = ad.getArrowIterator();
+//    	while (it.hasNext()){
+//    		AbstractArrow aa = it.next();
+//    		ConcreteArrow ca = makeConcreteArrow(aa,cdCreator,conCd,primariesPanels);
+//    		arrows.add(ca);
+//    	}
+//    	conCd.addConcreteArrows(arrows);
+//    }
     
     
     
     
-    private static ConcreteArrow makeConcreteArrow(AbstractArrow aa, CDiagramCreator dc, ConcreteCDiagram conCd, ArrayList<JPanel> primariesPanels){
-    	
-    	HashMap<CircleContour,Ellipse2D.Double> concreteToCanvasCircles =  new HashMap<CircleContour,Ellipse2D.Double>();
-    	
-    	for(JPanel jpanel: primariesPanels){
-    		SpeedithCirclesPanel copPanel=(SpeedithCirclesPanel) jpanel;
-//    		if (copPanel.getConcreteToCanvasCircleMap().isEmpty()){
-//    			System.out.println("map poulation"); 
+//    private static ConcreteArrow makeConcreteArrow(AbstractArrow aa, CDiagramCreator dc, ConcreteCDiagram conCd, ArrayList<JPanel> primariesPanels){
+//    	
+//    	HashMap<CircleContour,Ellipse2D.Double> concreteToCanvasCircles =  new HashMap<CircleContour,Ellipse2D.Double>();
+//    	
+//    	for(JPanel jpanel: primariesPanels){
+//    		SpeedithCirclesPanel copPanel=(SpeedithCirclesPanel) jpanel;
+//    		concreteToCanvasCircles.putAll(copPanel.getConcreteToCanvasCircleMap());
+//    	}
+//    	
+//    	ConcreteArrow ca=null;
+//    	ConcreteSpiderFoot feet = null;
+//    	double xs = 0,ys=0,xt=0,yt=0;
+//    	    	
+//    	if(aa.get_start() instanceof AbstractCurve){
+//    		AbstractCurve ac =(AbstractCurve) aa.get_start();
+//    		
+//    		AbstractCurve acPrime = null;
+//    		
+//    		for (AbstractCurve acnew : dc.mapAll.keySet()){
+//    			if (acnew.matchesLabel(ac)){
+//    				acPrime = acnew;
+//    				break;
+//    			}
 //    		}
-    		concreteToCanvasCircles.putAll(copPanel.getConcreteToCanvasCircleMap());
-    	}
-    	
-    	ConcreteArrow ca=null;
-    	ConcreteSpiderFoot feet = null;
-    	double xs = 0,ys=0,xt=0,yt=0;
-    	    	
-    	if(aa.get_start() instanceof AbstractCurve){
-    		AbstractCurve ac =(AbstractCurve) aa.get_start();
-    		
-    		AbstractCurve acPrime = null;
-    		
-    		for (AbstractCurve acnew : dc.mapAll.keySet()){
-    			if (acnew.matchesLabel(ac)){
-    				acPrime = acnew;
-    				break;
-    			}
-    		}
-    		CircleContour cc= dc.mapAll.get(acPrime);
-    		
-    		
-    		//CircleContour cc= dc.mapAll.get(ac);
-    		
-    		if(cc == null) {System.out.println("cc is null");}
-    		
-    		Ellipse2D.Double ec = concreteToCanvasCircles.get(cc);
-    		
-    		if(ec == null) {System.out.println("ec is null");}
-    		
-    		xs = ec.getX();
-    		ys = ec.getY()-ec.width;
-    	}else {if (aa.get_start() instanceof AbstractSpider){
-    		
-    		//System.out.println("You should come here for source.");
-    		AbstractSpider as = (AbstractSpider) aa.get_start();
-    		
-            for (ConcreteSpider concreteSpider : dc.getSpiderAll()){
-            	if (concreteSpider.get_as().getName().equals(as.getName())){
-            		feet = concreteSpider.get_feet().get(0);
-            	}            	
-            	
-            	
-//              	if (concreteSpider.get_as().equals(as)){
-//              		feet = concreteSpider.get_feet().get(0);
-//              	}
-              }
-            
-            xs = feet.getX();
-            ys = feet.getY();
-    	}
-    	}
-    	
-    	
-    	if(aa.get_end() instanceof AbstractCurve){
-    		AbstractCurve ac = (AbstractCurve) aa.get_end(); 
-    		
-    		AbstractCurve acPrime = null;
-    		
-    		for (AbstractCurve acnew : dc.mapAll.keySet()){
-    			if (acnew.matchesLabel(ac)){
-    				acPrime = acnew;
-    				break;
-    			}
-    		}
-    		CircleContour cc= dc.mapAll.get(acPrime);
-    		
-    		
-    		//CircleContour cc= dc.mapAll.get(ac);
-    		Ellipse2D.Double ec = concreteToCanvasCircles.get(cc);
-    		
-    		xs = ec.getX();
-    		ys = ec.getY()+ec.width;
-    	}else {if (aa.get_end() instanceof AbstractSpider){
-    		//System.out.println("You should come here for target.");
-    		AbstractSpider as = (AbstractSpider) aa.get_end();
-    		
-            for (ConcreteSpider concreteSpider : dc.getSpiderAll()){
-            	
-            	if (concreteSpider.get_as().getName().equals(as.getName())){
-            		feet = concreteSpider.get_feet().get(0);
-            	} 
-            	
-//              	if (concreteSpider.get_as().equals(as)){
-//              		feet = concreteSpider.get_feet().get(0);
-//              	}
-              }
-            
-            xt = feet.getX();
-            yt = feet.getY();
-    	}
-    	}
-    	
-    	return ca= new ConcreteArrow(xs,ys,xt,yt,aa);
-    }
+//    		CircleContour cc= dc.mapAll.get(acPrime);
+//    		
+//    		
+//    		if(cc == null) {System.out.println("cc is null");}
+//    		
+//    		Ellipse2D.Double ec = concreteToCanvasCircles.get(cc);
+//    		
+//    		if(ec == null) {System.out.println("ec is null");}
+//    		
+//    		xs = ec.getX();
+//    		ys = ec.getY()-ec.width;
+//    	}else {if (aa.get_start() instanceof AbstractSpider){
+//    		
+//    		AbstractSpider as = (AbstractSpider) aa.get_start();
+//    		
+//            for (ConcreteSpider concreteSpider : dc.getSpiderAll()){
+//            	if (concreteSpider.get_as().getName().equals(as.getName())){
+//            		feet = concreteSpider.get_feet().get(0);
+//            	}            	
+//            	
+//         
+//              }
+//            
+//            xs = feet.getX();
+//            ys = feet.getY();
+//    	}
+//    	}
+//    	
+//    	
+//    	if(aa.get_end() instanceof AbstractCurve){
+//    		AbstractCurve ac = (AbstractCurve) aa.get_end(); 
+//    		
+//    		AbstractCurve acPrime = null;
+//    		
+//    		for (AbstractCurve acnew : dc.mapAll.keySet()){
+//    			if (acnew.matchesLabel(ac)){
+//    				acPrime = acnew;
+//    				break;
+//    			}
+//    		}
+//    		CircleContour cc= dc.mapAll.get(acPrime);
+//    		
+//    		
+//    		Ellipse2D.Double ec = concreteToCanvasCircles.get(cc);
+//    		
+//    		xs = ec.getX();
+//    		ys = ec.getY()+ec.width;
+//    	}else {if (aa.get_end() instanceof AbstractSpider){
+//    		AbstractSpider as = (AbstractSpider) aa.get_end();
+//    		
+//            for (ConcreteSpider concreteSpider : dc.getSpiderAll()){
+//            	
+//            	if (concreteSpider.get_as().getName().equals(as.getName())){
+//            		feet = concreteSpider.get_feet().get(0);
+//            	} 
+//            	
+//              }
+//            
+//            xt = feet.getX();
+//            yt = feet.getY();
+//    	}
+//    	}
+//    	
+//    	return ca= new ConcreteArrow(xs,ys,xt,yt,aa);
+//    }
     
     
     private void addNUllOperatorPanel(ConceptDiagram cd, int gridx) {
@@ -585,35 +615,15 @@ public class COPDiagramPanel extends javax.swing.JPanel {
 //    }
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    //Zohreh: we are using COPDiagramVisualisation instead of DiagramVisualisation 
     private int addSpiderDiagramPanel(int nextSubdiagramIndex, SpiderDiagram curSD, int gridx) throws CannotDrawException {
         GridBagConstraints gridBagConstraints;
         JPanel result;
-        // a CannotDrawException can only be thrown, if curSD is a PrimarySpiderDiagram
-        // (only then do we create a SpeedithCirclesPanel). If drawing fails, explicitly create
-        // a SpiderDiagramPanel for the primary diagram. This triggers the error label
-        // drawing in the constructor.
-        // This is a hack to catch the exception as early as possible, so that the rest
-        // of a compound diagram can still be drawn. To change this, the structure of SpiderDiagramPanel
-        // and the logic of drawing SpiderDiagrams would have to be changed significantly.
-        // One disadvantage of this solution: If a diagram cannot be drawn, iCircles is
-        // called twice to draw it (one time here, and the other time in the constructor in the
-        // catch clause)
         try {
-        	//Zohreh
-            //result = DiagramVisualisation.getSpiderDiagramPanel(curSD);
-            result = COPDiagramVisualisation.getSpiderDiagramPanel(curSD);
-            
-            //Zohreh
-            //cd_primaries.add((ConcreteCOPDiagram) ((ACirclesPanelEx) result).getDiagram());
-            
-            //result.setBorder(BorderFactory.createEtchedBorder());
+            result = DiagramVisualisation.getSpiderDiagramPanel(curSD);
         } catch (CannotDrawException e) {
             result = new SpiderDiagramPanel(curSD);
             result.setBorder(BorderFactory.createEmptyBorder());
         }
-        //Zohreh: sdp only registers a click listener for a given panel.
         JPanel sdp = registerSubdiagramClickListener(result, nextSubdiagramIndex);
         
         gridBagConstraints = getSubdiagramLayoutConstraints(gridx, true, sdp.getPreferredSize().width, 1);
@@ -621,9 +631,6 @@ public class COPDiagramPanel extends javax.swing.JPanel {
         return nextSubdiagramIndex + curSD.getSubDiagramCount();
     }
 
-//    public javax.swing.JPanel getDiagrams() {
-//		return diagrams;
-//	}
 
 
 	public void setDiagrams(javax.swing.JPanel diagrams) {
@@ -657,6 +664,10 @@ public class COPDiagramPanel extends javax.swing.JPanel {
                 }
                 
                 public void arrowClicked(ArrowClickedEvent e) {
+                    fireSpiderDiagramClicked(subdiagramIndex, e);
+                }
+                
+                public void spiderComparatorClicked(SpiderComparatorClickedEvent e) {
                     fireSpiderDiagramClicked(subdiagramIndex, e);
                 }
             }); 
@@ -754,46 +765,31 @@ public class COPDiagramPanel extends javax.swing.JPanel {
     }
     
     
-    //Zohreh:I'm not sure if it plays a role at all, but DiagramVis has changed to COPDiagramVis 
     private void drawPrimaryDiagram(PrimarySpiderDiagram psd) throws CannotDrawException {
         if (psd == null) {
             throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
         } else {
             diagrams.setLayout(new GridBagLayout());
             GridBagConstraints gbc = getSubdiagramLayoutConstraints(0, true, 1, 1);
-//            JPanel result;
-//            result = DiagramVisualisation.getSpiderDiagramPanel(psd);
-//            result.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-//            diagrams.add(registerSubdiagramClickListener(result, 0), gbc);
             diagrams.add(registerSubdiagramClickListener(DiagramVisualisation.getSpiderDiagramPanel(psd), 0), gbc);
         }
     }
     
     
-    private void drawCOPDiagram(COPDiagram cop) throws CannotDrawException {
-        if (cop == null) {
-            throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
-        } else {
-            diagrams.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = getSubdiagramLayoutConstraints(0, true, 1, 1);
-            diagrams.add(registerSubdiagramClickListener(COPDiagramVisualisation.getSpiderDiagramPanel(cop), 0), gbc);
-        }
-    }
+//    private void drawCOPDiagram(COPDiagram cop) throws CannotDrawException {
+//        if (cop == null) {
+//            throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
+//        } else {
+//            diagrams.setLayout(new GridBagLayout());
+//            GridBagConstraints gbc = getSubdiagramLayoutConstraints(0, true, 1, 1);
+//            diagrams.add(registerSubdiagramClickListener(COPDiagramVisualisation.getSpiderDiagramPanel(cop), 0), gbc);
+//        }
+//    }
     
     
 
     
-  
-//     private void drawConceptDiagram(ConceptDiagram cd) throws CannotDrawException {
-//    	 System.out.println("there must be something wrong here");
-//        if (cd != null && cd.getPrimaryCount() > 0) {
-//            diagrams.setLayout(new GridBagLayout());
-//            addSpiderDiagramPanel(1, cd.getPrimary(0), 0);
-//            addSpiderDiagramPanel(2, cd.getPrimary(1), 2);
-//        } else {
-//            throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
-//        }
-//    }
+
 
 
     private void drawNullSpiderDiagram() {

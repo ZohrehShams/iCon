@@ -15,11 +15,11 @@ import speedith.core.reasoning.InferenceRule;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.RuleApplicationResult;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.instructions.SelectArrowsInstruction;
+import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
 import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderToSolidArrowImageTransformer;
 
 /**

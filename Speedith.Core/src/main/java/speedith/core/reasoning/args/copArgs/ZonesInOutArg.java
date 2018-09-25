@@ -1,9 +1,10 @@
-package speedith.core.reasoning.args;
+package speedith.core.reasoning.args.copArgs;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import speedith.core.lang.Zone;
+import speedith.core.reasoning.args.SubDiagramIndexArg;
 /**
  * This argument passes two  sets of contours that are in and out of a new contour that will be added to teh diagram.
  * @author Zohreh Shams [zs315@cam.ac.uk]

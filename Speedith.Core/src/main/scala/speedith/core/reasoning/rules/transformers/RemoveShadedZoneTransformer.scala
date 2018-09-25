@@ -32,22 +32,50 @@ class RemoveShadedZoneTransformer (target:  SubDiagramIndexArg, zones : java.uti
           throw new RuleApplicationException("Cannot remove zone that contains a spider")
         }
         
-                
-      //Zohreh
-      if(psd.isInstanceOf[LUCarCOPDiagram]){
-        val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
-            createLUCarCOPDiagram(
-            lucarcop.getSpiders,
-            lucarcop.getHabitats, 
-            lucarcop.getShadedZones, 
-            lucarcop.getPresentZones-- zones.map(_.getZone), 
-            lucarcop.getArrows,
-            lucarcop.getSpiderLabels, 
-            lucarcop.getCurveLabels,
-            lucarcop.getArrowCardinalities)
-      }else{
-        SpiderDiagrams.createPrimarySD(psd.getHabitats, psd.getShadedZones , psd.getPresentZones-- zones.map(_.getZone))
-      }
+        
+        if(psd.isInstanceOf[CompleteCOPDiagram]){
+        val compCop = psd.asInstanceOf[CompleteCOPDiagram]
+            SpiderDiagrams.createCompleteCOPDiagram(
+            psd.getSpiders,
+            psd.getHabitats, 
+            psd.getShadedZones, 
+            psd.getPresentZones-- zones.map(_.getZone), 
+            compCop.getArrows,
+            compCop.getSpiderLabels, 
+            compCop.getCurveLabels,
+            compCop.getArrowCardinalities,
+            compCop.getSpiderComparators)
+            }else{
+              if(psd.isInstanceOf[LUCarCOPDiagram]){
+                val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
+                createLUCarCOPDiagram(
+                    psd.getSpiders,
+                    psd.getHabitats, 
+                    psd.getShadedZones, 
+                    psd.getPresentZones-- zones.map(_.getZone), 
+                    lucarcop.getArrows,
+                    lucarcop.getSpiderLabels, 
+                    lucarcop.getCurveLabels,
+                    lucarcop.getArrowCardinalities)
+              }else{
+                SpiderDiagrams.createPrimarySD(psd.getHabitats, psd.getShadedZones , psd.getPresentZones-- zones.map(_.getZone))
+              }
+            }
+      
+//      if(psd.isInstanceOf[LUCarCOPDiagram]){
+//        val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
+//            createLUCarCOPDiagram(
+//            psd.getSpiders,
+//            psd.getHabitats, 
+//            psd.getShadedZones, 
+//            psd.getPresentZones-- zones.map(_.getZone), 
+//            lucarcop.getArrows,
+//            lucarcop.getSpiderLabels, 
+//            lucarcop.getCurveLabels,
+//            lucarcop.getArrowCardinalities)
+//      }else{
+//        SpiderDiagrams.createPrimarySD(psd.getHabitats, psd.getShadedZones , psd.getPresentZones-- zones.map(_.getZone))
+//      }
         
         
         

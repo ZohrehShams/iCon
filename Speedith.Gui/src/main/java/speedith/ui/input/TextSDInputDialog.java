@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.reader.COPDiagramReader;
 import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.i18n.Translations;
 import static speedith.i18n.Translations.*;
@@ -189,9 +188,8 @@ public class TextSDInputDialog extends javax.swing.JDialog {
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         String sdText = taInputText.getText();
         try {
-        	//Zohreh: SpiderDiagramsReader is replcaed with COPDiagramReader.
-            //spiderDiagram = SpiderDiagramsReader.readSpiderDiagram(sdText);
-        	spiderDiagram = COPDiagramReader.readSpiderDiagram(sdText);
+            spiderDiagram = SpiderDiagramsReader.readSpiderDiagram(sdText);
+        	//spiderDiagram = COPDiagramReader.readSpiderDiagram(sdText);
             cancelled = false;
             dispose();
         } catch (Exception ex) {

@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.instructions;
+package speedith.core.reasoning.rules.instructions.copIns;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,12 +16,12 @@ import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.ZoneArg;
-import speedith.core.reasoning.args.ZonesInOutArg;
+import speedith.core.reasoning.args.copArgs.ZonesInOutArg;
 import speedith.core.reasoning.args.selection.SelectZonesStep;
-import speedith.core.reasoning.args.selection.SelectZonesStepInEmp;
 import speedith.core.reasoning.args.selection.SelectZonesStepOutEmp;
 import speedith.core.reasoning.args.selection.SelectionSequence;
 import speedith.core.reasoning.args.selection.SelectionStep;
+import speedith.core.reasoning.args.selection.copSelection.SelectZonesStepInEmp;
 
 
 public class TRAddUnCurveInstruction implements RuleApplicationInstruction<ZonesInOutArg>{

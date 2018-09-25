@@ -35,7 +35,6 @@ public class CompleteCOPDiagram extends LUCarCOPDiagram {
 	TreeSet<SpiderComparator> spiderComparators){
 		super(spiders, habitats, shadedZones, presentZones,arrows, spiderLabels, curveLabels,arrowCardinalities);
 		this.spiderComparators  = spiderComparators  == null ? new TreeSet<SpiderComparator>() : spiderComparators;
-	
 	}
 	
 	
@@ -43,16 +42,15 @@ public class CompleteCOPDiagram extends LUCarCOPDiagram {
 		  Collection<Zone> presentZones, Collection<Arrow> arrows, Map<String,String> spiderLabels, 
 		  Map<String,String> curveLabels,Map<Arrow,Cardinality> arrowCardinalities, 
 		  Collection<SpiderComparator> spiderComparators){
-	      super(spiders == null ? null : new TreeSet<>(spiders),
+	      this(spiders == null ? null : new TreeSet<>(spiders),
 	              habitats == null ? null : new TreeMap<>(habitats),
 	              shadedZones == null ? null : new TreeSet<>(shadedZones),
 	              presentZones == null ? null : new TreeSet<>(presentZones),
 	              arrows == null ? null : new TreeSet<>(arrows),
 	              spiderLabels == null ? null : new TreeMap<>(spiderLabels),
 	              curveLabels == null ? null : new TreeMap<>(curveLabels),
-	              arrowCardinalities == null ? null : new TreeMap<> (arrowCardinalities));
-	      
-	      this.spiderComparators  = spiderComparators  == null ? null : new TreeSet<SpiderComparator>(spiderComparators);	
+	              arrowCardinalities == null ? null : new TreeMap<> (arrowCardinalities),
+	              spiderComparators  == null ? null : new TreeSet<SpiderComparator>(spiderComparators));
 	}
 	
 	
@@ -142,6 +140,117 @@ public class CompleteCOPDiagram extends LUCarCOPDiagram {
 	}
 	
 	
+	@Override
+	public COPDiagram deleteSpider(String spider) {
+		  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
+		  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+		  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
+		  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
+		  TreeMap<Arrow,Cardinality> newArrowCardinalities = new TreeMap<>(getArrowCardinalities());
+		  TreeSet<SpiderComparator> newSpiderComparators = new TreeSet<>(spiderComparators);
+		  
+		  newSpiders.remove(spider);
+		  newHabitats.remove(spider);
+	      for (Arrow arrow : newArrows){
+	          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+	      		newArrows.remove(arrow);
+	      		newArrowCardinalities.remove(arrow);
+	          }
+	        }
+	      newSpiderLabels.remove(spider);
+	      for (SpiderComparator sc : spiderComparators){
+	    	  if(spider.equals(sc.getComparable1()) ||spider.equals(sc.getComparable2())){
+	    		  newSpiderComparators.remove(sc);
+            }
+          }
+
+	      return new CompleteCOPDiagram(
+	              newSpiders,
+	              newHabitats,
+	              getShadedZones(),
+	              getPresentZones(),
+	              newArrows,
+	              newSpiderLabels,
+	              getCurveLabels(),
+	              newArrowCardinalities,
+	              newSpiderComparators);
+	  }
+	
+	
+	
+	
+	@Override
+	public COPDiagram addArrow(Arrow arrow) {
+	    	TreeSet<Arrow> newArrows = getArrowsMod();
+	    	if (arrow != null){
+	    		if ((! containsArrow(arrow)) && (validArrow(arrow))) {
+	    			newArrows.add(arrow);
+	    		}
+	    	}
+	    	return new CompleteCOPDiagram(getSpiders(), getHabitats(),getShadedZones(), getPresentZones(), 
+	    			newArrows,getSpiderLabels(),getCurveLabels(),getArrowCardinalities(),spiderComparators);
+	 }
+	
+	
+	
+	
+	@Override
+	public LUCarCOPDiagram addCardinality(Arrow arrow,Cardinality cardinality){
+		  TreeMap<Arrow,Cardinality>  newArrowCardinalities = new TreeMap<>(getArrowCardinalities());
+		  
+		  if (! getArrows().contains(arrow)){
+            throw new IllegalArgumentException("The arrow does not exist in the diagram.");
+		  }
+		  
+		  if (getArrowCardinalities().containsKey(arrow)){
+            throw new IllegalArgumentException("The arrow should not have a cardinality.");
+		  }
+		  
+		  arrow.setCardinality(cardinality);
+		  newArrowCardinalities.put(arrow,cardinality);
+		  
+		  
+	      return new CompleteCOPDiagram(
+	              getSpiders(),
+	              getHabitats(),
+	              getShadedZones(),
+	              getPresentZones(),
+	              getArrows(),
+	              getSpiderLabels(),
+	              getCurveLabels(),
+	              newArrowCardinalities,
+	              spiderComparators);  
+	  }
+	
+	
+	@Override
+	public LUCarCOPDiagram deleteCardinality(Arrow arrow){
+		  TreeMap<Arrow,Cardinality>  newArrowCardinalities = new TreeMap<>(getArrowCardinalities());
+		  
+		  if (! getArrows().contains(arrow)){
+              throw new IllegalArgumentException("The arrow does not exist in the diagram.");
+		  }
+		  
+		  if (! getArrowCardinalities().containsKey(arrow)){
+              throw new IllegalArgumentException("The arrow should have a cardinality.");
+		  }
+		  
+		  newArrowCardinalities.remove(arrow);
+		  
+		  
+	      return new CompleteCOPDiagram(
+	              getSpiders(),
+	              getHabitats(),
+	              getShadedZones(),
+	              getPresentZones(),
+	              getArrows(),
+	              getSpiderLabels(),
+	              getCurveLabels(),
+	              newArrowCardinalities,
+	              spiderComparators);  
+	  }
+	  
+	  
 	public boolean validSpiderComparator(SpiderComparator sc){
 		if ((getSpiders().contains(sc.getComparable1())) &&
 				(getSpiders().contains(sc.getComparable2())) &&
@@ -246,7 +355,7 @@ public class CompleteCOPDiagram extends LUCarCOPDiagram {
 	      }
 	      if (other instanceof CompleteCOPDiagram) {
 	    	  CompleteCOPDiagram cCOP = (CompleteCOPDiagram) other;
-	        
+	    	  
 	         return (super.isSEquivalentTo(other) && 					
 	        		equal(getSpiderComparators() == null ? null : getSpiderComparators(), 
              		cCOP.getSpiderComparators() == null ? null : cCOP.getSpiderComparators()));

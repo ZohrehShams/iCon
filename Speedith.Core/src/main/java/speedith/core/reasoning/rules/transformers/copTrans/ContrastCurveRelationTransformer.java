@@ -8,8 +8,10 @@ import speedith.core.lang.IdTransformer;
 import speedith.core.lang.NullSpiderDiagram;
 import speedith.core.lang.Operator;
 import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
+import speedith.core.lang.Zone;
 import speedith.core.lang.Zones;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetChecks;
@@ -56,11 +58,13 @@ public class ContrastCurveRelationTransformer extends IdTransformer {
             	throw new TransformationException("The two curves must be disjoint.");
             }
             
-            //If the first chosen contour subsumes the second one in the target diagram all the zones in the subsumed contour will be shaded in both diagrams.
+            //If the first chosen contour subsumes the second one in the target diagram and it is not the habitat of any spider, all the zones in the subsumed contour will be shaded in both diagrams.
         	if(contourRelationsDiagramWithoutDisjointContour.contourContainsAnother(getTargetContours().get(0), getTargetContours().get(1)) &&
         			!contourRelationsDiagramWithoutDisjointContour.contourContainsAnother(getTargetContours().get(1), getTargetContours().get(0))){
+        		assertCurveHasNoSpider(diagramWithDisjointContour,getTargetContours().get(1));
         		newDiagramWithDisjointContour =diagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour
         				(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(1)));
+        		assertCurveHasNoSpider(diagramWithoutDisjointContour,getTargetContours().get(1));
         		newDiagramWithoutDisjointContour = diagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour
         				(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(1)));
         	}
@@ -68,18 +72,30 @@ public class ContrastCurveRelationTransformer extends IdTransformer {
             //If the two chosen contour subsume each other (i.e. they are the same)  all the zones in both contours will be shaded in both diagrams.
         	if(contourRelationsDiagramWithoutDisjointContour.contourContainsAnother(getTargetContours().get(0), getTargetContours().get(1)) &&
         			contourRelationsDiagramWithoutDisjointContour.contourContainsAnother(getTargetContours().get(1), getTargetContours().get(0))){
-        		newDiagramWithDisjointContour = diagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(0)));
-        		newDiagramWithoutDisjointContour = diagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(0)));
+        		assertCurveHasNoSpider(diagramWithDisjointContour,getTargetContours().get(0));
+        		newDiagramWithDisjointContour = diagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour
+        				(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(0)));
+        		assertCurveHasNoSpider(diagramWithoutDisjointContour,getTargetContours().get(0));
+        		newDiagramWithoutDisjointContour = diagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour
+        				(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(0)));
         		
-        		newDiagramWithDisjointContour = newDiagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(1)));
-        		newDiagramWithoutDisjointContour = newDiagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(1)));
+        		assertCurveHasNoSpider(diagramWithDisjointContour,getTargetContours().get(1));
+        		newDiagramWithDisjointContour = newDiagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour
+        				(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(1)));
+        		assertCurveHasNoSpider(diagramWithoutDisjointContour,getTargetContours().get(1));
+        		newDiagramWithoutDisjointContour = newDiagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour
+        				(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(1)));
         	}
         	
             //If the second chosen contour subsumes the first one in the target diagram all the zones in the subsumed contour will be shaded in both diagrams.
         	if(!contourRelationsDiagramWithoutDisjointContour.contourContainsAnother(getTargetContours().get(0), getTargetContours().get(1)) &&
         			contourRelationsDiagramWithoutDisjointContour.contourContainsAnother(getTargetContours().get(1), getTargetContours().get(0))){
-        		newDiagramWithDisjointContour = diagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(0)));
-        		newDiagramWithoutDisjointContour = diagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(0)));
+        		assertCurveHasNoSpider(diagramWithDisjointContour,getTargetContours().get(0));
+        		newDiagramWithDisjointContour = diagramWithDisjointContour.addShading(Zones.getZonesInsideAnyContour
+        				(diagramWithDisjointContour.getPresentZones(),getTargetContours().get(0)));
+        		assertCurveHasNoSpider(diagramWithoutDisjointContour,getTargetContours().get(0));
+        		newDiagramWithoutDisjointContour = diagramWithoutDisjointContour.addShading(Zones.getZonesInsideAnyContour
+        				(diagramWithoutDisjointContour.getPresentZones(),getTargetContours().get(0)));
         	}
             
             return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, newDiagramWithDisjointContour, newDiagramWithoutDisjointContour, targetContours.get(0), indexOfParent);
@@ -126,6 +142,25 @@ public class ContrastCurveRelationTransformer extends IdTransformer {
         if (diagramIndex == indexOfParent) {
             throw new TransformationException("The target of the rule must be a conjunctive compound diagram.");
         }
+    }
+    
+    
+    
+    private void assertCurveHasNoSpider(PrimarySpiderDiagram psd, String curve){
+    	if(psd.getAllContours().contains(curve)){
+    		ArrayList<Zone> zones = Zones.getZonesInsideAnyContour(psd.getPresentZones(),curve);
+    		for (Zone zone : zones){
+    			if (psd.getSpiderCountInZone(zone) != 0){
+    				throw new TransformationException("The curve must not have any spiders.");
+    			}
+//    			for (Region region : psd.getHabitats().values()){
+//    				if(region.contains(zone)){
+//    					throw new TransformationException("The curve must not have any spiders.");
+//    				}
+//    			}
+    		}
+    	}else
+    		throw new TransformationException("The diagram does not contain the curve.");
     }
 
 }

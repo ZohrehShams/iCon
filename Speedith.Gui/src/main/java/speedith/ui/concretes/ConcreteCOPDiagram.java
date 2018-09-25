@@ -1,4 +1,4 @@
-package speedith.ui;
+package speedith.ui.concretes;
 
 import java.awt.Point;
 import java.awt.geom.Line2D;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import icircles.abstractDescription.AbstractDescription;
 import icircles.concreteDiagram.*;
 import icircles.util.CannotDrawException;
+import speedith.ui.COPDiagramCreator;
 
 
 

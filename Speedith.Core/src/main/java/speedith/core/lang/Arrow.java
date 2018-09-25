@@ -12,6 +12,8 @@ import java.io.Serializable;
 
 
 public class Arrow implements Comparable<Arrow>, Serializable{
+	
+	private static final long serialVersionUID = 1766062030962182226L;
 	private  String  source;
 	private  String target;
 	private  String arrowType;
@@ -111,11 +113,13 @@ public class Arrow implements Comparable<Arrow>, Serializable{
 		else return false;
 
 	}
-	
+	   
 
 	
-    public void setCardinality(Cardinality cardinal){
-    	cardinality = cardinal;
+    public Arrow setCardinality(Cardinality cardinal){
+    	//this.cardinality = new Cardinality(cardinal.getComparator(),cardinal.getNumber());
+    	this.cardinality = cardinal;
+    	return this;
     }
     
     

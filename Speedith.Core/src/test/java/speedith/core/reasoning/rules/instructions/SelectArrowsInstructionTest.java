@@ -8,10 +8,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import speedith.core.lang.Arrow;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
-import speedith.core.reasoning.args.selection.ArrowsSelectionStep;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
+import speedith.core.reasoning.args.selection.copSelection.ArrowsSelectionStep;
+import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
 
 public class SelectArrowsInstructionTest {
 	

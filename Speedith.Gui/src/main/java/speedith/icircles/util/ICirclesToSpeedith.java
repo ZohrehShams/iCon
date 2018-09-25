@@ -33,8 +33,10 @@ import icircles.concreteDiagram.ConcreteZone;
 import java.util.ArrayList;
 
 import speedith.core.lang.Arrow;
+import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.Zone;
-import speedith.ui.ConcreteArrow;
+import speedith.ui.concretes.ConcreteArrow;
+import speedith.ui.concretes.ConcreteSpiderComparator;
 
 /**
  *
@@ -100,8 +102,20 @@ public final class ICirclesToSpeedith {
 
         return new Arrow(source,target,arrow.aa.get_type(),arrow.aa.getLabel());
     }
+ 
     
     
+    public static SpiderComparator convertSpiderComparator(ConcreteSpiderComparator conSpiderComparator){
+    	
+        if (conSpiderComparator == null) {
+            throw new IllegalArgumentException(speedith.core.i18n.Translations.i18n("GERR_NULL_ARGUMENT", "spiderComparator"));
+        }
+        
+    	String comparable1 = conSpiderComparator.get_asc().getAbsComparable1().getName();
+    	String comparable2 = conSpiderComparator.get_asc().getAbsComparable2().getName();
+
+        return new SpiderComparator(comparable1,comparable2,conSpiderComparator.get_asc().getAbsQuality());
+    }
     
     private ICirclesToSpeedith() {
     }

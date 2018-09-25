@@ -346,12 +346,14 @@ public class ProofPanel extends javax.swing.JPanel implements Proof, AutomaticPr
         }
     }
 
+    //Zohreh: changed the colour
     private void displayInitialGoals(Goals initialGoals) {
         GridBagConstraints gbc = new java.awt.GridBagConstraints();
         gbc.fill = java.awt.GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        SubgoalsPanel sgp = new SubgoalsPanel(initialGoals, getSubgoalsTitle(0), (String) null, Color.BLUE);
+        SubgoalsPanel sgp = new SubgoalsPanel(initialGoals, getSubgoalsTitle(0), 
+        		(String) null, new java.awt.Color(51, 204, 255));
         addSubgoal(gbc, sgp);
         registerMouseSelectionListener(initialGoals, sgp);
     }
@@ -374,7 +376,9 @@ public class ProofPanel extends javax.swing.JPanel implements Proof, AutomaticPr
         gbc.gridx = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        final SubgoalsPanel sgp = new SubgoalsPanel(goals, getSubgoalsTitle(stepIndex), getStepDescription(rule, args, application.getType(), application.getTypeSpecifier()), application.getType().getColor());
+        final SubgoalsPanel sgp = new SubgoalsPanel(goals, getSubgoalsTitle(stepIndex), 
+        		getStepDescription(rule, args, application.getType(), application.getTypeSpecifier()), 
+        		application.getType().getColor());
         addSubgoal(gbc, sgp);
         registerMouseSelectionListener(goals, sgp);
         validate();
@@ -480,7 +484,8 @@ public class ProofPanel extends javax.swing.JPanel implements Proof, AutomaticPr
         gbc.gridx = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        SubgoalsPanel sgp = new SubgoalsPanel(i18n("PROOF_PANEL_PROOF_FINISHED"), null, Color.GREEN);
+        SubgoalsPanel sgp = new SubgoalsPanel(i18n("PROOF_PANEL_PROOF_FINISHED"), 
+        		null, new java.awt.Color(102, 255, 102));
         addSubgoal(gbc, sgp);
         validate();
     }

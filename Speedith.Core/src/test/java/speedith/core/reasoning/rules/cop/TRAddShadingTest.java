@@ -16,7 +16,6 @@ import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationResult;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.ZoneArg;
-import speedith.core.reasoning.rules.RemoveArrow;
 import speedith.core.reasoning.util.unitary.TestCOPDiagrams;
 
 public class TRAddShadingTest {

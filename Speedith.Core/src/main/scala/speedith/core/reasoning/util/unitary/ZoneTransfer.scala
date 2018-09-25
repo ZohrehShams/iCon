@@ -1,8 +1,9 @@
 package speedith.core.reasoning.util.unitary
 
 import speedith.core.lang.SpiderDiagrams.createPrimarySD
+import speedith.core.lang.SpiderDiagrams.createCompleteCOPDiagram
 import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
-import speedith.core.lang.{PrimarySpiderDiagram, LUCarCOPDiagram, Region, Zone, Zones}
+import speedith.core.lang.{PrimarySpiderDiagram, LUCarCOPDiagram, CompleteCOPDiagram, Region, Zone, Zones}
 
 import scala.collection.JavaConversions._
 
@@ -20,20 +21,13 @@ class ZoneTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: Prim
     val zonesIn = zonesInDestinationInsideContour(contourFromSource)
     val zonesOut = zonesInDestinationOutsideContour(contourFromSource)
     val splitZones = allVisibleZonesInDestinationDiagram -- (zonesOut ++ zonesIn)
-    
-        val spiderHabitats = destinationDiagram.getHabitats.map {
+    val spiderHabitats = destinationDiagram.getHabitats.map {
       case (spider, habitat) => (spider, new Region(
-        (habitat.zones).map(addInContourToZone(_, contourFromSource))
+        (zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource)) ++
+        (zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
       ))
     }
-
-//    val spiderHabitats = destinationDiagram.getHabitats.map {
-//      case (spider, habitat) => (spider, new Region(
-//        (zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource)) ++
-//        (zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
-//      ))
-//    }
-
+    
     val shadedZones = Zones.sameRegionWithNewContours(destinationDiagram.getShadedZones, contourFromSource) ++
       zonesOut.map(addInContourToZone(_, contourFromSource)) ++
       zonesIn.map(addOutContourToZone(_, contourFromSource))
@@ -41,27 +35,69 @@ class ZoneTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: Prim
     val presentZones = (zonesOut.intersect(allVisibleZonesInDestinationDiagram) ++ splitZones).map(zone => addOutContourToZone(zone, contourFromSource)) ++
       (zonesIn.intersect(allVisibleZonesInDestinationDiagram) ++ splitZones).map(zone => addInContourToZone(zone, contourFromSource))
 
-    //Zohreh  
-    if (destinationDiagram.isInstanceOf[LUCarCOPDiagram] &&
-        sourceDiagram.isInstanceOf[LUCarCOPDiagram]){
-      val destination = destinationDiagram.asInstanceOf[LUCarCOPDiagram]
-      val source = sourceDiagram.asInstanceOf[LUCarCOPDiagram]
+ 
+    if (destinationDiagram.isInstanceOf[CompleteCOPDiagram] &&
+        sourceDiagram.isInstanceOf[CompleteCOPDiagram]){
+      val destination = destinationDiagram.asInstanceOf[CompleteCOPDiagram]
+      val source = sourceDiagram.asInstanceOf[CompleteCOPDiagram]
       val curveName = source.getCurveLabels.get(contourFromSource)
       
+      val luSpiderHabitats = destination.getHabitats.map {
+        
+      //if spider is unnamed
+      case (spider, habitat) if ((destination.getSpiderLabels().get(spider) == null) || 
+          (destination.getSpiderLabels().get(spider).isEmpty)) => 
+            (spider, new Region((zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource)) ++
+        (zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
+      ))
+
+      
+      //if spider is named but does not exists in source
+      //here we check if the spiders Name (their unique identifier) is the same. Might be better to check for the label)
+      case (spider, habitat) if ((destination.getSpiderLabels().get(spider) != null) && 
+          (! source.getSpiders().contains(spider))) => 
+            (spider, new Region((zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource)) ++
+        (zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
+      ))
+      
+            
+      //spider is named and exists in source and is inside curveName in source
+      case (spider, habitat) if ((destination.getSpiderLabels().get(spider) != null) && 
+          (source.getSpiders().contains(spider)) && (source.getHabitats().get(spider).getZonesCount == 1 )
+          &&           (source.getSpiders().contains(spider)) && (source.getHabitats().get(spider).getZonesCount == 1 ) 
+            && (  source.getHabitats.values().flatMap(_.zones).forall(habitatZone =>
+      Zones.isZonePartOfThisContour(habitatZone, curveName)  ) ))=> 
+            (spider, new Region((zonesIn ++ splitZones).intersect(habitat.zones).map(addInContourToZone(_, contourFromSource))
+      ))
+
+    
+      //spider is named and exists in source and is outside curveName in source
+      case (spider, habitat) if ((destination.getSpiderLabels().get(spider) != null) && 
+          (source.getSpiders().contains(spider)) && (source.getHabitats().get(spider).getZonesCount == 1 ) 
+            && (  source.getHabitats.values().flatMap(_.zones).forall(habitatZone =>
+      Zones.isZoneOutsideContours(habitatZone, curveName)
+    ))) => 
+            (spider, new Region((zonesOut ++ splitZones).intersect(habitat.zones).map(addOutContourToZone(_, contourFromSource))
+      ))
+      
+
+    }
+      
       if(curveName != null){
-        createLUCarCOPDiagram(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones, destination.getArrows,
-            destination.getSpiderLabels, destination.getCurveLabels + (contourFromSource -> curveName), destination.getArrowCardinalities)
+        createCompleteCOPDiagram(spiderHabitats.keySet, luSpiderHabitats, shadedZones, presentZones, destination.getArrows,
+            destination.getSpiderLabels, destination.getCurveLabels + (contourFromSource -> curveName), destination.getArrowCardinalities,destination.getSpiderComparators)
         
       }else{
-        createLUCarCOPDiagram(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones, destination.getArrows,
-            destination.getSpiderLabels, destination.getCurveLabels, destination.getArrowCardinalities)
-        
+        createCompleteCOPDiagram(spiderHabitats.keySet, luSpiderHabitats, shadedZones, presentZones, destination.getArrows,
+            destination.getSpiderLabels, destination.getCurveLabels, destination.getArrowCardinalities,destination.getSpiderComparators)
       }
      
-      }else {createPrimarySD(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones)}
+      }
+    else {createPrimarySD(spiderHabitats.keySet, spiderHabitats, shadedZones, presentZones)}
   }
 
-
+  
+  
   def zonesInDestinationOutsideContour(sourceContour: String): java.util.Set[Zone] = {
     assertContourOnlyInSource(sourceContour)
 

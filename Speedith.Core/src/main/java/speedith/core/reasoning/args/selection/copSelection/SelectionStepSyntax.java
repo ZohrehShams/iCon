@@ -1,13 +1,15 @@
-package speedith.core.reasoning.args.selection;
+package speedith.core.reasoning.args.selection.copSelection;
 
 import static speedith.core.i18n.Translations.i18n;
 
 import java.util.Locale;
 
 import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.selection.SelectionSequence;
+import speedith.core.reasoning.args.selection.SelectionStep;
 import speedith.core.reasoning.args.selection.SelectionStep.SelectionRejectionExplanation;
 
-//Zohreh: selection of main syntactic elements.
+//Zohreh: selection of main syntactic elements: spiders, contours and arrows.
 public class SelectionStepSyntax  extends SelectionStep {
 	
 	 public SelectionStepSyntax() {

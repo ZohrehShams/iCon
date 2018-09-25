@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import speedith.core.reasoning.RuleApplicationInstruction;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SpiderArg;
 import speedith.core.reasoning.args.SubDiagramIndexArg;
-import speedith.core.reasoning.args.selection.ArrowsSelectionStep;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
+import speedith.core.reasoning.args.copArgs.SpiderComparatorArg;
 import speedith.core.reasoning.args.selection.SelectSingleSpiderStep;
 import speedith.core.reasoning.args.selection.SelectionSequence;
 import speedith.core.reasoning.args.selection.SelectionStep;
+import speedith.core.reasoning.args.selection.copSelection.ArrowsSelectionStep;
+import speedith.core.reasoning.args.selection.copSelection.SelectSingleSpiderComparatorStep;
 
 public class SelectSingleArrowSingleSpiderInstruction implements RuleApplicationInstruction<MultipleRuleArgs>{
-
+	
+	
 	@Override
 	public List<? extends SelectionStep> getSelectionSteps() {
         ArrowsSelectionStep arrowSelectionStep = new ArrowsSelectionStep();
@@ -49,5 +52,7 @@ public class SelectSingleArrowSingleSpiderInstruction implements RuleApplication
         }
         return new MultipleRuleArgs(ruleArgs);
 	}
+
+
 
 }

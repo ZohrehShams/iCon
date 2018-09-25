@@ -51,12 +51,14 @@ case class RemoveContoursTransformer(contourArgs: java.util.List[ContourArg], ap
         throw new TransformationException("The contours to be removed do not exist in the target diagram")
       }
       
-       //Zohreh
+      
+      val commonSpiders = psd.getSpiders
+      val commonHabitats = psd.getHabitats.map {case (spider, habitat) => (spider, new Region(regionWithoutContours(habitat.zones)))}
+      val commonShadedZones = shadedRegionWithoutContours(psd.getShadedZones.toSet)
+      val commonPresentZones = regionWithoutContours(psd.getPresentZones.toSet)
+      
       if(psd.isInstanceOf[LUCarCOPDiagram]){
         val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
-        //val newCurveLabelsMap=lucarcop.getCurveLabels.toMap
-        //var newCurveLabelsTreeMap = scala.collection.immutable.TreeMap[String,String]()
-        
         var arrowsToRemove = scala.collection.immutable.TreeSet[Arrow]()
 
         for (arrow <- lucarcop.getArrows){
@@ -64,29 +66,24 @@ case class RemoveContoursTransformer(contourArgs: java.util.List[ContourArg], ap
             arrowsToRemove = arrowsToRemove + arrow
           }
         }
-            createLUCarCOPDiagram(
-            lucarcop.getSpiders,
-            lucarcop.getHabitats.map {
-            case (spider, habitat) => (spider, new Region(regionWithoutContours(habitat.zones)))}, 
-            shadedRegionWithoutContours(lucarcop.getShadedZones.toSet), regionWithoutContours(lucarcop.getPresentZones.toSet), 
-            lucarcop.getArrows -- arrowsToRemove,
-            lucarcop.getSpiderLabels, 
-            //newCurveLabelsTreeMap ++ (newCurveLabelsMap -- contoursToRemove), 
-            lucarcop.getCurveLabels -- contoursToRemove,
-            lucarcop.getArrowCardinalities -- arrowsToRemove)
-            
+        
+        val commonArrows = lucarcop.getArrows -- arrowsToRemove
+        val commonSpiderLabels = lucarcop.getSpiderLabels
+        val commonCurveLabels = lucarcop.getCurveLabels -- contoursToRemove
+        val commonArrowCardinalities = lucarcop.getArrowCardinalities -- arrowsToRemove
+        
+        if(psd.isInstanceOf[CompleteCOPDiagram]){
+          val compCop = psd.asInstanceOf[CompleteCOPDiagram]
+          SpiderDiagrams.createCompleteCOPDiagram(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones,commonArrows,commonSpiderLabels,
+              commonCurveLabels,commonArrowCardinalities,compCop.getSpiderComparators)
+          } else{
+          createLUCarCOPDiagram(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones,commonArrows,commonSpiderLabels,
+              commonCurveLabels,commonArrowCardinalities)} 
       }else{
-        SpiderDiagrams.createPrimarySD(
-          psd.getSpiders,
-          psd.getHabitats.map {
-            case (spider, habitat) => (spider, new Region(regionWithoutContours(habitat.zones)))
-          },
-          shadedRegionWithoutContours(psd.getShadedZones.toSet),
-          regionWithoutContours(psd.getPresentZones.toSet)
-        )}
+        SpiderDiagrams.createPrimarySD(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones)
+        }
 
-        
-        
+   
         
     } else {
       null

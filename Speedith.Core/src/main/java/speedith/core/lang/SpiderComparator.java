@@ -50,27 +50,44 @@ public class SpiderComparator implements Comparable<SpiderComparator>, Serializa
 		}
 	}
 
-
+	
+	
 	@Override
 	public int compareTo(SpiderComparator sc) {
 		int v;
 		
-		v = this.comparable1.compareTo(sc.comparable1);
-		if (v != 0) return v;
-		
-		v = this.comparable2.compareTo(sc.comparable2);
-		if (v != 0) return v;
-		
-		v = this.quality.compareTo(sc.quality);
-		if (v != 0) return v;
+		if (((this.comparable1.compareTo(sc.comparable1) ==0) && (this.comparable2.compareTo(sc.comparable2)==0)) ||
+		(this.comparable1.compareTo(sc.comparable2) ==0) && (this.comparable2.compareTo(sc.comparable1)==0)) {
+			v = this.quality.compareTo(sc.quality);
+			if (v != 1) return v;
+		}
 
-		return 0;
+		return 1;
+
 	}
+	
+
+//	@Override
+//	public int compareTo(SpiderComparator sc) {
+//		int v;
+//		
+//		v = this.comparable1.compareTo(sc.comparable1);
+//		if (v != 0) return v;
+//		
+//		v = this.comparable2.compareTo(sc.comparable2);
+//		if (v != 0) return v;
+//		
+//		v = this.quality.compareTo(sc.quality);
+//		if (v != 0) return v;
+//
+//		return 0;
+//	}
 	
 	
 	
 	@Override 
 	public boolean equals(Object o) {
+		System.out.println(this.compareTo((SpiderComparator) o));
 		return (o instanceof SpiderComparator) && (this.compareTo((SpiderComparator) o) == 0);	
 	}
 

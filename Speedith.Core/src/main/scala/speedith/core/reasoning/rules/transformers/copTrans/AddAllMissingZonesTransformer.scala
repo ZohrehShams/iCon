@@ -17,47 +17,68 @@ class AddAllMissingZonesTransformer (target:  SubDiagramIndexArg) extends IdTran
     
     if (diagramIndex == subDiagramIndex) {
       
-      if(psd.isInstanceOf[CompleteCOPDiagram]){
-        val cCop = psd.asInstanceOf[CompleteCOPDiagram]
-         
-         if ( (cCop.getShadedZones -- cCop.getPresentZones).isEmpty) {
-           throw new TransformationException("The diagram does not have any missing zones.")
-         }else{
-            SpiderDiagrams.createCompleteCOPDiagram(
-            cCop.getSpiders,
-            cCop.getHabitats, 
-            cCop.getShadedZones, 
-            cCop.getPresentZones ++ ( cCop.getShadedZones -- cCop.getPresentZones), 
-            cCop.getArrows,
-            cCop.getSpiderLabels, 
-            cCop.getCurveLabels,
-            cCop.getArrowCardinalities,
-            cCop.getSpiderComparators)
-         }
-      }
-      else{
-       if(psd.isInstanceOf[LUCarCOPDiagram]){
-         val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
-         
-         if ( (lucarcop.getShadedZones -- lucarcop.getPresentZones).isEmpty) {
-           throw new TransformationException("The diagram does not have any missing zones.")
-         }else{
-            createLUCarCOPDiagram(
-            lucarcop.getSpiders,
-            lucarcop.getHabitats, 
-            lucarcop.getShadedZones, 
-            lucarcop.getPresentZones ++ (lucarcop.getShadedZones -- lucarcop.getPresentZones), 
-            lucarcop.getArrows,
-            lucarcop.getSpiderLabels, 
-            lucarcop.getCurveLabels,
-            lucarcop.getArrowCardinalities)
-         }
-       }else{
-         SpiderDiagrams.createPrimarySD(psd.getHabitats,psd.getShadedZones, 
-             psd.getPresentZones ++  (psd.getShadedZones -- psd.getPresentZones))
-       }
+      if ( (psd.getShadedZones -- psd.getPresentZones).isEmpty) {
+        throw new TransformationException("The diagram does not have any missing zones.")
+        }
       
-    }}else{
+      val commonSpiders = psd.getSpiders
+      val commonHabitats = psd.getHabitats
+      val commonShadedZones = psd.getShadedZones
+      val commonPresentZones = psd.getPresentZones ++ ( psd.getShadedZones -- psd.getPresentZones)
+      
+      if(psd.isInstanceOf[LUCarCOPDiagram]){
+        val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
+        val commonArrows = lucarcop.getArrows
+        val commonSpiderLabels = lucarcop.getSpiderLabels
+        val commonCurveLabels = lucarcop.getCurveLabels
+        val commonArrowCardinalities = lucarcop.getArrowCardinalities
+        
+        if(psd.isInstanceOf[CompleteCOPDiagram]){
+          val compCop = psd.asInstanceOf[CompleteCOPDiagram]
+          SpiderDiagrams.createCompleteCOPDiagram(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones,commonArrows,commonSpiderLabels,
+              commonCurveLabels,commonArrowCardinalities,compCop.getSpiderComparators)
+          } else{
+          createLUCarCOPDiagram(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones,commonArrows,commonSpiderLabels,
+              commonCurveLabels,commonArrowCardinalities)} 
+      }else{
+        SpiderDiagrams.createPrimarySD(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones)
+        }
+
+//      if(psd.isInstanceOf[CompleteCOPDiagram]){
+//        val cCop = psd.asInstanceOf[CompleteCOPDiagram]
+//         
+//            SpiderDiagrams.createCompleteCOPDiagram(
+//            cCop.getSpiders,
+//            cCop.getHabitats, 
+//            cCop.getShadedZones, 
+//            cCop.getPresentZones ++ ( cCop.getShadedZones -- cCop.getPresentZones), 
+//            cCop.getArrows,
+//            cCop.getSpiderLabels, 
+//            cCop.getCurveLabels,
+//            cCop.getArrowCardinalities,
+//            cCop.getSpiderComparators)
+//         
+//      }
+//      else{
+//       if(psd.isInstanceOf[LUCarCOPDiagram]){
+//         val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
+//            createLUCarCOPDiagram(
+//            lucarcop.getSpiders,
+//            lucarcop.getHabitats, 
+//            lucarcop.getShadedZones, 
+//            lucarcop.getPresentZones ++ (lucarcop.getShadedZones -- lucarcop.getPresentZones), 
+//            lucarcop.getArrows,
+//            lucarcop.getSpiderLabels, 
+//            lucarcop.getCurveLabels,
+//            lucarcop.getArrowCardinalities)
+//         
+//       }else{
+//         SpiderDiagrams.createPrimarySD(psd.getHabitats,psd.getShadedZones, 
+//             psd.getPresentZones ++  (psd.getShadedZones -- psd.getPresentZones))
+//       }
+//      
+//    }
+      }else{
       null
     }
     

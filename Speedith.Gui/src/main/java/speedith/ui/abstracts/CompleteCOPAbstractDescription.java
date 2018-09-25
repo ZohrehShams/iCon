@@ -1,4 +1,4 @@
-package speedith.ui;
+package speedith.ui.abstracts;
 
 import java.util.Iterator;
 import java.util.Set;

@@ -37,7 +37,6 @@ import scala.collection.JavaConversions;
 import speedith.core.lang.*;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.lang.reader.SpiderDiagramsReader;
-import speedith.core.lang.reader.COPDiagramReader;
 import speedith.core.reasoning.*;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SpiderRegionArg;
@@ -145,6 +144,9 @@ public class SpeedithMainForm extends javax.swing.JFrame {
    * Creates new form SpeedithMainForm
    */
   public SpeedithMainForm() {
+	  
+	//System.out.println(System.getProperty("java.version"));
+	  
     readPreferences();
     proofFoundIcon = new HashMap<>(2);
     URL onUrl = SpeedithMainForm.class.getResource("lightbulb.png");
@@ -342,8 +344,6 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     inspectProof = new javax.swing.JMenuItem();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    //Zohreh
-    //setTitle("Speedith");
     setTitle("iCon");
     
 
@@ -913,8 +913,6 @@ public class SpeedithMainForm extends javax.swing.JFrame {
         e.printStackTrace();
       }
       proofPanel1.replaceCurrentProof(inputProof);
-      //Zohreh
-      //this.setTitle("Speedith"+": " + file.getName());
       this.setTitle("iCon"+": " + file.getName());
     }
   }
@@ -932,15 +930,12 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       File file = goalFileChooser.getSelectedFile();
       try {
-    	//zohreh
-    	  SpiderDiagram input = COPDiagramReader.readSpiderDiagram(file);
-        //SpiderDiagram input = SpiderDiagramsReader.readSpiderDiagram(file);
+    	//SpiderDiagram input = COPDiagramReader.readSpiderDiagram(file);
+        SpiderDiagram input = SpiderDiagramsReader.readSpiderDiagram(file);
         if (!input.isValid()) {
           throw new ReadingException("The spider diagram contained in the file is not valid.");
         }
         proofPanel1.newProof(Goals.createGoalsFrom(ReasoningUtils.normalize(input)));
-        //Zohreh
-        //this.setTitle("Speedith"+": " + file.getName());
         this.setTitle("iCon"+": " + file.getName());
         cancelAutomaticProof();
         if (backgroundProofSearch) {
@@ -1148,8 +1143,8 @@ public class SpeedithMainForm extends javax.swing.JFrame {
       SpiderDiagram spiderDiagram;
       try {
     	  //Zohreh
-    	  spiderDiagram = COPDiagramReader.readSpiderDiagram(spiderDrawer.getSpiderDiagram());
-        //spiderDiagram = SpiderDiagramsReader.readSpiderDiagram(spiderDrawer.getSpiderDiagram());
+    	  //spiderDiagram = COPDiagramReader.readSpiderDiagram(spiderDrawer.getSpiderDiagram());
+          spiderDiagram = SpiderDiagramsReader.readSpiderDiagram(spiderDrawer.getSpiderDiagram());
         proofPanel1.newProof(Goals.createGoalsFrom(spiderDiagram));
       } catch (Exception ex) {
         System.out.println(ex.getMessage());
@@ -1219,8 +1214,6 @@ public class SpeedithMainForm extends javax.swing.JFrame {
     dialog.setVisible(true);
     if (!dialog.isCancelled() && dialog.getSpiderDiagram() != null) {
       proofPanel1.newProof(Goals.createGoalsFrom(ReasoningUtils.normalize(dialog.getSpiderDiagram())));
-      //Zohreh
-      //setTitle("Speedith");
       setTitle("iCon");
     }
   }//GEN-LAST:event_onTextInputClicked

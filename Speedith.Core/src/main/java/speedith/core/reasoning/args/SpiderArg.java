@@ -78,6 +78,22 @@ public class SpiderArg extends SubDiagramIndexArg implements Serializable {
         }
         return previousSubDiagramIndex;
     }
+    
+    
+    public static ArrayList<SpiderArg> getSpiderArgsFrom(MultipleRuleArgs multipleRuleArgs) throws RuleApplicationException {
+        ArrayList<SpiderArg> spiderArgs = new ArrayList<>();
+        int subDiagramIndex = -1;
+        int goalIndex = -1;
+        for (RuleArg ruleArg : multipleRuleArgs) {
+            SpiderArg spiderArg = getSpiderArgFrom(ruleArg);
+            subDiagramIndex = assertSameSubDiagramIndices(subDiagramIndex, spiderArg);
+            goalIndex = assertSameGoalIndices(goalIndex, spiderArg);
+            spiderArgs.add(spiderArg);
+        }
+        return spiderArgs;
+    }
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
     /**

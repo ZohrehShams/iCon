@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.instructions;
+package speedith.core.reasoning.rules.instructions.copIns;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,15 +11,15 @@ import speedith.core.lang.Arrow;
 import speedith.core.lang.Operator;
 import speedith.core.lang.TransformationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
-import speedith.core.reasoning.args.ArrowArg;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SpiderArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.selection.SelectSingleSpiderStep;
 import speedith.core.reasoning.args.selection.SelectionSequence;
 import speedith.core.reasoning.args.selection.SelectionStep;
 import speedith.core.reasoning.args.selection.SelectionStepAny;
-import speedith.core.reasoning.args.selection.SelectionStepSpiderOrContour;
+import speedith.core.reasoning.args.selection.copSelection.SelectionStepSpiderOrContour;
 
 
 public class TRAddArrowInstruction implements RuleApplicationInstruction<ArrowArg>{

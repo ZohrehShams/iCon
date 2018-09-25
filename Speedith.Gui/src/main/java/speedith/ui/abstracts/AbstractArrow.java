@@ -1,4 +1,4 @@
-package speedith.ui;
+package speedith.ui.abstracts;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

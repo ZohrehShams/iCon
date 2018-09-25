@@ -1,4 +1,4 @@
-package speedith.core.reasoning.rules.instructions;
+package speedith.core.reasoning.rules.instructions.copIns;
 
 import java.util.Arrays;
 import java.util.Collections;

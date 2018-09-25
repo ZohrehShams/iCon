@@ -21,7 +21,7 @@ import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.args.ZoneArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.SelectZonesInstruction;
-import speedith.core.reasoning.rules.transformers.TRAddSpiderTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.TRAddSpiderTransformer;
 /**
  * This class implements a transformation function that adds a labelled spider to a diagram.
  * @author Zohreh Shams [zs315@cam.ac.uk]

@@ -1,14 +1,19 @@
-package speedith.ui;
+package speedith.ui.concretes;
 
 import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import icircles.abstractDescription.AbstractDescription;
 import icircles.concreteDiagram.ConcreteDiagram;
 import icircles.concreteDiagram.ConcreteDiagrams;
 import icircles.util.CannotDrawException;
+import speedith.ui.CDiagramCreator;
+import speedith.ui.abstracts.CDAbstractDescription;
+
+import java.util.Set;
 
 public class ConcreteCDiagram implements ConcreteDiagrams{
 
@@ -24,8 +29,17 @@ public class ConcreteCDiagram implements ConcreteDiagrams{
         return cd_arrows;
     }
     
+    public int getArrowsCount(){
+    	return cd_arrows.size();
+    }
+    
     public ArrayList<ConcreteCOPDiagram> getPrimaries() {
         return cd_primaries;
+    }
+    
+    public Set<ConcreteCOPDiagram> getCOPs() {
+        //return (Set<ConcreteCOPDiagram>) cd_primaries;
+    	return new HashSet<ConcreteCOPDiagram>(cd_primaries);
     }
     
     

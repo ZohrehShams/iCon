@@ -12,7 +12,7 @@ import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
-import speedith.core.reasoning.args.ArrowArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 
 public class TRAddCardinalityTransformer  extends IdTransformer{
 	

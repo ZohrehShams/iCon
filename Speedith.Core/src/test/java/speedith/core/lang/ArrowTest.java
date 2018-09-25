@@ -1,5 +1,6 @@
 package speedith.core.lang;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -41,5 +42,17 @@ public class ArrowTest {
 		assertTrue(three.equals(four));
 		assertFalse(two.equals(four));
 	}
+	
+	@Test
+	public void testCardinality() {
+		//Cardinality cardinality = new Cardinality("=","1");
+		Cardinality cardinality = new Cardinality(Comparator.Eq, 1);
+		one.setCardinality(cardinality);
+		assertEquals(one.getCardinality(),cardinality);
+	}
+	
+
+	
+
 
 }

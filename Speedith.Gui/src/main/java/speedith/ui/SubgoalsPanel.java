@@ -175,7 +175,10 @@ public class SubgoalsPanel extends javax.swing.JPanel {
             // If there is only one subgoal, don't display its subgoal index.
             // TODO: Rather create a function that hides the subgoal index.
             subgoalPanel.setSubgoalIndex(goalsCount > 1 ? i : -1);
+            
             subgoalPanel.setDiagram(spiderDiagram);
+            
+            
             pnlGoals.add(subgoalPanel, bgc);
             size.width = Math.max(size.width, subgoalPanel.getPreferredSize().width);
             size.height += subgoalPanel.getPreferredSize().height;
@@ -198,4 +201,10 @@ public class SubgoalsPanel extends javax.swing.JPanel {
     // </editor-fold>
 
     public Color getColor() { return  color;}
+    
+    
+
+    
+    
+    
 }

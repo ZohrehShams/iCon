@@ -38,8 +38,8 @@ import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.export.SDExportProvider;
 import speedith.core.lang.export.SDExporter;
 import speedith.core.lang.export.SDExporting;
-import speedith.core.lang.reader.COPDiagramReader;
 import speedith.core.lang.reader.ReadingException;
+import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.InferenceRule;
 import speedith.core.reasoning.InferenceRuleProvider;
@@ -80,6 +80,7 @@ public class Main {
      * @param args the Command line arguments to Speedith.
      */
     public static void main(String[] args) {
+    	    	
         CliOptions clargs = new CliOptions();
         try {
             clargs.parse(args);
@@ -88,7 +89,7 @@ public class Main {
             // Otherwise startup Speedith.
             if (clargs.isHelp()) {
                 clargs.printHelp();
-            } else if (clargs.isListOutputFormats()) {
+           } else if (clargs.isListOutputFormats()) {
                 printKnownFormats();
             } else if (clargs.isListInferenceRules()) {
                 printKnownInferenceRules();
@@ -98,8 +99,9 @@ public class Main {
                 String formula = clargs.getSpiderDiagram();
                 
                 //Zohreh: I'm using COPDiagramReader to read everything. This used to be 
-                //SpiderDiagram readSpiderDiagram = (formula == null) ? null : spiderDiagramsReader.readSpiderDiagram(formula);
-                SpiderDiagram readSpiderDiagram = (formula == null) ? null : COPDiagramReader.readSpiderDiagram(formula);
+                //SpiderDiagram readSpiderDiagram = (formula == null) ? null : COPDiagramReader.readSpiderDiagram(formula);
+
+                SpiderDiagram readSpiderDiagram = (formula == null) ? null : SpiderDiagramsReader.readSpiderDiagram(formula);
        
                 // Did the user specify an output format?
                 String outputFormat = clargs.getOutputFormat();

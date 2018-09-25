@@ -29,6 +29,7 @@ package speedith.ui;
 import speedith.ui.SpiderClickedEvent;
 import speedith.ui.ContourClickedEvent;
 import speedith.ui.ZoneClickedEvent;
+import speedith.ui.concretes.ConcreteArrow;
 import icircles.concreteDiagram.CircleContour;
 import icircles.concreteDiagram.ConcreteDiagram;
 import icircles.concreteDiagram.ConcreteSpiderFoot;
@@ -69,8 +70,8 @@ public interface DiagramClickListener extends EventListener {
      * @param e the descriptor of this event. It contains a reference to the
      * clicked arrow.
      */
-    //Zohreh
+  
     void arrowClicked(ArrowClickedEvent e);
-
+    void spiderComparatorClicked(SpiderComparatorClickedEvent e);
     
 }

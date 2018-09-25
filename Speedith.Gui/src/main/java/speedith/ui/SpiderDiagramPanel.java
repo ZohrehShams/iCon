@@ -37,13 +37,11 @@ import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.NullSpiderDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.reader.COPDiagramReader;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.core.reasoning.args.selection.SelectionStep;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -170,13 +168,12 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
      *                                  diagram but not a primary spider diagram.
      */
     
-    //Zohreh: I'm using COPDiagramReader instead of Spider's one
     public void setDiagramString(String diagram) throws ReadingException {
         if (diagram == null || diagram.isEmpty()) {
             setDiagram(null);
         } else {
-            //setDiagram(SpiderDiagramsReader.readSpiderDiagram(diagram));
-            setDiagram(COPDiagramReader.readSpiderDiagram(diagram));
+            setDiagram(SpiderDiagramsReader.readSpiderDiagram(diagram));
+            //setDiagram(COPDiagramReader.readSpiderDiagram(diagram));
         }
     }
 
@@ -437,6 +434,10 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
                 }
                 
                 public void arrowClicked(ArrowClickedEvent e) {
+                    fireSpiderDiagramClicked(subdiagramIndex, e);
+                }
+                
+                public void spiderComparatorClicked(SpiderComparatorClickedEvent e) {
                     fireSpiderDiagramClicked(subdiagramIndex, e);
                 }
             });

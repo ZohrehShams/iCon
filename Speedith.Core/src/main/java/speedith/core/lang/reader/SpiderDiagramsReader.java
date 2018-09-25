@@ -29,6 +29,13 @@ package speedith.core.lang.reader;
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.CommonTree;
 import speedith.core.lang.*;
+import speedith.core.lang.reader.CDiagramsReader.CompleteCOPTranslator;
+import speedith.core.lang.reader.CDiagramsReader.CDCarTranslator;
+import speedith.core.lang.reader.CDiagramsReader.CDTranslator;
+import speedith.core.lang.reader.CDiagramsReader.COPTranslator;
+import speedith.core.lang.reader.CDiagramsReader.FalseSDTranslator;
+import speedith.core.lang.reader.CDiagramsReader.LUCOPTranslator;
+import speedith.core.lang.reader.CDiagramsReader.LUCarCOPTranslator;
 import speedith.core.lang.reader.SpiderDiagramsParser.list_return;
 import speedith.core.lang.reader.SpiderDiagramsParser.spiderDiagram_return;
 
@@ -54,10 +61,10 @@ import static speedith.core.lang.PrimarySpiderDiagram.*;
  * lexer}).</p>
  * @author Matej Urbas [matej.urbas@gmail.com]
  */
-public final class SpiderDiagramsReader {
+public class SpiderDiagramsReader {
 
     // <editor-fold defaultstate="collapsed" desc="Disabled Constructor">
-    private SpiderDiagramsReader() {
+    protected SpiderDiagramsReader() {
     }
     // </editor-fold>
 
@@ -228,12 +235,12 @@ public final class SpiderDiagramsReader {
         return SDTranslator.Instance.fromASTNode(spiderDiagram.tree);
     }
 
-    private abstract static class ElementTranslator<T> {
+    protected abstract static class ElementTranslator<T> {
 
         public abstract T fromASTNode(CommonTree treeNode) throws ReadingException;
     }
 
-    private static class ZoneTranslator extends ElementTranslator<Zone> {
+    protected static class ZoneTranslator extends ElementTranslator<Zone> {
 
         public static final ZoneTranslator Instance = new ZoneTranslator();
         public static final ListTranslator<Zone> ZoneListTranslator = new ListTranslator<>(Instance);
@@ -253,7 +260,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class HabitatTranslator extends ElementTranslator<Map<String, Region>> {
+    protected static class HabitatTranslator extends ElementTranslator<Map<String, Region>> {
 
         public static final HabitatTranslator Instance = new HabitatTranslator();
         private ListTranslator<ArrayList<Object>> regionListTranslator;
@@ -280,7 +287,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class StringTranslator extends ElementTranslator<String> {
+    protected static class StringTranslator extends ElementTranslator<String> {
 
         public static final StringTranslator Instance = new StringTranslator();
 
@@ -296,7 +303,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class IDTranslator extends ElementTranslator<String> {
+    protected static class IDTranslator extends ElementTranslator<String> {
 
         public static final IDTranslator Instance = new IDTranslator();
 
@@ -309,12 +316,12 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static abstract class GeneralSDTranslator<V extends SpiderDiagram> extends ElementTranslator<V> {
+    protected static abstract class GeneralSDTranslator<V extends SpiderDiagram> extends ElementTranslator<V> {
 
         private GeneralMapTranslator<Object> keyValueMapTranslator;
         private TreeSet<String> mandatoryAttributes;
 
-        private GeneralSDTranslator(int headTokenType) {
+        protected GeneralSDTranslator(int headTokenType) {
             keyValueMapTranslator = new GeneralMapTranslator<>(headTokenType, new HashMap<String, ElementTranslator<? extends Object>>(), null);
         }
 
@@ -358,11 +365,12 @@ public final class SpiderDiagramsReader {
         abstract V createSD(Map<String, Entry<Object, CommonTree>> attributes, CommonTree mainNode) throws ReadingException;
     }
 
-    private static class SDTranslator extends ElementTranslator<SpiderDiagram> {
+    
+    protected static class SDTranslator extends ElementTranslator<SpiderDiagram> {
 
         public static final SDTranslator Instance = new SDTranslator();
 
-        private SDTranslator() {
+        protected SDTranslator() {
         }
 
         @Override
@@ -378,13 +386,28 @@ public final class SpiderDiagramsReader {
                     return PrimarySDTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.SD_NULL:
                     return NullSDTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.SD_FALSE:
+                    return FalseSDTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.COP:
+                    return COPTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.LUCOP:
+                    return LUCOPTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.LUCarCOP:
+                    return LUCarCOPTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.CompleteCOP:
+                    return CompleteCOPTranslator.Instance.fromASTNode(treeNode);
+                case SpiderDiagramsParser.CD_BINARY:
+                	return CDTranslator.BinaryTranslator.fromASTNode(treeNode);
+                case SpiderDiagramsParser.CD_Car_BINARY:
+                	return CDCarTranslator.BinaryTranslator.fromASTNode(treeNode);
                 default:
                     throw new ReadingException(i18n("ERR_UNKNOWN_SD_TYPE"));
             }
         }
     }
 
-    private static class CompoundSDTranslator extends GeneralSDTranslator<CompoundSpiderDiagram> {
+    
+    protected static class CompoundSDTranslator extends GeneralSDTranslator<CompoundSpiderDiagram> {
 
         public static final CompoundSDTranslator CompoundTranslator = new CompoundSDTranslator(SpiderDiagramsParser.SD_COMPOUND);
         public static final CompoundSDTranslator BinaryTranslator = new CompoundSDTranslator(SpiderDiagramsParser.SD_BINARY);
@@ -420,7 +443,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class PrimarySDTranslator extends GeneralSDTranslator<PrimarySpiderDiagram> {
+    protected static class PrimarySDTranslator extends GeneralSDTranslator<PrimarySpiderDiagram> {
 
         public static final PrimarySDTranslator Instance = new PrimarySDTranslator();
 
@@ -443,7 +466,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class NullSDTranslator extends GeneralSDTranslator<NullSpiderDiagram> {
+    protected static class NullSDTranslator extends GeneralSDTranslator<NullSpiderDiagram> {
 
         public static final NullSDTranslator Instance = new NullSDTranslator();
 
@@ -457,7 +480,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static abstract class CollectionTranslator<V> extends ElementTranslator<ArrayList<V>> {
+    protected static abstract class CollectionTranslator<V> extends ElementTranslator<ArrayList<V>> {
 
         private int headTokenType;
 
@@ -500,7 +523,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class ListTranslator<V> extends CollectionTranslator<V> {
+    protected static class ListTranslator<V> extends CollectionTranslator<V> {
 
         public static final ListTranslator<String> StringListTranslator = new ListTranslator<>(StringTranslator.Instance);
         ElementTranslator<? extends V> valueTranslator = null;
@@ -523,7 +546,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class TupleTranslator<V> extends CollectionTranslator<V> {
+    protected static class TupleTranslator<V> extends CollectionTranslator<V> {
 
         List<ElementTranslator<? extends V>> valueTranslators = null;
 
@@ -563,7 +586,7 @@ public final class SpiderDiagramsReader {
         }
     }
 
-    private static class GeneralMapTranslator<V> extends ElementTranslator<Map<String, Entry<V, CommonTree>>> {
+    protected static class GeneralMapTranslator<V> extends ElementTranslator<Map<String, Entry<V, CommonTree>>> {
 
         private Map<String, ElementTranslator<? extends V>> typedValueTranslators;
         private ElementTranslator<? extends V> defaultValueTranslator;

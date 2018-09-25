@@ -2,8 +2,6 @@ package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.FalseSpiderDiagram;
@@ -16,7 +14,6 @@ import speedith.core.lang.util.HabitatUtils;
 import speedith.core.reasoning.args.ZoneArg;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetChecks;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetExtraction;
-import speedith.core.reasoning.util.unitary.ShadingTransfer;
 
 public class ZoneContrastHabitatTransformer extends IdTransformer {
 	
@@ -63,22 +60,6 @@ public class ZoneContrastHabitatTransformer extends IdTransformer {
     	    }
     	    
     	    return combineToFalse(diagramWithShadedZone,diagramWithExtraSpiders);
-    	    
-//    	    if(InferenceTargetChecks.assertCurveIsNotFullyShaded(diagramWithCurve, targetContours.get(0).getContour())){
-//        	    InferenceTargetChecks.assertCurveIsSpiderFree(diagramWithCurve, targetContours.get(0).getContour());
-//        	    InferenceTargetChecks.assertCurveIsSpiderFree(diagramWithExtraShading, targetContours.get(0).getContour());
-//        	    
-//        	    //All shading in diagramWithExtraShading will be added to diagramWithCurve.
-//        	    PrimarySpiderDiagram  diagramWithCurveAndExtraShading = new ShadingTransfer(diagramWithExtraShading,diagramWithCurve).transferShading(diagramWithExtraShading.getShadedZones()); 
-//        	    InferenceTargetChecks.assertCurveIsFullyShaded(diagramWithCurveAndExtraShading, targetContours.get(0).getContour());
-//        	    
-//        	    //All the curves apart from the fully shaded one will be removed. 
-//        	    SortedSet<String> curves = new TreeSet<String>();
-//        	    curves.addAll(diagramWithCurveAndExtraShading.getAllContours());
-//        	    curves.remove(targetContours.get(0).getContour());
-//        	    PrimarySpiderDiagram singleShadedCurve = new RemoveCurvesTransformer(diagramWithCurveAndExtraShading,curves).removeCurve();
-//     
-//        	    return singleShadedCurve;
     	    }
     	return null;
     	}

@@ -57,10 +57,10 @@ public class CDiagramReaderTest {
     @Test
     public void testReadSpiderDiagram_Reader() throws Exception {
     	
-        ConceptDiagram sd = (ConceptDiagram) COPDiagramReader.readSpiderDiagram(CD_EXAMPLE_1);
+        ConceptDiagram sd = (ConceptDiagram) SpiderDiagramsReader.readSpiderDiagram(CD_EXAMPLE_1);
         
         String str1 = sd.toString();
-        ConceptDiagram sd2 = (ConceptDiagram) COPDiagramReader.readSpiderDiagram(str1);
+        ConceptDiagram sd2 = (ConceptDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
         assertEquals(str1, sd2.toString());
         
         assertEquals(sd, sd2);

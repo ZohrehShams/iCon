@@ -84,15 +84,8 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
      */
     public static final String SDTextSpidersAttribute = "spiders";
     private static final long serialVersionUID = -2824062283982956082L;
-    
-    //Zohreh
-    //private final TreeSet<String> spiders;
     protected TreeSet<String> spiders;
-    
-    //Zohreh
-    //private final TreeMap<String, Region> spiderHabitatsMap;
     protected TreeMap<String, Region> spiderHabitatsMap;
-    
     private final TreeSet<Zone> shadedZones;
     private final TreeSet<Zone> presentZones;
     private TreeSet<String> contours;
@@ -615,7 +608,6 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
      * habitats for their spiders (invariant under spider names). <p>This method
      * can be used to check for semantic equivalence.</p>
      */
-    //Zohreh: Private to protected 
     protected boolean __sameHabitats(PrimarySpiderDiagram psd) {
         if (getHabitatsCount() != psd.getHabitatsCount()) {
             return false;
@@ -700,10 +692,8 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
      *
      * @return see {@link PrimarySpiderDiagram#isValid()}.
      */
-    //Zohreh: I had to change this from private to protected to be able to override it in COP and LUCOP.
     protected boolean checkValid() {
         SortedSet<String> contours = getContours();
-      //System.out.println("habitats:"+ areHabitatZonesValid(contours) + "; present:"+ arePresentZonesValid(contours)+"; shaded:"+ areShadedZonesValid(contours));
         return areHabitatZonesValid(contours)
                && areShadedZonesValid(contours)
                && arePresentZonesValid(contours);

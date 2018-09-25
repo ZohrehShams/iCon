@@ -1,4 +1,8 @@
-package speedith.ui;
+package speedith.ui.concretes;
+
+import java.awt.geom.Line2D;
+
+import speedith.ui.abstracts.AbstractSpiderComparator;
 
 public class ConcreteSpiderComparator {
 
@@ -50,7 +54,5 @@ public class ConcreteSpiderComparator {
     public double getLabelYPosition() {
     	return (ys + yt)  / 2;
     }
-    
-    
     
 }
