@@ -1,9 +1,6 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import speedith.core.lang.Arrow;
 import speedith.core.lang.Cardinality;
@@ -11,13 +8,11 @@ import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCOPDiagram;
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
-import speedith.core.lang.Zone;
+import speedith.core.lang.Zones;
 import speedith.core.reasoning.args.SpiderArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 
@@ -44,30 +39,32 @@ public class AddSpiderArrowTransformer extends IdTransformer {
         	if(psd instanceof CompleteCOPDiagram){
         		
         		CompleteCOPDiagram compCop = (CompleteCOPDiagram) psd;
+        		
         		assertDiagramContainTargetArrow(compCop);
         		assertSourceOfTargetArrowIsCurve(compCop);
         		assertTargetOfTargetArrowIsNamedSpiderOrUnamedCurve(compCop);
         		assertDiagramContainTargetSpider(compCop);
-        		assertSpiderIsSingleHabitat(compCop);
         		assertSpiderIsInArrowSource(compCop);
         		
         		Arrow oldArrow = arrowArg.getArrow();
+        		
         		Arrow newArrow = new Arrow(spiderArg.getSpider(),oldArrow.arrowTarget(),
         				oldArrow.arrowType(),oldArrow.arrowLabel());
-        		newArrow.setCardinality(compCop.getArrowCardinalities().get(oldArrow));
+        		Cardinality cardinality = compCop.getArrowCardinalities().get(oldArrow);
         		
-        	   	TreeSet<Arrow> newArrows = new TreeSet<Arrow>();
-            	newArrows.addAll(compCop.getArrows());
-            	newArrows.add(newArrow);
-            	
-            	TreeMap<Arrow,Cardinality> newCardinalities = new TreeMap<Arrow,Cardinality>();
-            	newCardinalities.putAll(compCop.getArrowCardinalities());
-            	newCardinalities.put(newArrow,newArrow.getCardinality());
-            	
-            	return SpiderDiagrams.createCompleteCOPDiagram(compCop.getSpiders(), 
-            			compCop.getHabitats(), compCop.getShadedZones(), compCop.getPresentZones(), 
-            			newArrows, compCop.getSpiderLabels(), compCop.getCurveLabels(), 
-            			newCardinalities, compCop.getSpiderComparators());
+        		// It deletes the arrow from the curve, because it will be replaced with the new one from the spider to curve
+        		CompleteCOPDiagram compCopDelArrow = (CompleteCOPDiagram) compCop.removeArrow(oldArrow);
+        		
+        		CompleteCOPDiagram compCopNewArrow = (CompleteCOPDiagram) compCopDelArrow.addArrow(newArrow);
+//        		CompleteCOPDiagram compCopNewArrowCar =  (CompleteCOPDiagram) 
+//        				compCopNewArrow.addCardinality(newArrow,compCop.getArrowCardinalities().get(oldArrow));
+        		if(cardinality != null){
+        		return  compCopNewArrow.addCardinality(newArrow,cardinality);}
+        		else {return compCopNewArrow; }
+        		
+        		
+        		
+//        		return compCopNewArrowCar;
         		
         	}
         	else return psd;
@@ -108,7 +105,7 @@ public class AddSpiderArrowTransformer extends IdTransformer {
     				(currentDiagram.getSpiderLabels().get(arrowArg.getArrow().arrowTarget()).equals("")) ){
     			throw new TransformationException("The target of the arrow must be a named spider or an unnamed curve.");
     		}
-    	}else{  if ((currentDiagram.getCurveLabels().get(arrowArg.getArrow().arrowTarget()) != null) ||
+    	}else{  if ((currentDiagram.getCurveLabels().get(arrowArg.getArrow().arrowTarget()) != null) &&
 				(! currentDiagram.getCurveLabels().get(arrowArg.getArrow().arrowTarget()).equals("")) ){
 			throw new TransformationException("The target of the arrow must be a named spider or an unnamed curve.");
 		}	
@@ -122,15 +119,16 @@ public class AddSpiderArrowTransformer extends IdTransformer {
         }
     }
     
-    private void assertSpiderIsSingleHabitat(CompleteCOPDiagram currentDiagram) {
-        if (currentDiagram.getSpiderHabitat(spiderArg.getSpider()).getZonesCount() > 1) {
-            throw new TransformationException("The spider is not single foot.");
-        }
-    }
+
     
     private void assertSpiderIsInArrowSource(CompleteCOPDiagram currentDiagram) {
-    	Zone theSingleHabitat = currentDiagram.getSpiderHabitat(spiderArg.getSpider()).sortedZones().first();
-    	if (! theSingleHabitat.getInContours().contains(arrowArg.getArrow().arrowSource())){
+    	
+    	String[] allPossibleZones = new String[currentDiagram.getAllContours().size()];
+    	allPossibleZones = currentDiagram.getAllContours().toArray(allPossibleZones);
+    	Region regionInsideCurve = new Region(Zones.getZonesInsideAnyContour
+    		(Zones.allZonesForContours(allPossibleZones),arrowArg.getArrow().arrowSource()));
+    	
+    	if(! currentDiagram.getHabitats().get(spiderArg.getSpider()).isSubregionOf(regionInsideCurve)){
     		throw new TransformationException("The target spider is not in the curve that is the source of selected arrow.");
     	}
     }
