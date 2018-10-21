@@ -30,7 +30,8 @@ import speedith.core.reasoning.rules.transformers.copTrans.RemoveArrowsTransform
 
 public class RemoveArrow extends SimpleInferenceRule<MultipleRuleArgs> implements Serializable, ForwardRule<MultipleRuleArgs>{
 	
-    public static final String InferenceRuleName = "remove_arrows";
+	private static final long serialVersionUID = 4902246444437604183L;
+	public static final String InferenceRuleName = "remove_arrows";
     private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.COPDiagram,DiagramType.LUCOPDiagram);
 
 	@Override

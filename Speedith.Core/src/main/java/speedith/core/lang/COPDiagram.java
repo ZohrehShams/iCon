@@ -67,6 +67,10 @@ public class COPDiagram extends PrimarySpiderDiagram {
 	  }
 
 
+  	
+  	public PrimarySpiderDiagram getPrimarySpiderDiagram(){
+  		return SpiderDiagrams.createPrimarySD(getSpiders(),getHabitats(),getShadedZones(),getPresentZones());
+  	}
 	
     public SortedSet<Arrow> getArrows() {
         return Collections.unmodifiableSortedSet(arrows);
@@ -79,6 +83,19 @@ public class COPDiagram extends PrimarySpiderDiagram {
 	
     public boolean containsArrow(Arrow arrow) {
         return arrows.contains(arrow);
+    }
+   
+    
+    // Only when the habitat of all spiders is ([],[]), we populates the dots with spiders.  
+    public SortedSet<String> getDots(){
+    	Zone zone = new Zone(new TreeSet<String>(), new TreeSet<String>());
+    	for(String spider : getSpiders()){
+    		Region habitat = getSpiderHabitat(spider);
+    		if((habitat.getZonesCount() != 1) || (! habitat.sortedZones().first().equals(zone))){
+    			return new TreeSet<String>();
+    		}
+    	}
+    	return new TreeSet<String>(getSpiders());
     }
    
   
@@ -163,25 +180,22 @@ public class COPDiagram extends PrimarySpiderDiagram {
   }
   
   
-  public PrimarySpiderDiagram addNewSpider(String spider, Region habitat) {
-	  if (getSpidersMod().contains(spider)){
-		  throw new IllegalArgumentException("The spider has to have a fresh label.");
-	  } else return addSpider(spider,habitat); 
-  }
   
-  
-  public COPDiagram deleteSpider(String spider) {
+  public COPDiagram deleteSpider(String... spiders) {
 	  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
 	  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
 	  TreeSet<Arrow> newArrows = new TreeSet<>(arrows);
 	  
-	  newSpiders.remove(spider);
-	  newHabitats.remove(spider);
-      for (Arrow arrow : arrows){
-          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
-      		newArrows.remove(arrow);
-          }
-        }
+	  for(String spider : spiders){
+		  newSpiders.remove(spider);
+		  newHabitats.remove(spider);
+		  
+	      for (Arrow arrow : arrows){
+	          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+	      		newArrows.remove(arrow);
+	          }
+	        }
+	  }
 
       return new COPDiagram(
               newSpiders,
@@ -194,15 +208,16 @@ public class COPDiagram extends PrimarySpiderDiagram {
   
  
   public COPDiagram addArrow(Arrow arrow) {
-  	TreeSet<Arrow> newArrows = getArrowsMod();
+  	//TreeSet<Arrow> newArrows = getArrowsMod();
+	TreeSet<Arrow> newArrows = new TreeSet<Arrow>(getArrows());
   	if (arrow != null){
   		if ((! containsArrow(arrow)) && (validArrow(arrow))) {
   			newArrows.add(arrow);
   		}
   	}
-  	//return new COPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), newArrows);
-  	return new COPDiagram(getSpidersMod(), getHabitatsMod(), 
-  			getShadedZonesMod(), getPresentZonesMod(), newArrows);
+  	return new COPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), newArrows);
+//  	return new COPDiagram(getSpidersMod(), getHabitatsMod(), 
+//  			getShadedZonesMod(), getPresentZonesMod(), newArrows);
   } 
   
   

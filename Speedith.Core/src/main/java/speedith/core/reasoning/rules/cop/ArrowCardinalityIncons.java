@@ -30,7 +30,7 @@ import speedith.core.reasoning.rules.transformers.copTrans.ArrowCardinalityIncon
 public class ArrowCardinalityIncons extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
 
-	private static final long serialVersionUID = 1385286212241735924L;
+	private static final long serialVersionUID = -8718147988595960013L;
 	public static final String InferenceRuleName = "arrow_cardinality_inconsistency";
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.COPDiagram, DiagramType.LUCOPDiagram);
 	   

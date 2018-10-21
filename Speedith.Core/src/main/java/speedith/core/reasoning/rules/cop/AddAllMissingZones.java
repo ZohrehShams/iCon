@@ -31,6 +31,7 @@ import speedith.core.reasoning.rules.transformers.copTrans.AddAllMissingZonesTra
 public class AddAllMissingZones extends SimpleInferenceRule<SubDiagramIndexArg>
 implements BasicInferenceRule<SubDiagramIndexArg>, ForwardRule<SubDiagramIndexArg>, Serializable{
 	
+	private static final long serialVersionUID = -3577573891100951985L;
 	public static final String InferenceRuleName = "Add All Missing Zones";
     private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCarCOPDiagram,DiagramType.LUCOPDiagram);
 

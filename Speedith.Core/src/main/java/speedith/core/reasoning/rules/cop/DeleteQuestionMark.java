@@ -1,7 +1,6 @@
 package speedith.core.reasoning.rules.cop;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
@@ -9,8 +8,6 @@ import java.util.Set;
 import speedith.core.i18n.Translations;
 import speedith.core.lang.DiagramType;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.reasoning.ApplyStyle;
-import speedith.core.reasoning.BasicInferenceRule;
 import speedith.core.reasoning.ForwardRule;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.InferenceRule;
@@ -19,17 +16,12 @@ import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.RuleApplicationResult;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
-import speedith.core.reasoning.args.SpiderArg;
-import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.copArgs.SpiderComparatorArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
+import speedith.core.reasoning.rules.instructions.copIns.SelectFeetOfSpiderSingleCurveInstruction;
 import speedith.core.reasoning.rules.instructions.copIns.SelectSingleArrowSingleSpiderComparatorInstruction;
-import speedith.core.reasoning.rules.instructions.copIns.SelectSpiderComparatorInstruction;
-import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderArrowTransformer;
 import speedith.core.reasoning.rules.transformers.copTrans.DeleteQuestionMarkTransformer;
-import speedith.core.reasoning.rules.transformers.copTrans.RemoveArrowsTransformer;
 
 
 /**

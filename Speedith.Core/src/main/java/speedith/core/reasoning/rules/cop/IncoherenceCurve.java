@@ -34,6 +34,7 @@ import speedith.core.reasoning.rules.transformers.copTrans.IncoherenceCurveTrans
 public class IncoherenceCurve extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
 	
+	private static final long serialVersionUID = 7170254689067195079L;
 	public static final String InferenceRuleName = "incoherence_curve";
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram);
 	

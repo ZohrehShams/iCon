@@ -67,27 +67,40 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     	    	assertDiagramContainArrow(compSpiderDiagram,secondArrow.getArrow());
     	    	assertSecondArrowIsSuitable(compSpiderDiagram);
     	    	
-    	    	if (! compArrowDiagram.getSpiders().contains(secondArrow.getArrow().arrowSource())){
-    	    		throw new TransformationException("The spider that is the target of arrow cannot exists in the"
-    	    				+ "source diagram.");
+    	    	if (compArrowDiagram.getSpiders().contains(secondArrow.getArrow().arrowTarget())){
+    	    		throw new TransformationException("The spider being added to the dashed arrow image cannot exists in the destination diagram.");
     	    	}
-    	    	    	    	
-    	    	ArrayList<Zone> zonesIniseArrowTarget = new ArrayList<Zone>();
+    	    	
+    	    	
     	    	String[] allPossibleZones = new String[compArrowDiagram.getAllContours().size()];
     	    	allPossibleZones = compArrowDiagram.getAllContours().toArray(allPossibleZones);
-    	    	
-    	    	
-    	    	for (Zone zone: Zones.allZonesForContours(allPossibleZones)){
-    	    		if((Zones.isZonePartOfThisContour(zone,firstArrow.getArrow().arrowTarget()))
-    	    				&&(compArrowDiagram.getPresentZones().contains(zone))){
-    	    			zonesIniseArrowTarget.add(zone);
+    	    	Region regionInsideArrowTarget = new Region(Zones.getZonesInsideAnyContour
+    	    		(Zones.allZonesForContours(allPossibleZones),firstArrow.getArrow().arrowTarget()));
+    	    	ArrayList<Zone> nonShadedZonesInsideArrowTarget = new ArrayList<Zone>();
+    	    	for(Zone zone: regionInsideArrowTarget.sortedZones()){
+    	    		if(! compArrowDiagram.getShadedZones().contains(zone)){
+    	    			nonShadedZonesInsideArrowTarget.add(zone);
     	    		}
     	    	}
+    	    	Region nonShadedRegionInsideArrowTarget = new Region(nonShadedZonesInsideArrowTarget);
     	    	
-    	    	Region regionInsideArrowTarget = new Region(zonesIniseArrowTarget);
+    	    	
+//    	    	ArrayList<Zone> zonesIniseArrowTarget = new ArrayList<Zone>();
+//    	    	String[] allPossibleZones = new String[compArrowDiagram.getAllContours().size()];
+//    	    	allPossibleZones = compArrowDiagram.getAllContours().toArray(allPossibleZones);
+//    	    	
+//    	    	
+//    	    	for (Zone zone: Zones.allZonesForContours(allPossibleZones)){
+//    	    		if((Zones.isZonePartOfThisContour(zone,firstArrow.getArrow().arrowTarget()))
+//    	    				&&(compArrowDiagram.getPresentZones().contains(zone))){
+//    	    			zonesIniseArrowTarget.add(zone);
+//    	    		}
+//    	    	}
+//    	    	
+//    	    	Region regionInsideArrowTarget = new Region(zonesIniseArrowTarget);
     	    	
 
-    	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), regionInsideArrowTarget, 
+    	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
     	    			compSpiderDiagram.getSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
                 return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, spiderDiagram, firstArrow, indexOfParent);
     	    }else return currentDiagram;
@@ -114,6 +127,10 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     private void assertFirstArrowIsSuitable(CompleteCOPDiagram currentDiagram){
     	if (! firstArrow.getArrow().arrowType().equals("dashed") ){
     		throw new TransformationException("The type of arrow must be dashed.");
+    	}
+    	
+    	if (currentDiagram.getArrowCardinalities().get(firstArrow.getArrow()) != null ){
+    		throw new TransformationException("The arrow should not have any cardinality.");
     	}
     	
     	if (! currentDiagram.arrowSourceSpider(firstArrow.getArrow())){

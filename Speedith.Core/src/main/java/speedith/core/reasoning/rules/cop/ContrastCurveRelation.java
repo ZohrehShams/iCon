@@ -33,6 +33,8 @@ import speedith.core.reasoning.rules.transformers.copTrans.ContrastCurveRelation
 public class ContrastCurveRelation extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
 	
+
+	private static final long serialVersionUID = 4409183785000240842L;
 	public static final String InferenceRuleName = "contrast_curve_relation";
 
     //private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram);

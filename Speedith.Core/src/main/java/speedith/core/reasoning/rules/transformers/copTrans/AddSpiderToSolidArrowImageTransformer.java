@@ -55,29 +55,26 @@ public class AddSpiderToSolidArrowImageTransformer extends IdTransformer{
     	    	
     	    	assertDiagramContainTargetArrow(compSpiderDiagram,destinationArrow.getArrow());
     	    	assertDestinationArrowIsSuitable(compSpiderDiagram);
+
     	    	
-    	    	if (! compArrowDiagram.getSpiders().contains(destinationArrow.getArrow().arrowSource())){
-    	    		throw new TransformationException("The spider that is the target of arrow cannot exists in the"
-    	    				+ "source diagram.");
+    	    	if (compArrowDiagram.getSpiders().contains(destinationArrow.getArrow().arrowTarget())){
+    	    		throw new TransformationException("The spider being added to the solid arrow image cannot exists in the destination diagram.");
     	    	}
     	    	
     	    	
-    	    	ArrayList<Zone> zonesIniseArrowTarget = new ArrayList<Zone>();
     	    	String[] allPossibleZones = new String[compArrowDiagram.getAllContours().size()];
     	    	allPossibleZones = compArrowDiagram.getAllContours().toArray(allPossibleZones);
-    	    	
-    	    	
-    	    	for (Zone zone: Zones.allZonesForContours(allPossibleZones)){
-    	    		if((Zones.isZonePartOfThisContour(zone,targetArrow.getArrow().arrowTarget()))
-    	    				&&(compArrowDiagram.getPresentZones().contains(zone))){
-    	    			zonesIniseArrowTarget.add(zone);
+    	    	Region regionInsideArrowTarget = new Region(Zones.getZonesInsideAnyContour
+    	    		(Zones.allZonesForContours(allPossibleZones),targetArrow.getArrow().arrowTarget()));
+    	    	ArrayList<Zone> nonShadedZonesInsideArrowTarget = new ArrayList<Zone>();
+    	    	for(Zone zone: regionInsideArrowTarget.sortedZones()){
+    	    		if(! compArrowDiagram.getShadedZones().contains(zone)){
+    	    			nonShadedZonesInsideArrowTarget.add(zone);
     	    		}
     	    	}
-    	    	
-    	    	Region regionInsideArrowTarget = new Region(zonesIniseArrowTarget);
-    	    	
-    	    	
-    	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(destinationArrow.getArrow().arrowTarget(), regionInsideArrowTarget, 
+    	    	Region nonShadedRegionInsideArrowTarget = new Region(nonShadedZonesInsideArrowTarget);
+    	    	    	
+    	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(destinationArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
     	    			compSpiderDiagram.getSpiderLabels().get(destinationArrow.getArrow().arrowTarget()));
     	    	
                 return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, spiderDiagram, targetArrow, indexOfParent);
@@ -109,9 +106,9 @@ public class AddSpiderToSolidArrowImageTransformer extends IdTransformer{
     		throw new TransformationException("The target of arrow must be a contour.");
     	}
     	
-//    	if (targetArrow.getArrow().getCardinality() != null ){
-//    		throw new TransformationException("The arrow cannot have cardinality.");
-//    	}
+    	if (currentDiagram.getArrowCardinalities().get(targetArrow.getArrow()) != null ){
+    		throw new TransformationException("The arrow cannot have cardinality.");
+    	}
     }
     
     

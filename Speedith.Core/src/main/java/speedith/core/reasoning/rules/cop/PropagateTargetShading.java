@@ -16,16 +16,12 @@ import speedith.core.reasoning.InferenceRule;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.RuleApplicationResult;
-import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.instructions.SelectContoursInstruction;
 import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
-import speedith.core.reasoning.rules.transformers.copTrans.ContrastCurveRelationTransformer;
 import speedith.core.reasoning.rules.transformers.copTrans.PropagateTargetShadingTransformer;
-import speedith.core.reasoning.rules.transformers.copTrans.TRAddArrowTransformer;
 
 /**
  * This rule operates on a unitary diagram. An arrow (solid or dashed) is chosen such that both source and target of the arrow are curves
@@ -36,8 +32,8 @@ import speedith.core.reasoning.rules.transformers.copTrans.TRAddArrowTransformer
 public class PropagateTargetShading extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
 
+	private static final long serialVersionUID = 7826844409242857333L;
 	public static final String InferenceRuleName = "propagate_target_shading";
-
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram,DiagramType.LUCarCOPDiagram);
     
 

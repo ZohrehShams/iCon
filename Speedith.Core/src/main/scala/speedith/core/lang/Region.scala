@@ -7,8 +7,7 @@ import propity.util.Sets
 
 import scala.collection.JavaConversions.{asJavaCollection, asScalaSet, iterableAsScalaIterable, setAsJavaSet}
 
-case class Region(zones: Set[Zone]) extends Comparable[Region] {
-
+case class Region(zones: Set[Zone]) extends Comparable[Region] {  
   val sortedZones: java.util.SortedSet[Zone] = {
     Collections.unmodifiableSortedSet(
       new java.util.TreeSet[Zone](setAsJavaSet(zones))
@@ -79,4 +78,16 @@ case class Region(zones: Set[Zone]) extends Comparable[Region] {
   override def toString: String = {
     toString(new StringBuilder()).toString
   }
+  
+  
+  //Zohreh 
+  def intersect(otherRegion: Region): Boolean = {
+   val intersection = zones.intersect(otherRegion.zones)
+   if(intersection.isEmpty){
+     return false
+   }else 
+     return true
+  }
+    
+    
 }

@@ -91,7 +91,6 @@ public class InferenceRules {
         registerProvider(DoubleNegationElimination.class);
         registerProvider(DoubleNegationIntroduction.class);
         
-        //Zohreh
         registerProvider(TRAddShading.class);
         registerProvider(TRAddUnCurve.class);
         registerProvider(TRAddCurveLabel.class);
@@ -118,6 +117,8 @@ public class InferenceRules {
         registerProvider(SwapSpiderWithCardinality.class);
         registerProvider(InverseToDashedArrow.class);
         registerProvider(DashedToInverseArrow.class);
+        registerProvider(ArrowTargetInconsistency.class);
+        registerProvider(DeleteSpiderFeet.class);
     }
 
     /**

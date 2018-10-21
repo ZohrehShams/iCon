@@ -34,8 +34,8 @@ import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderToSolidArrow
  */
 public class AddSpiderToDashedArrowImage extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
-	
-	private static final long serialVersionUID = 964529299619787893L;
+
+	private static final long serialVersionUID = -8090522495105570322L;
 	public static final String InferenceRuleName = "add_spider_to_dashed_arrow_image";
 	private static final Set<DiagramType> applicableTypes = 
 			EnumSet.of(DiagramType.LUCOPDiagram,DiagramType.ConceptDiagram, DiagramType.SpiderDiagram);

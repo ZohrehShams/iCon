@@ -30,7 +30,7 @@ import speedith.core.reasoning.rules.transformers.copTrans.DashedToInverseArrowT
 public class DashedToInverseArrow extends SimpleInferenceRule<ArrowArg> 
 implements BasicInferenceRule<ArrowArg>, ForwardRule<ArrowArg>, Serializable{
 
-	private static final long serialVersionUID = 5136262184836167681L;
+	private static final long serialVersionUID = -3885233681648520838L;
 	public static final String InferenceRuleName = "dashed_to_inverse_arrow";
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram,DiagramType.ConceptDiagram);
 

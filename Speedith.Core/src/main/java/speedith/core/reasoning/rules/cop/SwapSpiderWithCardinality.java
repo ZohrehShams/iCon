@@ -14,17 +14,10 @@ import speedith.core.reasoning.InferenceRule;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.RuleApplicationResult;
-import speedith.core.reasoning.args.ContourArg;
-import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
-import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
-import speedith.core.reasoning.args.selection.copSelection.ArrowsSelectionStep;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
-import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
 import speedith.core.reasoning.rules.instructions.copIns.SelectSingleArrowInstruction;
-import speedith.core.reasoning.rules.instructions.copIns.SelectSingleArrowSingleCurveInstruction;
-import speedith.core.reasoning.rules.transformers.copTrans.SwapSpiderWithCardinalityCurveTransformer;
 import speedith.core.reasoning.rules.transformers.copTrans.SwapSpiderWithCardinalityTransformer;
 
 
@@ -35,7 +28,7 @@ import speedith.core.reasoning.rules.transformers.copTrans.SwapSpiderWithCardina
  */
 public class SwapSpiderWithCardinality extends SimpleInferenceRule<ArrowArg> implements Serializable, ForwardRule<ArrowArg>{
 
-	private static final long serialVersionUID = -1963839956170379105L;
+	private static final long serialVersionUID = -7880650290931097406L;
 	public static final String InferenceRuleName = "swap_spider_with_arrow_cardinality";
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.COPDiagram,DiagramType.LUCOPDiagram);
 

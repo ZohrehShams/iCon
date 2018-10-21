@@ -5,6 +5,7 @@ import static speedith.core.i18n.Translations.i18n;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -116,40 +117,51 @@ public class LUCOPDiagram extends COPDiagram {
 	}
 	
 	
-	@Override
-	public PrimarySpiderDiagram addNewSpider(String spider, Region habitat) {
-		  if (getSpidersMod().contains(spider)){
-			  throw new IllegalArgumentException("The spider has to have a fresh label.");
-		  } else return addLUSpider(spider,habitat,""); 
-	}
+//	@Override
+//	public PrimarySpiderDiagram addNewSpider(String spider, Region habitat) {
+//		  if (getSpidersMod().contains(spider)){
+//			  throw new IllegalArgumentException("The spider has to have a fresh label.");
+//		  } else return addLUSpider(spider,habitat,""); 
+//	}
 
 	
 	public LUCOPDiagram addLUSpider(String spiderName, Region habitat, String spiderLabel) {
-		  if (spiderName == null || spiderName.isEmpty()){
-        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
-		  }
+//		  if (spiderName == null || spiderName.isEmpty()){
+//        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
+//		  }
 		
 	      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
 	      newHabitats.put(spiderName, habitat);
 	      
-	      TreeMap<String, String> spiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
-	      spiderLabels.put(spiderName, spiderLabel);
+	      TreeMap<String, String> newSpiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
+	      newSpiderLabels.put(spiderName, spiderLabel);
 	      
-	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
-	      
-	      if (getSpidersMod() != null) {
-	          if (getSpidersMod().contains(spiderName)) {
-	              //newSpiders = getSpidersMod();
-	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
-	        	  //throw new IllegalArgumentException("The spider has to have a fresh name.");
-	              
-	          } else {
-	              newSpiders.add(spiderName);
-	          }
-	      } else {
-	          newSpiders = new TreeSet<>();
-	          newSpiders.add(spiderName);
-	      }
+//	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
+//	      if (getSpidersMod() != null) {
+//	          if (getSpidersMod().contains(spiderName)) {
+//	              //newSpiders = getSpidersMod();
+//	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
+//	        	  //throw new IllegalArgumentException("The spider has to have a fresh name.");
+//	              
+//	          } else {
+//	              newSpiders.add(spiderName);
+//	          }
+//	      } else {
+//	          newSpiders = new TreeSet<>();
+//	          newSpiders.add(spiderName);
+//	      }
+	      TreeSet<String> newSpiders;
+	        if (spiders != null) {
+	            if (spiders.contains(spiderName)) {
+	                newSpiders = spiders;
+	            } else {
+	                newSpiders = new TreeSet<>(spiders); 
+	                newSpiders.add(spiderName);
+	            }
+	        } else {
+	            newSpiders = new TreeSet<>();
+	            newSpiders.add(spiderName);
+	        }
 	
 	      return new LUCOPDiagram(
 	              newSpiders,
@@ -157,27 +169,32 @@ public class LUCOPDiagram extends COPDiagram {
 	              getShadedZones(),
 	              getPresentZones(),
 	              getArrows(),
-	              spiderLabels,
+	              newSpiderLabels,
 	              curveLabels);
 	  }
 	
 	
 	
 	@Override
-	public COPDiagram deleteSpider(String spider) {
+	public COPDiagram deleteSpider(String... spiders) {
 		  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
 		  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
 		  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
 		  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
 		  
-		  newSpiders.remove(spider);
-		  newHabitats.remove(spider);
-	      for (Arrow arrow : getArrows()){
-	          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
-	      		newArrows.remove(arrow);
-	          }
-	        }
-	      newSpiderLabels.remove(spider);
+		  
+		  for(String spider : spiders){
+			  newSpiders.remove(spider);
+			  newHabitats.remove(spider);
+			  
+		      for (Arrow arrow : getArrows()){
+		          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+		      		newArrows.remove(arrow);
+		          }
+		        }
+		     
+		      newSpiderLabels.remove(spider); 
+		  }
 
 	      return new LUCOPDiagram(
 	              newSpiders,
@@ -212,15 +229,16 @@ public class LUCOPDiagram extends COPDiagram {
 	  
 	@Override
 	public COPDiagram addArrow(Arrow arrow) {
-	    	TreeSet<Arrow> newArrows = getArrowsMod();
-	    	if (arrow != null){
-	    		if ((! containsArrow(arrow)) && (validArrow(arrow))) {
-	    			newArrows.add(arrow);
-	    		}
-	    	}
-	    	//return new COPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), newArrows);
-	    	return new LUCOPDiagram(getSpidersMod(), getHabitatsMod(), 
-	    			getShadedZonesMod(), getPresentZonesMod(), newArrows,spiderLabels,curveLabels);
+//	    	TreeSet<Arrow> newArrows = getArrowsMod();
+		TreeSet<Arrow> newArrows = new TreeSet<Arrow>(getArrows());
+		if (arrow != null){
+			if ((! containsArrow(arrow)) && (validArrow(arrow))) {
+				newArrows.add(arrow);
+			}
+		}
+	    	return new LUCOPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), newArrows, spiderLabels,curveLabels);
+//	    	return new LUCOPDiagram(getSpidersMod(), getHabitatsMod(), 
+//	    			getShadedZonesMod(), getPresentZonesMod(), newArrows,spiderLabels,curveLabels);
 	    }
 	    
 	    

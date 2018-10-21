@@ -129,58 +129,83 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	  
 	  @Override
 	  public LUCOPDiagram addLUSpider(String spiderName, Region habitat, String spiderLabel) {
-		  if (spiderName == null || spiderName.isEmpty()){
-        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
-		  }
-		
-	      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
+//		  if (spiderName == null || spiderName.isEmpty()){
+//        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
+//		  }
+//		
+//	      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
+//	      newHabitats.put(spiderName, habitat);
+//	      
+//	      TreeMap<String, String> spiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
+//	      spiderLabels.put(spiderName, spiderLabel);
+//	      
+//	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
+//	      
+//	      if (getSpidersMod() != null) {
+//	          if (getSpidersMod().contains(spiderName)) {
+//	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
+//	          } else {
+//	              newSpiders.add(spiderName);
+//	          }
+//	      } else {
+//	          newSpiders = new TreeSet<>();
+//	          newSpiders.add(spiderName);
+//	      }
+		  TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
 	      newHabitats.put(spiderName, habitat);
 	      
-	      TreeMap<String, String> spiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
-	      spiderLabels.put(spiderName, spiderLabel);
+	      TreeMap<String, String> newSpiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
+	      newSpiderLabels.put(spiderName, spiderLabel);
 	      
-	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
+	      TreeSet<String> newSpiders;
+	        if (spiders != null) {
+	            if (spiders.contains(spiderName)) {
+	                newSpiders = spiders;
+	            } else {
+	                newSpiders = new TreeSet<>(spiders); 
+	                newSpiders.add(spiderName);
+	            }
+	        } else {
+	            newSpiders = new TreeSet<>();
+	            newSpiders.add(spiderName);
+	        }
 	      
-	      if (getSpidersMod() != null) {
-	          if (getSpidersMod().contains(spiderName)) {
-	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
-	          } else {
-	              newSpiders.add(spiderName);
-	          }
-	      } else {
-	          newSpiders = new TreeSet<>();
-	          newSpiders.add(spiderName);
-	      }
 	      return new LUCarCOPDiagram(
 	              newSpiders,
 	              newHabitats,
 	              getShadedZones(),
 	              getPresentZones(),
 	              getArrows(),
-	              spiderLabels,
+	              newSpiderLabels,
 	              getCurveLabels(),
 	              arrowCardinalities);
 	  }
 	  
+		
 	  
-
 		@Override
-		public COPDiagram deleteSpider(String spider) {
+		public COPDiagram deleteSpider(String... spiders) {
 			  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
 			  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
 			  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
 			  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
 			  TreeMap<Arrow,Cardinality> newArrowCardinalities = new TreeMap<>(arrowCardinalities);
 			  
-			  newSpiders.remove(spider);
-			  newHabitats.remove(spider);
-		      for (Arrow arrow : getArrows()){
-		          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
-		      		newArrows.remove(arrow);
-		      		newArrowCardinalities.remove(arrow);
-		          }
-		        }
-		      newSpiderLabels.remove(spider);
+			  
+			  for(String spider : spiders){
+				  newSpiders.remove(spider);
+				  newHabitats.remove(spider);
+				  
+			      for (Arrow arrow : getArrows()){
+			          if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
+			      		newArrows.remove(arrow);
+			      		newArrowCardinalities.remove(arrow);
+			          }
+			        }
+			     
+			      newSpiderLabels.remove(spider); 
+			      
+			  }
 
 		      return new LUCarCOPDiagram(
 		              newSpiders,
@@ -194,18 +219,18 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 		  }
 		
 		
-		
 		@Override
 		public COPDiagram addArrow(Arrow arrow) {
-		    	TreeSet<Arrow> newArrows = getArrowsMod();
-		    	if (arrow != null){
-		    		if ((! containsArrow(arrow)) && (validArrow(arrow))) {
-		    			newArrows.add(arrow);
-		    		}
-		    	}
-		    	return new LUCarCOPDiagram(getSpiders(), getHabitats(), 
-		    			getShadedZones(), getPresentZones(), newArrows,getSpiderLabels(),getCurveLabels(),getArrowCardinalities());
-		    }
+			TreeSet<Arrow> newArrows = new TreeSet<Arrow>(getArrows());
+			if (arrow != null){
+				if ((! containsArrow(arrow)) && (validArrow(arrow))) {
+					newArrows.add(arrow);
+				}
+			}
+	    	return new LUCarCOPDiagram(getSpiders(), getHabitats(), 
+	    			getShadedZones(), getPresentZones(), newArrows,getSpiderLabels(),getCurveLabels(),getArrowCardinalities());
+		}
+
 		
 		
 		

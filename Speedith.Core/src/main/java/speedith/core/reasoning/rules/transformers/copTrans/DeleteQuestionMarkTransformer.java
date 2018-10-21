@@ -1,13 +1,19 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
-import speedith.core.lang.*;
-import speedith.core.lang.Comparator;
-import speedith.core.reasoning.ApplyStyle;
-import speedith.core.reasoning.args.SpiderArg;
+import java.util.ArrayList;
+import java.util.TreeSet;
+import speedith.core.lang.CompleteCOPDiagram;
+import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.IdTransformer;
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
+import speedith.core.lang.SpiderComparator;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.SpiderDiagrams;
+import speedith.core.lang.TransformationException;
+import speedith.core.lang.Zones;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.copArgs.SpiderComparatorArg;
-
-import java.util.*;
 
 
 public class DeleteQuestionMarkTransformer extends IdTransformer {
@@ -73,7 +79,25 @@ public class DeleteQuestionMarkTransformer extends IdTransformer {
     		return psd;
     }
     
+        
     
+    
+    private void assertArrowSuitability(CompleteCOPDiagram currentDiagram){
+    	
+    	if (!currentDiagram.arrowSourceSpider(arrowArg.getArrow())){
+    		throw new TransformationException("The source of arrow has to be a spider.");
+    	}
+    	
+    	if (!currentDiagram.arrowTargetContour(arrowArg.getArrow())){
+    		throw new TransformationException("The target of arrow has to be a curve.");
+    	}
+    	
+    	if( ( currentDiagram.getArrowCardinalities().get(arrowArg.getArrow()).getNumber() != 1) || 
+		(! currentDiagram.getArrowCardinalities().get(arrowArg.getArrow()).getComparator().equals("<="))){
+    		throw new TransformationException("The arrow cardinality must be <=1.");
+    	}
+
+    }
     
     private void assertSpidersHabitats(CompleteCOPDiagram currentDiagram) {
     	
@@ -85,50 +109,20 @@ public class DeleteQuestionMarkTransformer extends IdTransformer {
     	}
     	
     	//Since spiders have the same habitat, we can check the rest of the conditions for one of them only.
-    	if(currentDiagram.getSpiderHabitat(comparable1).getZonesCount() != 1){
-    		throw new TransformationException("The spiders must be single zone habitat.");
-    	}
+    	String[] allPossibleZones = new String[currentDiagram.getAllContours().size()];
+    	allPossibleZones = currentDiagram.getAllContours().toArray(allPossibleZones);
+    	Region regionInsideCurve = new Region(Zones.getZonesInsideAnyContour
+    	          (Zones.allZonesForContours(allPossibleZones),arrowArg.getArrow().arrowTarget()));
     	
-    	SortedSet<String> inContours = currentDiagram.getSpiderHabitat(comparable1).sortedZones().first().getInContours();
-    	String curveName = currentDiagram.getCurveLabels().get(inContours.first());
-    	
-    	if ((inContours.isEmpty()) || (curveName != null)){
-    		throw new TransformationException("The spiders must be contained in an unamed curve.");
+    	if(! currentDiagram.getHabitats().get(comparable1).isSubregionOf(regionInsideCurve)){
+    		throw new TransformationException("The spiders must be contained in the target of the arrow.");
     	}
-    		
 
-    }
-    
-    
-    
-    private void assertArrowSuitability(CompleteCOPDiagram currentDiagram){
-    	
-    	if (!currentDiagram.arrowSourceSpider(arrowArg.getArrow())){
-    		throw new TransformationException("The source of arrow has to be a spider.");
-    	}
-    	
-    	String comparable1 = targetSpiderComparator.getSpiderComparator().getComparable1();
-    	SortedSet<String> inContours = currentDiagram.getSpiderHabitat(comparable1).sortedZones().first().getInContours();
-    	if(! arrowArg.getArrow().arrowTarget().equals(inContours.first())){
-    		throw new TransformationException("The source of arrow has to be the habitat of the spiders.");
-    	}
-    	
-    	
-    	if( ( currentDiagram.getArrowCardinalities().get(arrowArg.getArrow()).getNumber() != 1) || 
-		(! currentDiagram.getArrowCardinalities().get(arrowArg.getArrow()).getComparator().equals("<="))){
-    		throw new TransformationException("The arrow cardinality must be <=1.");
-    	}
     	
 
     }
     
-    
-    
-    
-    
-    
-    
-    
+    	
     
     
 }

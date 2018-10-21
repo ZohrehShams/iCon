@@ -22,7 +22,6 @@ import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
 import speedith.core.reasoning.rules.transformers.copTrans.GeneraliseEqualityCardinalityTransformer;
-import speedith.core.reasoning.rules.transformers.copTrans.TRAddCardinalityTransformer;
 
 /**
  * This class implements an inference rule that generalises an equality cardinality to an at least cardinality. For example, 
@@ -31,11 +30,9 @@ import speedith.core.reasoning.rules.transformers.copTrans.TRAddCardinalityTrans
  */
 public class GeneraliseEqualityCardinality extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
-	
-	public static final String InferenceRuleName = "generalise_equality_cardinality";
 
-	//Zohreh: this is not applicable to LUCOP but because I want all these rules to appear in "My Rule" bar in the gui, 
-	//I have to add it here.
+	private static final long serialVersionUID = 8370303843669765544L;
+	public static final String InferenceRuleName = "generalise_equality_cardinality";
     private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCarCOPDiagram,DiagramType.LUCOPDiagram);
     
     @Override

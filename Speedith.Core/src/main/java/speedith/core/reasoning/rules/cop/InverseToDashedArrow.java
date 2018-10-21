@@ -21,7 +21,6 @@ import speedith.core.reasoning.args.SpiderArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.copIns.SelectSingleArrowSingleSpiderInstruction;
-import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderArrowTransformer;
 import speedith.core.reasoning.rules.transformers.copTrans.InverseToDashedArrowTransformer;
 
 /**
@@ -32,7 +31,7 @@ import speedith.core.reasoning.rules.transformers.copTrans.InverseToDashedArrowT
 public class InverseToDashedArrow extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
 
-	private static final long serialVersionUID = 5136262184836167681L;
+	private static final long serialVersionUID = -5912949186889241027L;
 	public static final String InferenceRuleName = "inverse_to_dashed_arrow";
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram,DiagramType.ConceptDiagram);
 

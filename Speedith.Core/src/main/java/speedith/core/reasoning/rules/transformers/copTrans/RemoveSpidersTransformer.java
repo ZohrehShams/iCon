@@ -1,14 +1,23 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
+import speedith.core.lang.Arrow;
 import speedith.core.lang.COPDiagram;
+import speedith.core.lang.Cardinality;
+import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
+import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
+import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
 import speedith.core.reasoning.ApplyStyle;
@@ -34,13 +43,11 @@ public class RemoveSpidersTransformer extends IdTransformer {
     		return psd;
     	}
     	
-       	//PrimarySpiderDiagram temp = psd;
+    	
        	if(!(psd instanceof COPDiagram)){
        		throw new TransformationException("The rule is not applicaple to this diagram.");
        	}
        	
-    	COPDiagram cop = (COPDiagram) psd;
-    	COPDiagram temp = cop;
     	
     	if (diagramIndex == spiderArgs.get(0).getSubDiagramIndex()){
     		
@@ -51,76 +58,11 @@ public class RemoveSpidersTransformer extends IdTransformer {
         	    		throw new IllegalArgumentException("The habitat of the spider cannot contain any shaded zones.");
         			}
         		}
-        		temp = temp.deleteSpider(spider);
         		}
     		
-    		return temp;
-    		
-//    		TreeSet<String> updatedSpiders = new TreeSet<String>(psd.getSpiders());
-//    		TreeMap<String,Region> updatedHabitat = new TreeMap<String,Region>(psd.getHabitats());
-//    		
-//      		TreeSet<Arrow> updatedArrows = new TreeSet<Arrow>(luCarCop.getArrows());
-//    		TreeMap<Arrow,Cardinality> updatedArrowCar = new TreeMap<Arrow,Cardinality>(luCarCop.getArrowCardinalities());
-//    		TreeMap<String,String> updatedSpiderLabel = new TreeMap<String,String>(luCarCop.getSpiderLabels());
-//
-//    		
-//    		for (String spider : getSpidersTarget()){
-//    			Region spiderHabitat = psd.getSpiderHabitat(spider);
-//    			
-//        		for(Zone zone : spiderHabitat.sortedZones()){
-//        			if(psd.getShadedZones().contains(zone)){
-//        	    		throw new IllegalArgumentException("The habitat of the spider cannot contain shaded zones.");
-//        			}
-//        		}
-//        		
-//        		updatedSpiders.remove(spider);
-//        		updatedHabitat.remove(spider);
-//			
-//			
-//            for (Arrow arrow : luCarCop.getArrows()){
-//                if(spider.equals(arrow.arrowSource()) || spider.equals(arrow.arrowTarget())){
-//            		updatedArrows.remove(arrow);
-//            		updatedArrowCar.remove(arrow);
-//                }
-//              }
-//    		
-//    		updatedSpiderLabel.remove(spider);}
-//    		
-//    		if (temp instanceof CompleteCOPDiagram){
-//    			CompleteCOPDiagram compCop = (CompleteCOPDiagram) temp;
-//    			TreeSet<SpiderComparator> updatedSpiderComparators = new TreeSet<SpiderComparator>(compCop.getSpiderComparators());
-//
-//    			for (String spider : getSpidersTarget()){	
-//    				for (SpiderComparator sc : compCop.getSpiderComparators()){
-//    					if(spider.equals(sc.getComparable1()) ||spider.equals(sc.getComparable2())){
-//                    	updatedSpiderComparators.remove(sc);
-//                    }
-//                  }}
-//    			
-//    			
-//    			return SpiderDiagrams.createCompleteCOPDiagram(
-//    	    			updatedSpiders, 
-//    	    			updatedHabitat, 
-//    	    			compCop.getShadedZones(), 
-//    	    			compCop.getPresentZones(),  
-//    	        		updatedArrows,
-//    	        		updatedSpiderLabel,
-//    	        		compCop.getCurveLabels(),
-//    	        		updatedArrowCar,
-//    	        		updatedSpiderComparators
-//    	        		);
-//    		}else{
-//    			return LUCarCOPDiagram.createLUCarCOPDiagram(
-//            			updatedSpiders, 
-//            			updatedHabitat, 
-//            			luCarCop.getShadedZones(), 
-//            			luCarCop.getPresentZones(),  
-//                		updatedArrows,
-//                		updatedSpiderLabel,
-//                		luCarCop.getCurveLabels(),
-//                		updatedArrowCar);
-//    		}
-    				
+    		COPDiagram cop = (COPDiagram) psd;
+    		String[] spidersArray = getSpidersTarget().toArray(new String[getSpidersTarget().size()]);
+    		return cop.deleteSpider(spidersArray);
     		
     	}
     	return null;	

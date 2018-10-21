@@ -317,6 +317,9 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
         return spiders.contains(spider);
     }
 
+    
+    
+    
     /**
      * <p>Returns a set of all contours that are mentioned in this primary
      * spider diagram.</p> <p><span style="font-weight:bold">Important</span>:

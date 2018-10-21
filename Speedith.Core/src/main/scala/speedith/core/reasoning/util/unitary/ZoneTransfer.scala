@@ -40,7 +40,8 @@ class ZoneTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: Prim
         sourceDiagram.isInstanceOf[CompleteCOPDiagram]){
       val destination = destinationDiagram.asInstanceOf[CompleteCOPDiagram]
       val source = sourceDiagram.asInstanceOf[CompleteCOPDiagram]
-      val curveName = source.getCurveLabels.get(contourFromSource)
+      val curveName = contourFromSource
+      val curveLabel = source.getCurveLabels.get(contourFromSource)
       
       val luSpiderHabitats = destination.getHabitats.map {
         
@@ -83,9 +84,9 @@ class ZoneTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: Prim
 
     }
       
-      if(curveName != null){
+      if(curveLabel != null){
         createCompleteCOPDiagram(spiderHabitats.keySet, luSpiderHabitats, shadedZones, presentZones, destination.getArrows,
-            destination.getSpiderLabels, destination.getCurveLabels + (contourFromSource -> curveName), destination.getArrowCardinalities,destination.getSpiderComparators)
+            destination.getSpiderLabels, destination.getCurveLabels + (contourFromSource -> curveLabel), destination.getArrowCardinalities,destination.getSpiderComparators)
         
       }else{
         createCompleteCOPDiagram(spiderHabitats.keySet, luSpiderHabitats, shadedZones, presentZones, destination.getArrows,
