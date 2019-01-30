@@ -35,6 +35,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.alternativeCompCOPDiffLabels;
+import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.sevenLabArrowCompCOP;
+import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.threeColSpCompCOP;
+import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.threeColSpCompCOPWithArrow;
+import static speedith.core.reasoning.util.unitary.TestConceptDiagrams.*;
 
 /**
  *
@@ -489,6 +494,18 @@ public class CompoundSpiderDiagramTest {
         checkSDCollection(SpiderDiagramsReader.readSpiderDiagram(SpiderDiagramsReaderTest.SD_EXAMPLE_16));
         checkSDCollection(SpiderDiagramsReader.readSpiderDiagram(SpiderDiagramsReaderTest.SD_EXAMPLE_17));
     }
+    
+    
+    @Test
+    public void testGetSubDiagramAtWithCD(){
+    	assertSame(oneCompoundCD.getSubDiagramAt(0), oneCompoundCD);
+    	assertSame(oneCompoundCD.getSubDiagramAt(1), fourCarCDThreePrimaries);
+    	assertSame(oneCompoundCD.getSubDiagramAt(2), sevenLabArrowCompCOP);
+    	assertSame(oneCompoundCD.getSubDiagramAt(3), threeColSpCompCOP);
+    	assertSame(oneCompoundCD.getSubDiagramAt(4), alternativeCompCOPDiffLabels);
+    	assertSame(oneCompoundCD.getSubDiagramAt(5), threeColSpCompCOPWithArrow);
+    }
+        
 
     /**
      * Test of iterator method, of class CompoundSpiderDiagram.
@@ -516,6 +533,40 @@ public class CompoundSpiderDiagramTest {
         checkSDIterator(SpiderDiagramsReader.readSpiderDiagram(SpiderDiagramsReaderTest.SD_EXAMPLE_17));
     }
 
+    
+    
+    @Test
+    public void checkSDwithCDIterator() {	
+        int i = 0;
+        for (SpiderDiagram ssd : oneCompoundCD) {
+            assertSame(oneCompoundCD.getSubDiagramAt(i++), ssd);
+        }
+        assertEquals(i, oneCompoundCD.getSubDiagramCount());
+    }
+    
+    
+    
+    @Test
+    public void checkSDwithCDIterator2() {	
+        int i = 0;
+        for (SpiderDiagram ssd : twoCompoundCD) {
+            assertSame(twoCompoundCD.getSubDiagramAt(i++), ssd);
+        }
+        assertEquals(i, twoCompoundCD.getSubDiagramCount());
+    }
+    
+    
+    
+    @Test
+    public void checkSDwithCDIterator3() {	
+        int i = 0;
+        for (SpiderDiagram ssd : threeCompoundCD) {
+            assertSame(threeCompoundCD.getSubDiagramAt(i++), ssd);
+        }
+        assertEquals(i, threeCompoundCD.getSubDiagramCount());
+    }
+    
+    
     //<editor-fold defaultstate="collapsed" desc="Private Helper Methods">
     private void checkVisitSD(CompoundSpiderDiagram sd) {
         for (int i = 0; i < sd.getSubDiagramCount(); i++) {

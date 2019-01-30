@@ -119,6 +119,10 @@ public class InferenceRules {
         registerProvider(DashedToInverseArrow.class);
         registerProvider(ArrowTargetInconsistency.class);
         registerProvider(DeleteSpiderFeet.class);
+        registerProvider(RemoveCOP.class);
+        registerProvider(AddSpiderArrowTarget.class);
+        registerProvider(ReverseArrowDirection.class);
+        registerProvider(SwapDashedWithSolidArrow.class);
     }
 
     /**

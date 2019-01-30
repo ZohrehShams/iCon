@@ -259,24 +259,29 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
         visitor.end();
         return visitor.getResult();
     }
+    
 
+   
+    
     @Override
     public Iterator<SpiderDiagram> iterator() {
         return new CompoundSpiderDiagramIterator(this);
     }
 
     private static class CompoundSpiderDiagramIterator implements Iterator<SpiderDiagram> {
+    	
+//      private ArrayList<CompoundSDIterationCursor> iterationStack;
+      private ArrayList<IterationCursor> iterationStack;
 
-        private ArrayList<CompoundSDIterationCursor> iterationStack;
-
-        public CompoundSpiderDiagramIterator(CompoundSpiderDiagram csdToIterateThrough) {
-            if (csdToIterateThrough == null) {
-                throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "csdToIterateThrough"));
-            }
-            iterationStack = new ArrayList<>();
-            iterationStack.add(new CompoundSDIterationCursor(csdToIterateThrough, -1));
-        }
-
+      public CompoundSpiderDiagramIterator(CompoundSpiderDiagram csdToIterateThrough) {
+          if (csdToIterateThrough == null) {
+              throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "csdToIterateThrough"));
+          }
+          iterationStack = new ArrayList<>();
+          iterationStack.add(new CompoundSDIterationCursor(csdToIterateThrough, -1));
+      }
+    	
+    	
         @Override
         public boolean hasNext() {
             // If there are no unfinished cursors on the stack then there is
@@ -292,7 +297,32 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
          *
          * @return
          */
-        private CompoundSDIterationCursor getLatestUnfinishedCursor() {
+//        private CompoundSDIterationCursor getLatestUnfinishedCursor() {
+//            // Check first whether there are any cursors at all.
+//            int lastIndex = iterationStack.size() - 1;
+//            if (lastIndex < 0) {
+//                return null;
+//            }
+//            // Now peek at the latest cursor and check whether it points to a valid
+//            // operand.
+//            CompoundSDIterationCursor cur = iterationStack.get(lastIndex);
+//            // Check whether the current cursor went past the last operand.
+//            while (cur.nextChildIndex >= cur.csd.getOperandCount()) {
+//                // It went past all the operands. We can remove this cursor and
+//                // move to the next one.
+//                iterationStack.remove(lastIndex);
+//                if (--lastIndex >= 0) {
+//                    cur = iterationStack.get(lastIndex);
+//                } else {
+//                    // No cursors left... Return null to indicate that there is
+//                    // nothing left to visit.
+//                    return null;
+//                }
+//            }
+//            return cur;
+//        }
+        
+        private IterationCursor getLatestUnfinishedCursor() {
             // Check first whether there are any cursors at all.
             int lastIndex = iterationStack.size() - 1;
             if (lastIndex < 0) {
@@ -300,9 +330,9 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
             }
             // Now peek at the latest cursor and check whether it points to a valid
             // operand.
-            CompoundSDIterationCursor cur = iterationStack.get(lastIndex);
+            IterationCursor cur = iterationStack.get(lastIndex);
             // Check whether the current cursor went past the last operand.
-            while (cur.nextChildIndex >= cur.csd.getOperandCount()) {
+            while (cur.nextChildIndex >= cur.getSubDiagramNumber()) {
                 // It went past all the operands. We can remove this cursor and
                 // move to the next one.
                 iterationStack.remove(lastIndex);
@@ -316,42 +346,134 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
             }
             return cur;
         }
+        
+        
 
+//        @Override
+//        public SpiderDiagram next() {
+//            CompoundSDIterationCursor nextCur = getLatestUnfinishedCursor();
+//            if (nextCur == null) {
+//                throw new NoSuchElementException();
+//            }
+//            SpiderDiagram next;
+//            if (nextCur.nextChildIndex < 0) {
+//                next = nextCur.csd;
+//            } else {
+//                next = nextCur.csd.getOperand(nextCur.nextChildIndex);
+//                if (next instanceof CompoundSpiderDiagram) {
+//                    iterationStack.add(new CompoundSDIterationCursor((CompoundSpiderDiagram) next, 0));
+//                }
+//            } 
+//            ++nextCur.nextChildIndex;
+//            return next;
+//        }
+        
+        
         @Override
         public SpiderDiagram next() {
-            CompoundSDIterationCursor nextCur = getLatestUnfinishedCursor();
+            IterationCursor nextCur = getLatestUnfinishedCursor();
             if (nextCur == null) {
                 throw new NoSuchElementException();
             }
             SpiderDiagram next;
             if (nextCur.nextChildIndex < 0) {
-                next = nextCur.csd;
+                next = nextCur.getDiagram();
             } else {
-                next = nextCur.csd.getOperand(nextCur.nextChildIndex);
+            	next = nextCur.getOperandOrPrimary(nextCur.nextChildIndex);
                 if (next instanceof CompoundSpiderDiagram) {
                     iterationStack.add(new CompoundSDIterationCursor((CompoundSpiderDiagram) next, 0));
                 }
-            }
+                if (next instanceof ConceptDiagram) {
+                    iterationStack.add(new ConceptDIterationCursor((ConceptDiagram) next, 0));
+                }
+            } 
             ++nextCur.nextChildIndex;
             return next;
         }
+        
+
 
         @Override
         public void remove() {
             throw new UnsupportedOperationException(i18n("SD_ITER_REMOVE_NOT_SUPPORTED"));
         }
     }
-
-    private static class CompoundSDIterationCursor {
-
-        final CompoundSpiderDiagram csd;
-        int nextChildIndex;
-
-        public CompoundSDIterationCursor(CompoundSpiderDiagram csd, int nextChildIndex) {
-            this.csd = csd;
-            this.nextChildIndex = nextChildIndex;
-        }
+    
+    
+    private static abstract class IterationCursor{
+    	int nextChildIndex;	
+    	public IterationCursor(int nextChildIndex) {
+    		this.nextChildIndex = nextChildIndex;
+    	}
+    
+    	public abstract int getSubDiagramNumber();
+    	public abstract SpiderDiagram getDiagram();
+    	public abstract SpiderDiagram getOperandOrPrimary(int index);
+    	
     }
+    
+    
+    
+//    private static class CompoundSDIterationCursor {
+//
+//        final CompoundSpiderDiagram csd;
+//        int nextChildIndex;
+//
+//        public CompoundSDIterationCursor(CompoundSpiderDiagram csd, int nextChildIndex) {
+//            this.csd = csd;
+//            this.nextChildIndex = nextChildIndex;
+//        }
+//    }
+    
+    
+    private static class CompoundSDIterationCursor extends IterationCursor{
+        final CompoundSpiderDiagram csd;
+        public CompoundSDIterationCursor(CompoundSpiderDiagram csd, int nextChildIndex) {
+        	super(nextChildIndex);
+            this.csd = csd;
+//            this.nextChildIndex = nextChildIndex;
+        }
+        
+		@Override
+		public int getSubDiagramNumber() {
+			return csd.getOperandCount();
+		}
+		
+		@Override
+		public SpiderDiagram getDiagram() {
+			return csd;
+		}
+		
+		public SpiderDiagram getOperandOrPrimary(int index){
+			return csd.getOperand(index);
+		}
+
+    }
+    
+    private static class ConceptDIterationCursor extends IterationCursor{
+        final ConceptDiagram cd;
+        public ConceptDIterationCursor(ConceptDiagram cd, int nextChildIndex) {
+        	super(nextChildIndex);
+        	this.cd = cd;
+        }
+        
+		@Override
+		public int getSubDiagramNumber() {
+			return cd.getPrimaryCount();
+		}
+		
+		@Override
+		public SpiderDiagram getDiagram() {
+			return cd;
+		}
+		
+		public SpiderDiagram getOperandOrPrimary(int index){
+			return cd.getPrimary(index);
+		}
+		
+    }
+
+
 
     @Override
     public boolean equals(Object other) {
@@ -524,17 +646,50 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
             return transformedChildren == null ? curSD : SpiderDiagrams.createCompoundSD(curSD.getOperator(), transformedChildren, false);
         }
     }
+    
+    
+    //Zohreh: Transformer for those children that are of type ConceptDiagram.
+	private static SpiderDiagram transform(Transformer t, ConceptDiagram cd, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices){
+        SpiderDiagram transformedCD = ((CDTransformer) t).transform(cd, subDiagramIndex, parents, childIndices);
+        if (transformedCD != null) {
+        	return transformedCD;
+        }else if (t.isDone()) {
+        	return cd;
+        }else{
+		ArrayList<PrimarySpiderDiagram> transformedChildren = null;
+		for(int primaryIndex = 0; primaryIndex < cd.getPrimaryCount(); ++primaryIndex){
+			PrimarySpiderDiagram primary = cd.getPrimary(primaryIndex);
+			transformedCD = t.transform((PrimarySpiderDiagram) primary, subDiagramIndex+1, parents, childIndices);
+			
+			if (transformedCD != null && !transformedCD.equals(primary)){
+				if (transformedChildren == null) {
+					transformedChildren = new ArrayList<>(cd.getPrimaries());
+				}
+				transformedChildren.set(primaryIndex, (PrimarySpiderDiagram) transformedCD);
+			}
+			
+            if (t.isDone()) {
+                break;
+            }
+            subDiagramIndex += cd.getSubDiagramCount();
+		}
+		
+		return transformedChildren == null ? cd: SpiderDiagrams.createConceptDiagram(cd.get_cd_Arrows(), transformedChildren, false);}
+	}
+	
 
     /**
      * Applies the transformer on the given spider diagram based on the type of
      * the spider diagram.
      */
     private static SpiderDiagram __applyTransform(SpiderDiagram sd, Transformer t, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices) {
-        if (sd instanceof CompoundSpiderDiagram) {
+        if (sd instanceof CompoundSpiderDiagram) {;
             return transform(t, (CompoundSpiderDiagram) sd, subDiagramIndex, parents, childIndices);
         } else if (sd instanceof PrimarySpiderDiagram) {
             return t.transform((PrimarySpiderDiagram) sd, subDiagramIndex, parents, childIndices);
-        } else {
+        } else if(sd instanceof ConceptDiagram){
+        	return transform(t, (ConceptDiagram) sd, subDiagramIndex, parents, childIndices);
+        }else {
             return t.transform((NullSpiderDiagram) sd, subDiagramIndex, parents, childIndices);
         }
     }
@@ -546,8 +701,7 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
      */
     private static <T> boolean __visitCompoundSD(DiagramVisitor<T> visitor, CompoundSpiderDiagram curSD, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices, ArrayList<Integer> parentIndices) {
         // Visit the current spider diagram.
-        visitor.visit(curSD, subDiagramIndex, parents, childIndices, parentIndices);
-
+        visitor.visit(curSD, subDiagramIndex, parents, childIndices, parentIndices);        
         // Now visit the child spider diagrams, if it is not finished yet
         // and if there are actually any child spider diagrams.
         if (curSD.getOperandCount() > 0 && !visitor.isDone()) {
@@ -579,6 +733,8 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
         }
         return visitor.isDone();
     }
+    
+
 
     private static void popParentIndex(ArrayList<Integer> parentIndices) {
         if (parentIndices != null) {
@@ -597,14 +753,58 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
      * This method returns {@code true} if and only if the visitor is done and
      * no further calls to visit must be made.
      */
+//    private static <T> boolean __visitSD(SpiderDiagram sd, DiagramVisitor<T> visitor, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices, ArrayList<Integer> parentIndices) {
+//        if (sd instanceof CompoundSpiderDiagram) {
+//            return __visitCompoundSD(visitor, (CompoundSpiderDiagram) sd, subDiagramIndex, parents, childIndices, parentIndices);
+//        } else {
+//            visitor.visit(sd, subDiagramIndex, parents, childIndices, parentIndices);
+//            return visitor.isDone();
+//        }
+//    }
+    
     private static <T> boolean __visitSD(SpiderDiagram sd, DiagramVisitor<T> visitor, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices, ArrayList<Integer> parentIndices) {
         if (sd instanceof CompoundSpiderDiagram) {
             return __visitCompoundSD(visitor, (CompoundSpiderDiagram) sd, subDiagramIndex, parents, childIndices, parentIndices);
-        } else {
+        } else if(sd instanceof ConceptDiagram){
+        	return visitConceptD(visitor, (ConceptDiagram) sd, subDiagramIndex, parents, childIndices, parentIndices);
+        }
+        else{
             visitor.visit(sd, subDiagramIndex, parents, childIndices, parentIndices);
             return visitor.isDone();
         }
     }
+    
+    
+    //Zohreh 
+    private static <T> boolean visitConceptD(DiagramVisitor<T> visitor, ConceptDiagram cd, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices, ArrayList<Integer> parentIndices) {
+
+        visitor.visit(cd, subDiagramIndex, parents, childIndices, parentIndices);        
+
+        if (cd.getPrimaryCount() > 0 && !visitor.isDone()) {
+        	pushParentIndex(parentIndices, subDiagramIndex);
+        	
+            subDiagramIndex++;
+
+            for (int childIndex = 0; childIndex < cd.getPrimaryCount(); ++childIndex) {
+                PrimarySpiderDiagram child = cd.getPrimary(childIndex);
+                
+                pushChildIndex(childIndices, childIndex);
+                
+                final boolean visitResult = __visitSD(child, visitor, subDiagramIndex, parents, childIndices, parentIndices);
+                
+                popChildIndex(childIndices);
+                
+                if (visitResult) {
+                    return true;
+                }
+                subDiagramIndex += 1;
+            }
+            popParentIndex(parentIndices);
+        }
+        return visitor.isDone();
+    }
+    
+   
 
     /**
      * Compares the operands of this and the other compound diagram. <p>This

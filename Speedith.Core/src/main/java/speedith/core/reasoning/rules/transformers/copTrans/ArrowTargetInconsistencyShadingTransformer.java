@@ -7,6 +7,7 @@ import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
@@ -20,15 +21,15 @@ public class ArrowTargetInconsistencyShadingTransformer extends IdTransformer{
 	
 	private final int indexOfParent;
     private final ArrowArg targetCurveArrow;
-    private final ArrowArg targetSpiderArrow;
+    private final ArrowArg targetSpiderOrCurveWithSpiderArrow;
 
-    public ArrowTargetInconsistencyShadingTransformer(int indexOfParent, ArrowArg targetCurveArrow, ArrowArg targetSpiderArrow) {
+    public ArrowTargetInconsistencyShadingTransformer(int indexOfParent, ArrowArg targetCurveArrow, ArrowArg targetSpiderOrCurveWithSpiderArrow ) {
         if (indexOfParent < 0) {
             throw new TransformationException("The target sub-diagram is not in a conjunction.");
         }
         this.indexOfParent = indexOfParent;
         this.targetCurveArrow = targetCurveArrow;
-        this.targetSpiderArrow = targetSpiderArrow;
+        this.targetSpiderOrCurveWithSpiderArrow = targetSpiderOrCurveWithSpiderArrow ;
     }
     
     
@@ -42,26 +43,46 @@ public class ArrowTargetInconsistencyShadingTransformer extends IdTransformer{
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-    	    PrimarySpiderDiagram targetCurveDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetCurveArrow);
-    	    PrimarySpiderDiagram targetSpiderDiagram= InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetCurveArrow);
+    	    PrimarySpiderDiagram targetCurveDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetCurveArrow);
+    	    PrimarySpiderDiagram targetSpiderOrCurveWithSpiderDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetCurveArrow);
     		
     	    
-    	    if((targetCurveDiagram instanceof CompleteCOPDiagram) && (targetSpiderDiagram instanceof CompleteCOPDiagram)){
+    	    if((targetCurveDiagram instanceof CompleteCOPDiagram) && (targetSpiderOrCurveWithSpiderDiagram instanceof CompleteCOPDiagram)){
     	    	
     	    	CompleteCOPDiagram compTargetCurveDiagram = (CompleteCOPDiagram) targetCurveDiagram;
-    	    	CompleteCOPDiagram compTargetSpiderDiagram = (CompleteCOPDiagram) targetSpiderDiagram;
+    	    	CompleteCOPDiagram compTargetSpiderOrCurveWithSpiderDiagram = (CompleteCOPDiagram) targetSpiderOrCurveWithSpiderDiagram;
     	    	
     	    	assertDiagramContainArrow(compTargetCurveDiagram,targetCurveArrow.getArrow());
     	    	assertTargetCurveArrowIsSuitable(compTargetCurveDiagram);
     	    	
-    	    	assertDiagramContainArrow(compTargetSpiderDiagram,targetSpiderArrow.getArrow());
-    	    	assertTargetSpiderArrowIsSuitable(compTargetSpiderDiagram);
+    	    	assertDiagramContainArrow(compTargetSpiderOrCurveWithSpiderDiagram,targetSpiderOrCurveWithSpiderArrow.getArrow());
+    	    	assertTargetSpiderOrCurveWithSpiderArrowIsSuitable(compTargetSpiderOrCurveWithSpiderDiagram);
 
-    	    	if(! targetCurveArrow.getArrow().arrowSource().equals(targetSpiderArrow.getArrow().arrowSource())){
+    	    	if(compTargetSpiderOrCurveWithSpiderDiagram.arrowTargetContour(targetSpiderOrCurveWithSpiderArrow.getArrow())){
+    	    	String[] allPossibleZones = new String[compTargetSpiderOrCurveWithSpiderDiagram.getAllContours().size()];
+    	    	allPossibleZones = compTargetSpiderOrCurveWithSpiderDiagram.getAllContours().toArray(allPossibleZones);
+    	    	Region regionInsideCurve = new Region(Zones.getZonesInsideAnyContour
+    	    		(Zones.allZonesForContours(allPossibleZones),targetSpiderOrCurveWithSpiderArrow.getArrow().arrowTarget()));
+    	    	
+    	    	Boolean found =false;
+    	    	for (String spider : compTargetSpiderOrCurveWithSpiderDiagram.getSpiders()){
+    	    		if (compTargetSpiderOrCurveWithSpiderDiagram.getHabitats().get(spider).isSubregionOf(regionInsideCurve)){
+    	    			found =true;
+    	    			break;
+    	    			}
+    	    		}
+    	    	if(! found){
+    	    		throw new TransformationException("The curve that is the target of the arrow must fully contain at least one spider.");
+    	    	}
+    	    	}
+    	    	
+
+    	    	
+    	    	if(! targetCurveArrow.getArrow().arrowSource().equals(targetSpiderOrCurveWithSpiderArrow.getArrow().arrowSource())){
     	    		throw new TransformationException("Arrows must have the same source.");
     	    	}
     	    	
-    	    	if(! targetCurveArrow.getArrow().arrowLabel().equals(targetSpiderArrow.getArrow().arrowLabel())){
+    	    	if(! targetCurveArrow.getArrow().arrowLabel().equals(targetSpiderOrCurveWithSpiderArrow.getArrow().arrowLabel())){
     	    		throw new TransformationException("Arrows must have the same label.");
     	    	}
     	    	
@@ -114,20 +135,23 @@ public class ArrowTargetInconsistencyShadingTransformer extends IdTransformer{
     
     
     
-    private void assertTargetSpiderArrowIsSuitable(CompleteCOPDiagram currentDiagram){
+    private void assertTargetSpiderOrCurveWithSpiderArrowIsSuitable(CompleteCOPDiagram currentDiagram){
     	
-    	if (targetSpiderArrow.getArrow().getCardinality() != null ){
+    	if (targetSpiderOrCurveWithSpiderArrow.getArrow().getCardinality() != null ){
     		throw new TransformationException("The arrow cannot have cardinality.");
     	}
     	
-    	if (! currentDiagram.arrowSourceSpider(targetSpiderArrow.getArrow())){
-    		throw new TransformationException("The source of arrow must be a spider.");
+    	if (! currentDiagram.arrowSourceSpider(targetSpiderOrCurveWithSpiderArrow.getArrow())){
+    		throw new TransformationException("The source of the arrow must be a spider.");
     	}
     	
-    	if (! currentDiagram.arrowTargetSpider(targetSpiderArrow.getArrow())){
-    		throw new TransformationException("The target of arrow must be a spider.");
+    	if (! currentDiagram.arrowTargetSpider(targetSpiderOrCurveWithSpiderArrow.getArrow()) && 
+    			! currentDiagram.arrowTargetContour(targetSpiderOrCurveWithSpiderArrow.getArrow())){
+    		throw new TransformationException("The target of the arrow must be a spider or a curve.");
     	}
     }
+    
+    
     
     
     

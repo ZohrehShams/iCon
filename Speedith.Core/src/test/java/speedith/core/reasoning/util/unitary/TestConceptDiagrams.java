@@ -1,13 +1,18 @@
 package speedith.core.reasoning.util.unitary;
 
+import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import speedith.core.lang.Arrow;
 import speedith.core.lang.Cardinality;
 import speedith.core.lang.Comparator;
+import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.ConceptDiagram;
+import speedith.core.lang.Operator;
+import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
+
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.*;
 
 public class TestConceptDiagrams {
@@ -19,6 +24,13 @@ public class TestConceptDiagrams {
 	public static TreeSet<Arrow> setArrowsOne(){
 		TreeSet<Arrow> arrows = new TreeSet<Arrow>();
 		arrows.add(new Arrow("B","X","solid","R"));
+		return arrows;
+	}
+	
+	public static TreeSet<Arrow> setArrowsOneAddedSpiderArrow(){
+		TreeSet<Arrow> arrows = new TreeSet<Arrow>();
+		arrows.add(new Arrow("B","X","solid","R"));
+		arrows.add(new Arrow("t1","X","solid","R"));
 		return arrows;
 	}
 	
@@ -61,13 +73,29 @@ public class TestConceptDiagrams {
 	
 	public static ConceptDiagram oneCD = SpiderDiagrams.createConceptDiagramNoText(oneArrows, sevenLabArrowLUCarCOP,sevenLabArrowLUCarCOP2);
 	public static ConceptDiagram twoCD = SpiderDiagrams.createConceptDiagramNoText(setArrowsOne(), sevenLabArrowLUCarCOP,alternativeLUCarCOP);
+	public static ConceptDiagram twoCompCD = SpiderDiagrams.createConceptDiagramNoText(setArrowsOne(), sevenLabArrowCompCOP,alternativeCompCOPXUnLab);
+	public static ConceptDiagram twoCompCDAddSpiderArrow = SpiderDiagrams.createConceptDiagramNoText(setArrowsOneAddedSpiderArrow(), 
+			sevenLabArrowCompCOP,alternativeCompCOPXUnLab);
+	
 	public static ConceptDiagram threeCD = SpiderDiagrams.createConceptDiagramNoText(setArrowsTwo(), sevenLabArrowLUCarCOP,threeColLUCarCOP);
 	public static ConceptDiagram fourCD = SpiderDiagrams.createConceptDiagramNoText(setArrowsThree(), sevenLabArrowLUCarCOP,threeColSpLUCarCOP);
 	public static ConceptDiagram fourCarCD = SpiderDiagrams.createCarCDiagramNoText(setArrowsThree(), settingArrowCardinalities_st1s1R_geq0(),
-			sevenLabArrowLUCarCOP,threeColSpLUCarCOP);
+			sevenLabArrowCompCOP,threeColSpCompCOP);
+	public static ConceptDiagram fourCarCDThreePrimaries = SpiderDiagrams.createCarCDiagramNoText(setArrowsThree(), settingArrowCardinalities_st1s1R_geq0(),
+			sevenLabArrowCompCOP,threeColSpCompCOP,alternativeCompCOPDiffLabels);
+	public static ConceptDiagram fourCarCDThreePrimariesPUnLab = SpiderDiagrams.createCarCDiagramNoText(setArrowsThree(), settingArrowCardinalities_st1s1R_geq0(),
+			sevenLabArrowCompCOP,threeColSpCompCOP,alternativeCompCOPPUnLab);
+	public static ConceptDiagram fourCarCDCOPOrder = SpiderDiagrams.createCarCDiagramNoText(setArrowsThree(), settingArrowCardinalities_st1s1R_geq0(),
+			threeColSpCompCOP,sevenLabArrowCompCOP);
 	public static ConceptDiagram fiveCarCD = SpiderDiagrams.createCarCDiagramNoText(setArrowsFour(), settingArrowCardinalities_sAXR_geq0(),
 			sevenLabArrowLUCarCOP,threeColSpLUCarCOP);
-
 	
-
+	public static CompoundSpiderDiagram oneCompoundCD =  SpiderDiagrams.createCompoundSD(Operator.Conjunction, 
+			fourCarCDThreePrimaries,threeColSpCompCOPWithArrow);
+	public static CompoundSpiderDiagram twoCompoundCD =  SpiderDiagrams.createCompoundSD(Operator.Conjunction, 
+			fourCarCDThreePrimariesPUnLab,threeColSpCompCOPWithArrow);
+	public static CompoundSpiderDiagram threeCompoundCD =  SpiderDiagrams.createCompoundSD(Operator.Conjunction, 
+			threeColSpCompCOPWithArrow,fourCarCDThreePrimariesPUnLab);
+	public static CompoundSpiderDiagram fourCompoundCD = SpiderDiagrams.createCompoundSD(Operator.Conjunction, oneCompoundCD,fourCarCDThreePrimaries );
+	
 }

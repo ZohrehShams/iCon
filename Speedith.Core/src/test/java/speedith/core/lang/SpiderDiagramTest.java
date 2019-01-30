@@ -41,7 +41,83 @@ public class SpiderDiagramTest {
         assertEquals(4, indexOfParent);
     }
     
-    //Zohreh
+    
+    
+    //Zohreh: tests for index of parent in presence of conceptDiagram
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_root_when_asked_for_parent_of_the_first_subdiagram() throws Exception {
+        int indexOfParent = fourCarCDThreePrimaries.getParentIndexOf(1);
+        assertEquals(0, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_root_when_asked_for_parent_of_the_second_subdiagram() throws Exception {
+        int indexOfParent = fourCarCDThreePrimaries.getParentIndexOf(2);
+        assertEquals(0, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_root_when_asked_for_parent_of_the_third_subdiagram() throws Exception {
+        int indexOfParent = fourCarCDThreePrimaries.getParentIndexOf(3);
+        assertEquals(0, indexOfParent);
+    }
+    
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_root_when_asked_for_parent_of_subdiagram1() throws Exception {
+    	int indexOfParent = oneCompoundCD.getParentIndexOf(1);
+        assertEquals(0, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_left_conjunct_when_asked_for_parent_of_subdiagram2() throws Exception {
+        int indexOfParent = oneCompoundCD.getParentIndexOf(2);
+        assertEquals(1, indexOfParent);
+    }
+    
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_left_conjunct_when_asked_for_parent_of_subdiagram3() throws Exception {
+        int indexOfParent = oneCompoundCD.getParentIndexOf(3);
+        assertEquals(1, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_left_conjunct_when_asked_for_parent_of_subdiagram4() throws Exception {
+        int indexOfParent = oneCompoundCD.getParentIndexOf(4);
+        assertEquals(1, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_root_when_asked_for_parent_of_subdiagram5() throws Exception {
+        int indexOfParent = oneCompoundCD.getParentIndexOf(5);
+        assertEquals(0, indexOfParent);
+    }
+    
+    
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_first_conjunction_when_asked_for_parent_of_subdiagram2() throws Exception {
+        int indexOfParent = fourCompoundCD.getParentIndexOf(2);
+        assertEquals(1, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_first_conncept_diagram_when_asked_for_parent_of_subdiagram4() throws Exception {
+        int indexOfParent = fourCompoundCD.getParentIndexOf(4);
+        assertEquals(2, indexOfParent);
+    }
+    
+    @Test
+    public void getParentIndexOf_should_return_the_index_of_the_second_conncept_diagram_when_asked_for_parent_of_subdiagram10() throws Exception {
+        int indexOfParent = fourCompoundCD.getParentIndexOf(10);
+        assertEquals(7, indexOfParent);
+    }
+    //end
+    
+    
+    
     @Test
     public void compund_with_concept_diagrams_get_sub_diagrams_count(){
     	CompoundSpiderDiagram incCD = SpiderDiagrams.createCompoundSD(Operator.Conjunction,one,oneCD);

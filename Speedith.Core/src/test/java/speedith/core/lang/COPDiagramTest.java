@@ -102,32 +102,32 @@ public class COPDiagramTest {
 	}
 	
 	
-//	@Test
-//	public void testAddArrowEq() {
-//		one.addArrow(fifthArrow);
-//		TreeSet<Arrow> newArrows = new TreeSet<>();
-//		newArrows.add(firstArrow);
-//		newArrows.add(secondArrow);
-//		newArrows.add(thirdArrow);
-//		newArrows.add(fifthArrow);
-//		COPDiagram newCOPDiagram = new COPDiagram(settingSpiders(), settingHabitats(), settingShadedZones(), 
-//				settingPresentZones(), newArrows);
-//		/**assertEquals(one,newCOPDiagram);**/
-//        assertTrue(newCOPDiagram.equals(one));
-//	}
+	@Test
+	public void testAddArrowEq() {
+		COPDiagram newOne = one.addArrow(fifthArrow);
+		TreeSet<Arrow> newArrows = new TreeSet<>();
+		newArrows.add(firstArrow);
+		newArrows.add(secondArrow);
+		newArrows.add(thirdArrow);
+		newArrows.add(fifthArrow);
+		COPDiagram newCOPDiagram = new COPDiagram(settingSpiders(), settingHabitats(), settingShadedZones(), 
+				settingPresentZones(), newArrows);
+//		assertEquals(newOne,newCOPDiagram);
+        assertTrue(newCOPDiagram.equals(newOne));
+	}
 
 	
-//	@Test
-//	public void testAddArrowUnEq() {
-//		one.addArrow(fifthArrow);
-//		TreeSet<Arrow> newArrows = new TreeSet<>();
-//		newArrows.add(firstArrow);
-//		newArrows.add(secondArrow);
-//		newArrows.add(thirdArrow);
-//		COPDiagram newCOPDiagram = new COPDiagram(settingSpiders(), settingHabitats(), settingShadedZones(), 
-//				settingPresentZones(), newArrows);
-//        assertFalse(newCOPDiagram.equals(one));
-//	}
+	@Test
+	public void testAddArrowUnEq() {
+		COPDiagram newOne = one.addArrow(fifthArrow);
+		TreeSet<Arrow> newArrows = new TreeSet<>();
+		newArrows.add(firstArrow);
+		newArrows.add(secondArrow);
+		newArrows.add(thirdArrow);
+		COPDiagram newCOPDiagram = new COPDiagram(settingSpiders(), settingHabitats(), settingShadedZones(), 
+				settingPresentZones(), newArrows);
+        assertFalse(newCOPDiagram.equals(newOne));
+	}
 
 	
     

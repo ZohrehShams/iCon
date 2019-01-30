@@ -14,9 +14,6 @@ abstract class SimpleTransformer extends Transformer {
     transform(sd, diagramIndex, JavaConversions.asScalaBuffer(parents), JavaConversions.asScalaBuffer(childIndices).asInstanceOf[mutable.Buffer[Int]])
   }
   
-  /**override def transform(sd: COPDiagram, diagramIndex: Int, parents: java.util.ArrayList[CompoundSpiderDiagram], childIndices: java.util.ArrayList[java.lang.Integer]): SpiderDiagram = {
-    transform(sd, diagramIndex, JavaConversions.asScalaBuffer(parents), JavaConversions.asScalaBuffer(childIndices).asInstanceOf[mutable.Buffer[Int]])
-  }**/
 
   override def transform(sd: NullSpiderDiagram, diagramIndex: Int, parents: java.util.ArrayList[CompoundSpiderDiagram], childIndices: java.util.ArrayList[java.lang.Integer]): SpiderDiagram = {
     transform(sd, diagramIndex, JavaConversions.asScalaBuffer(parents), JavaConversions.asScalaBuffer(childIndices).asInstanceOf[mutable.Buffer[Int]])

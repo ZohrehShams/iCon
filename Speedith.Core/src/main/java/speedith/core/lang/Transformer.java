@@ -239,6 +239,6 @@ public interface Transformer {
      * do.
      */
     
-    
+
     public boolean isDone();
 }

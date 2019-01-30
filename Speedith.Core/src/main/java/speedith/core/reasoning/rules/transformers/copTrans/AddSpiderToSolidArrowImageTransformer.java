@@ -1,6 +1,7 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
+
 import speedith.core.lang.Arrow;
 import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
@@ -41,8 +42,8 @@ public class AddSpiderToSolidArrowImageTransformer extends IdTransformer{
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-    	    PrimarySpiderDiagram arrowDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetArrow);
-    	    PrimarySpiderDiagram  spiderDiagram= InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetArrow);
+    	    PrimarySpiderDiagram arrowDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetArrow);
+    	    PrimarySpiderDiagram  spiderDiagram= (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetArrow);
     		
     	    
     	    if((arrowDiagram instanceof CompleteCOPDiagram) && (spiderDiagram instanceof CompleteCOPDiagram)){

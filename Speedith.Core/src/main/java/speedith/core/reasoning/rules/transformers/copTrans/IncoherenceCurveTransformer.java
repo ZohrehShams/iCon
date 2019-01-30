@@ -38,8 +38,8 @@ public class IncoherenceCurveTransformer extends IdTransformer{
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
     		
-    	    PrimarySpiderDiagram diagramWithCurve = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetContours.get(0));
-    	    PrimarySpiderDiagram diagramWithExtraShading = InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetContours.get(0));
+    	    PrimarySpiderDiagram diagramWithCurve = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetContours.get(0));
+    	    PrimarySpiderDiagram diagramWithExtraShading = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetContours.get(0));
     		
     	    if(InferenceTargetChecks.assertCurveIsNotFullyShaded(diagramWithCurve, targetContours.get(0).getContour())){
         	    InferenceTargetChecks.assertCurveIsSpiderFree(diagramWithCurve, targetContours.get(0).getContour());

@@ -3,6 +3,7 @@ package speedith.core.lang;
 import static propity.util.Sets.equal;
 import static speedith.core.i18n.Translations.i18n;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,14 +19,13 @@ import java.util.TreeSet;
 
 public class CarCDiagram extends ConceptDiagram{
 
-	public static final String CDTextBinaryId = "BinaryCarCD";
+	private static final long serialVersionUID = 2455720597909942571L;
+	public static final String CDCarTextBinaryId = "BinaryCarCD";
+	public static final String CDCarTextId = "CarCD";
 	public static final String CDTextArrowCardinalitiesAttribute = "cd_arrowCar";
-	
-	
-	//A map from arrows to their cardinalities
 	private  TreeMap<Arrow,Cardinality>  cd_arrowCardinalities;
 	
-	
+
 	CarCDiagram(ArrayList<PrimarySpiderDiagram> primaries, TreeSet<Arrow> arrows,TreeMap<Arrow,Cardinality> arrowCardinalities) {
 		super(primaries, arrows);
 		this.cd_arrowCardinalities  = arrowCardinalities  == null ? new TreeMap<Arrow,Cardinality>() : arrowCardinalities;
@@ -36,9 +36,6 @@ public class CarCDiagram extends ConceptDiagram{
     	this(primaries == null ? null : new ArrayList<>(primaries),
     			arrows == null ? null : new TreeSet<>(arrows),
     			arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities));
-    	
-//    	super(primaries, arrows);
-//		this.cd_arrowCardinalities  = arrowCardinalities  == null ? null : new TreeMap<Arrow,Cardinality>(arrowCardinalities );	
     }
     
 	public SortedMap<Arrow,Cardinality> get_cd_ArrowCardinalities() {
@@ -80,7 +77,34 @@ public class CarCDiagram extends ConceptDiagram{
 	             && are_cd_ArrowCardinalitiesValid());
 	}
 	
+	@Override
+	public void toString(Appendable sb) throws IOException {
+		 if (sb == null) {
+	            throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "sb"));
+	        }
+		 	printId(sb);
+	        sb.append(" {");
+	        printArgs(sb);
+	        sb.append(", ");
+	        printArrows(sb);
+	        sb.append('}');
+		
+	}
 	
+
+
+    private void printId(Appendable sb) throws IOException {
+        switch (getPrimaryCount()) {
+            case 2:
+                sb.append(CDCarTextBinaryId);
+                break;
+            default:
+                sb.append(CDCarTextId);
+                break;
+        }
+    }
+    
+    
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof CarCDiagram){
@@ -93,6 +117,21 @@ public class CarCDiagram extends ConceptDiagram{
 	}
 
 	
+	
+	@Override
+	public boolean isSEquivalentTo(SpiderDiagram other) {
+	      if (equals(other)) {
+	          return true;
+	      }
+	      if (other instanceof CarCDiagram) {
+	         CarCDiagram carCDiagram = (CarCDiagram) other;
+	        
+	         return (super.isSEquivalentTo(other) && 					
+	        		equal(get_cd_ArrowCardinalities() == null ? null : get_cd_ArrowCardinalities().entrySet(), 
+	        				carCDiagram.get_cd_ArrowCardinalities()  == null ? null : carCDiagram.get_cd_ArrowCardinalities() .entrySet()));
+	      }
+	      return false;
+	}
     
 
 

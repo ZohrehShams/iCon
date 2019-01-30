@@ -23,13 +23,13 @@ import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.util.unitary.AddCurve;
 import speedith.core.reasoning.util.unitary.DeleteCurve;
 
-public class InverseToDashedArrowTransformer extends IdTransformer {
+public class AddSpiderArrowTargetTransformer extends IdTransformer {
 	
 	private ArrowArg arrowArg;
 	private SpiderArg spiderArg;
     private final boolean applyForward;
 
-    public InverseToDashedArrowTransformer(ArrowArg arrowArg, SpiderArg spiderArg,boolean applyForward) {
+    public AddSpiderArrowTargetTransformer(ArrowArg arrowArg, SpiderArg spiderArg,boolean applyForward) {
     	this.arrowArg = arrowArg;
     	this.spiderArg = spiderArg;
     	this.applyForward = applyForward;
@@ -60,9 +60,7 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
         		CompleteCOPDiagram compCopNoCurve = (CompleteCOPDiagram) deleteCurve.deletingCurve();
         		
         		//Add the new Arrow. 
-        		//String newLabel = oldArrow.arrowLabel().substring(1);
-        		String newLabel = oldArrow.arrowLabel().substring(0, oldArrow.arrowLabel().length() - 1);
-        		Arrow newArrow = new Arrow(spiderArg.getSpider(),oldArrow.arrowSource(),"dashed",newLabel);
+        		Arrow newArrow = new Arrow(oldArrow.arrowSource(),spiderArg.getSpider(),"dashed",oldArrow.arrowLabel());
         		CompleteCOPDiagram compCopNoCurveArrow = (CompleteCOPDiagram) compCopNoCurve.addArrow(newArrow);
             	
             	return compCopNoCurveArrow;
@@ -99,9 +97,6 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
     
     
     private void assertSuitabilityOfArrow(CompleteCOPDiagram currentDiagram){
-    	if (! arrowArg.getArrow().arrowType().equals("solid")){
-    		throw new TransformationException("The arrow has to be solid.");
-    	}
     	
     	if (!currentDiagram.arrowSourceSpider(arrowArg.getArrow())){
     		throw new TransformationException("The source of arrow has to be a spider.");
@@ -114,10 +109,6 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
     	
     	if (!currentDiagram.arrowTargetContour(arrowArg.getArrow())){
     		throw new TransformationException("The target of arrow has to be a curve.");
-    	}
-    	
-    	if (! arrowArg.getArrow().arrowLabel().endsWith("-")){
-    		throw new TransformationException("The arrow has to have an inverse label.");
     	}
     	
     	if (currentDiagram.getArrowCardinalities().get(arrowArg.getArrow()) != null){

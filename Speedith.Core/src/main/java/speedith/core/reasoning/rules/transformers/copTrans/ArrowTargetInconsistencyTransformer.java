@@ -43,8 +43,8 @@ public class ArrowTargetInconsistencyTransformer extends IdTransformer{
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-    	    PrimarySpiderDiagram targetCurveDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetCurveArrow);
-    	    PrimarySpiderDiagram targetSpiderDiagram= InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetCurveArrow);
+    	    PrimarySpiderDiagram targetCurveDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetCurveArrow);
+    	    PrimarySpiderDiagram targetSpiderDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetCurveArrow);
     		
     	    
     	    if((targetCurveDiagram instanceof CompleteCOPDiagram) && (targetSpiderDiagram instanceof CompleteCOPDiagram)){

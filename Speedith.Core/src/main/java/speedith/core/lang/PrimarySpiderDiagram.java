@@ -394,6 +394,7 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
         SpiderDiagram curTransform = t.transform(this, 0, new ArrayList<CompoundSpiderDiagram>(), new ArrayList<Integer>());
         return curTransform == null ? this : curTransform;
     }
+    
 
     @Override
     public int getSubDiagramCount() {

@@ -7,7 +7,9 @@ import propity.util.Sets
 
 import scala.collection.JavaConversions.{asJavaCollection, asScalaSet, iterableAsScalaIterable, setAsJavaSet}
 
-case class Region(zones: Set[Zone]) extends Comparable[Region] {  
+@SerialVersionUID(1438848965274344333L)
+case class Region(zones: Set[Zone]) extends Comparable[Region] with Serializable{  
+  
   val sortedZones: java.util.SortedSet[Zone] = {
     Collections.unmodifiableSortedSet(
       new java.util.TreeSet[Zone](setAsJavaSet(zones))

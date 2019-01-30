@@ -74,6 +74,7 @@ public interface DiagramVisitor<T> {
      */
     void visit(SpiderDiagram subDiagram, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices, ArrayList<Integer> parentIndices);
 
+        
     /**
      * Indicates that this visitor has done all the visiting it
      * intends to do.

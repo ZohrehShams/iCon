@@ -24,6 +24,7 @@ public class TestCOPDiagrams {
 	public static final Arrow dAC = new Arrow("A","C","dashed");
 	public static final Arrow sAC = new Arrow("A","C","solid");
 	public static final Arrow dAB = new Arrow("A","B","dashed");
+	public static final Arrow ds1X = new Arrow("s1","X","solid");
 	
 	public static TreeSet<Arrow> arrows = new TreeSet<Arrow>();
 	
@@ -60,6 +61,13 @@ public class TestCOPDiagrams {
 		TreeSet<String> spiders = new TreeSet<>();
 		spiders.add("s1");
 		spiders.add("s2");
+		return spiders;
+	}
+	
+	public static TreeSet<String> settingSpidersg1g2(){
+		TreeSet<String> spiders = new TreeSet<>();
+		spiders.add("g1");
+		spiders.add("g2");
 		return spiders;
 	}
 	
@@ -105,6 +113,13 @@ public class TestCOPDiagrams {
         return habitats;
 	}
 	
+	public static TreeMap<String, Region> settingHabitats_g1QP_g2PQ(){
+        TreeMap<String, Region> habitats = new TreeMap<>();
+        habitats.put("g1", new Region(Zone.fromInContours("Q").withOutContours("P")));
+        habitats.put("g2", new Region(Zone.fromInContours("P").withOutContours("Q")));
+        return habitats;
+	}
+	
 	//Zohreh: t1 is in a region that includes zone([B],[A,C]) and zone([B,C],[A]) 
 	public static TreeMap<String, Region> settingHabitats_t1_reg_B_AC_BC_A_t2_A_BC(){
         TreeMap<String, Region> habitats = new TreeMap<>();
@@ -139,6 +154,12 @@ public class TestCOPDiagrams {
 	public static TreeSet<Zone> settingShadedZones_X_Y(){
 		TreeSet<Zone> shadedZones = new TreeSet<>();
 		shadedZones.add(Zone.fromInContours("X","Y"));
+        return shadedZones;
+	}
+	
+	public static TreeSet<Zone> settingShadedZones_P_Q(){
+		TreeSet<Zone> shadedZones = new TreeSet<>();
+		shadedZones.add(Zone.fromInContours("P","Q"));
         return shadedZones;
 	}
 	
@@ -224,6 +245,15 @@ public class TestCOPDiagrams {
 		presentZones.add(Zone.fromInContours("Y").withOutContours("X"));
 		presentZones.add(Zone.fromInContours("X").withOutContours("Y"));
 		presentZones.add(Zone.fromOutContours("X","Y"));
+        return presentZones;
+	}
+	
+	
+	public static TreeSet<Zone> settingPresentZones_Q_P_P_Q__PQ(){
+		TreeSet<Zone> presentZones = new TreeSet<>();
+		presentZones.add(Zone.fromInContours("Q").withOutContours("P"));
+		presentZones.add(Zone.fromInContours("P").withOutContours("Q"));
+		presentZones.add(Zone.fromOutContours("P","Q"));
         return presentZones;
 	}
 	
@@ -379,6 +409,12 @@ public class TestCOPDiagrams {
         return arrows;
 	}
 	
+	public static TreeSet<Arrow> settingArrows_ds1X(){
+		TreeSet<Arrow> arrows = new TreeSet<>();
+		arrows.add(ds1X);
+        return arrows;
+	}
+	
 	
 	
 	
@@ -399,6 +435,13 @@ public class TestCOPDiagrams {
 		TreeMap<String, String> spiderLabels = new TreeMap<>();
 		spiderLabels.put("s1","sp");
 		spiderLabels.put("s2","");
+		return spiderLabels;
+	}
+	
+	public static TreeMap<String,String> settingSpiderLabels_g1_sp_g2__(){
+		TreeMap<String, String> spiderLabels = new TreeMap<>();
+		spiderLabels.put("g1","sp");
+		spiderLabels.put("g2","");
 		return spiderLabels;
 	}
 	
@@ -430,6 +473,25 @@ public class TestCOPDiagrams {
 		TreeMap<String, String> curveLabels = new TreeMap<>();
 		curveLabels.put("X","Red");
 		curveLabels.put("Y","Blue");
+		return curveLabels;
+	}
+	
+	public static TreeMap<String,String> settingCurveLabels_X__Y_Blue(){
+		TreeMap<String, String> curveLabels = new TreeMap<>();
+		curveLabels.put("Y","Blue");
+		return curveLabels;
+	}
+	
+	public static TreeMap<String,String> settingCurveLabels_P_Red_Q_Blue(){
+		TreeMap<String, String> curveLabels = new TreeMap<>();
+		curveLabels.put("P","Red");
+		curveLabels.put("Q","Blue");
+		return curveLabels;
+	}
+	
+	public static TreeMap<String,String> settingCurveLabels_P__Q_Blue(){
+		TreeMap<String, String> curveLabels = new TreeMap<>();
+		curveLabels.put("Q","Blue");
 		return curveLabels;
 	}
 	
@@ -513,6 +575,9 @@ public class TestCOPDiagrams {
 	public static final LUCarCOPDiagram sevenLabArrowLUCarCOP = LUCarCOPDiagram.createLUCarCOPDiagram(settingSpiderst1t2(), settingHabitats_t1BA_t2AB(), 
 			settingShadedZones_A_B(), settingPresentZones_B_A_A_B__AB(), settingArrows_sABhas(), settingSpiderLabels_t1__(), 
 			settingCurveLabels_A_First_B_Second(),settingArrowCardinalities_sABhas_geq0());
+	public static final CompleteCOPDiagram sevenLabArrowCompCOP = SpiderDiagrams.createCompleteCOPDiagram(settingSpiderst1t2(), settingHabitats_t1BA_t2AB(), 
+			settingShadedZones_A_B(), settingPresentZones_B_A_A_B__AB(), settingArrows_sABhas(), settingSpiderLabels_t1__(), 
+			settingCurveLabels_A_First_B_Second(),settingArrowCardinalities_sABhas_geq0(),null);
 	public static final LUCarCOPDiagram sevenLabArrowLUCarCOP2 = LUCarCOPDiagram.createLUCarCOPDiagram(settingSpiderst1t2(), settingHabitats_t1BA_t2AB(), 
 			settingShadedZones_A_B(), settingPresentZones_B_A_A_B__AB(), settingArrows_sABhas(), settingSpiderLabels_t1__(), 
 			settingCurveLabels_A_First_B_Second(),settingArrowCardinalities_sABhas_geq2());
@@ -520,6 +585,20 @@ public class TestCOPDiagrams {
 	public static final LUCarCOPDiagram alternativeLUCarCOP = LUCarCOPDiagram.createLUCarCOPDiagram(settingSpiderss1s2(), settingHabitats_s1YX_s2XY(), 
 			settingShadedZones_X_Y(), settingPresentZones_Y_X_X_Y__XY(), settingArrows_empty(), settingSpiderLabels_s1_sp_s2__(), 
 			settingCurveLabels_X_Red_Y_Blue(),settingArrowCardinalities_empty());
+	public static final CompleteCOPDiagram alternativeCompCOP = SpiderDiagrams.createCompleteCOPDiagram(settingSpiderss1s2(), settingHabitats_s1YX_s2XY(), 
+			settingShadedZones_X_Y(), settingPresentZones_Y_X_X_Y__XY(), settingArrows_empty(), settingSpiderLabels_s1_sp_s2__(), 
+			settingCurveLabels_X_Red_Y_Blue(),settingArrowCardinalities_empty(),null);
+	public static final CompleteCOPDiagram alternativeCompCOPXUnLab = SpiderDiagrams.createCompleteCOPDiagram(settingSpiderss1s2(), settingHabitats_s1YX_s2XY(), 
+			settingShadedZones_X_Y(), settingPresentZones_Y_X_X_Y__XY(), settingArrows_empty(), settingSpiderLabels_s1_sp_s2__(), 
+			settingCurveLabels_X__Y_Blue(),settingArrowCardinalities_empty(),null);
+	public static final CompleteCOPDiagram alternativeCompCOPDiffLabels = SpiderDiagrams.createCompleteCOPDiagram(settingSpidersg1g2(), 
+			settingHabitats_g1QP_g2PQ(),settingShadedZones_P_Q(), settingPresentZones_Q_P_P_Q__PQ(), settingArrows_empty(), 
+			settingSpiderLabels_g1_sp_g2__(), settingCurveLabels_P_Red_Q_Blue(),settingArrowCardinalities_empty(),null);
+	public static final CompleteCOPDiagram alternativeCompCOPPUnLab= SpiderDiagrams.createCompleteCOPDiagram(settingSpidersg1g2(), 
+			settingHabitats_g1QP_g2PQ(),settingShadedZones_P_Q(), settingPresentZones_Q_P_P_Q__PQ(), settingArrows_empty(), 
+			settingSpiderLabels_g1_sp_g2__(), settingCurveLabels_P__Q_Blue(),settingArrowCardinalities_empty(),null);
+	
+	
 	
 	public static final LUCarCOPDiagram threeColLUCarCOP = LUCarCOPDiagram.createLUCarCOPDiagram(null, null, 
 			settingShadedZones_XY_Z_XYZ__XZ_Y_YZ_X(), settingPresentZones__XYZ_X_YZ_Y_XZ_Z_XY(), settingArrows_empty(), null, 
@@ -527,7 +606,17 @@ public class TestCOPDiagrams {
 	
 	public static final LUCarCOPDiagram threeColSpLUCarCOP = LUCarCOPDiagram.createLUCarCOPDiagram(settingSpiderss1(), 
 			settingHabitats_s1_X_YZ(), settingShadedZones_XY_Z_XYZ__XZ_Y_YZ_X(), settingPresentZones__XYZ_X_YZ_Y_XZ_Z_XY(), 
-			settingArrows_empty(), settingSpiderLabels_s1_s1_(), settingCurveLabels_X_Red_Y_Blue_Z_Yellow(),settingArrowCardinalities_empty());
+			settingArrows_empty(), settingSpiderLabels_s1_s1_(), settingCurveLabels_X_Red_Y_Blue_Z_Yellow(),
+			settingArrowCardinalities_empty());
+	public static final CompleteCOPDiagram threeColSpCompCOP = SpiderDiagrams.createCompleteCOPDiagram(settingSpiderss1(), 
+			settingHabitats_s1_X_YZ(), settingShadedZones_XY_Z_XYZ__XZ_Y_YZ_X(), settingPresentZones__XYZ_X_YZ_Y_XZ_Z_XY(), 
+			settingArrows_empty(), settingSpiderLabels_s1_s1_(), settingCurveLabels_X_Red_Y_Blue_Z_Yellow(),
+			settingArrowCardinalities_empty(),null);
+	public static final CompleteCOPDiagram threeColSpCompCOPWithArrow = SpiderDiagrams.createCompleteCOPDiagram(settingSpiderss1(), 
+			settingHabitats_s1_X_YZ(), settingShadedZones_XY_Z_XYZ__XZ_Y_YZ_X(), settingPresentZones__XYZ_X_YZ_Y_XZ_Z_XY(), 
+			settingArrows_ds1X(), settingSpiderLabels_s1_s1_(), settingCurveLabels_X_Red_Y_Blue_Z_Yellow(),
+			settingArrowCardinalities_empty(),null);
+	
 	
 	public static COPDiagram eight = COPDiagram.createCOPDiagram(null, null, settingShadedZones_AB_C_ABC__AC_B_BC_A(), 
 			settingPresentZones__ABC_A_BC_B_AC_C_AB(), settingArrows_sAB_sAC());

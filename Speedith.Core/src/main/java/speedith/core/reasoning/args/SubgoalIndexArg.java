@@ -94,11 +94,11 @@ public class SubgoalIndexArg implements Cloneable, RuleArg, Serializable {
         }
     }
 
-    public static int assertSameGoalIndices(int goalIndex, SubgoalIndexArg contourArg) throws RuleApplicationException {
-        if (goalIndex != -1 && goalIndex != contourArg.getSubgoalIndex()) {
+    public static int assertSameGoalIndices(int goalIndex, SubgoalIndexArg arg) throws RuleApplicationException {
+        if (goalIndex != -1 && goalIndex != arg.getSubgoalIndex()) {
             throw new RuleApplicationException("The unitary diagrams must be in the same goal.");
         } else {
-            goalIndex = contourArg.getSubgoalIndex();
+            goalIndex = arg.getSubgoalIndex();
         }
         return goalIndex;
     }

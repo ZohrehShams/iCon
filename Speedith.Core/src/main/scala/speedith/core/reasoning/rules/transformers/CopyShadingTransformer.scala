@@ -21,8 +21,8 @@ case class CopyShadingTransformer(compoundDiagramIndex: Int,
     assertIsConjunction(currentDiagram)
     assertOperandsAreUnitary(currentDiagram)
 
-    val diagramWithSpider = getSourceOperand(currentDiagram, compoundDiagramIndex, zoneArgs.head)
-    val diagramWithoutSpider = getTargetOperand(currentDiagram, compoundDiagramIndex, zoneArgs.head)
+    val diagramWithSpider = getSourceOperand(currentDiagram, compoundDiagramIndex, zoneArgs.head).asInstanceOf[PrimarySpiderDiagram]
+    val diagramWithoutSpider = getTargetOperand(currentDiagram, compoundDiagramIndex, zoneArgs.head).asInstanceOf[PrimarySpiderDiagram]
 
     copyShading(diagramWithSpider, diagramWithoutSpider)
   }

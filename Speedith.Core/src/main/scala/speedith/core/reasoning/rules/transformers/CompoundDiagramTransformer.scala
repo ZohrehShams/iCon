@@ -19,15 +19,10 @@ abstract class CompoundDiagramTransformer(compoundDiagramIndex: Int) extends IdT
   }
 
   override def transform(psd: PrimarySpiderDiagram, diagramIndex: Int, parents: java.util.ArrayList[CompoundSpiderDiagram], childIndices: java.util.ArrayList[java.lang.Integer]): SpiderDiagram = {
-    
     assertDiagramIsNotTarget(diagramIndex)
     null
   }
   
-    /**override def transform(psd: COPDiagram, diagramIndex: Int, parents: java.util.ArrayList[CompoundSpiderDiagram], childIndices: java.util.ArrayList[java.lang.Integer]): SpiderDiagram = {
-    assertDiagramIsNotTarget(diagramIndex)
-    null
-  }**/
 
   override def transform(nsd: NullSpiderDiagram, diagramIndex: Int, parents: java.util.ArrayList[CompoundSpiderDiagram], childIndices: java.util.ArrayList[java.lang.Integer]): SpiderDiagram = {
     assertDiagramIsNotTarget(diagramIndex)

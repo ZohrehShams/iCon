@@ -208,7 +208,6 @@ public class COPDiagram extends PrimarySpiderDiagram {
   
  
   public COPDiagram addArrow(Arrow arrow) {
-  	//TreeSet<Arrow> newArrows = getArrowsMod();
 	TreeSet<Arrow> newArrows = new TreeSet<Arrow>(getArrows());
   	if (arrow != null){
   		if ((! containsArrow(arrow)) && (validArrow(arrow))) {
@@ -216,8 +215,6 @@ public class COPDiagram extends PrimarySpiderDiagram {
   		}
   	}
   	return new COPDiagram(getSpiders(), getHabitats(), getShadedZones(), getPresentZones(), newArrows);
-//  	return new COPDiagram(getSpidersMod(), getHabitatsMod(), 
-//  			getShadedZonesMod(), getPresentZonesMod(), newArrows);
   } 
   
   
@@ -312,27 +309,6 @@ public class COPDiagram extends PrimarySpiderDiagram {
 		return false;
 	}
 	
-// @Override
-//  public boolean equals(Object other) {
-//      return other == this ||
-//             (other instanceof COPDiagram &&
-//              __isCOPEqual((COPDiagram) other));
-//  }
-//
-//  private boolean __isCOPEqual(COPDiagram cop) {
-//      return hashCode() == cop.hashCode()
-//              && equal(getSpiders(), cop.getSpiders())
-//              && equal(getHabitats() == null ? null : getHabitats().entrySet(), 
-//              		cop.getHabitats() == null ? null : cop.getHabitats().entrySet())
-//              && equal(getShadedZones(), cop.getShadedZones())
-//              && equal(getPresentZones(), cop.getPresentZones())
-//              && equal(getArrows(), cop.getArrows());
-//  }
-//  
-//  @Override
-//  public int hashCode() {
-//	  return super.hashCode() + (getArrows() == null ? 0 : getArrows().hashCode());
-//  }
   
   
   
@@ -343,19 +319,6 @@ public class COPDiagram extends PrimarySpiderDiagram {
       }
       if (other instanceof COPDiagram) {
          COPDiagram cop = (COPDiagram) other;
-//          
-//          if (getSpidersCount() != cop.getSpidersCount()) {
-//              return false;
-//          }
-//          if (!__sameHabitats(cop)) {
-//              return false;
-//          }
-//          
-//          if (! equal(getShadedZones(), cop.getShadedZones())) {
-//              return false;
-//          }
-         
-//          return equal(getArrows(), cop.getArrows());
 
           return super.isSEquivalentTo(other) && (equal(getArrows(), cop.getArrows()));
       }

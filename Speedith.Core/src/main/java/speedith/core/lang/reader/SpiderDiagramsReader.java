@@ -398,8 +398,12 @@ public class SpiderDiagramsReader {
                     return CompleteCOPTranslator.Instance.fromASTNode(treeNode);
                 case SpiderDiagramsParser.CD_BINARY:
                 	return CDTranslator.BinaryTranslator.fromASTNode(treeNode);
+                case SpiderDiagramsParser.CD:
+                	return CDTranslator.NaryTranslator.fromASTNode(treeNode);
                 case SpiderDiagramsParser.CD_Car_BINARY:
                 	return CDCarTranslator.BinaryTranslator.fromASTNode(treeNode);
+                case SpiderDiagramsParser.CD_Car:
+                	return CDCarTranslator.NaryTranslator.fromASTNode(treeNode);
                 default:
                     throw new ReadingException(i18n("ERR_UNKNOWN_SD_TYPE"));
             }

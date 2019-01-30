@@ -14,7 +14,6 @@ class AddAllMissingZonesTransformer (target:  SubDiagramIndexArg) extends IdTran
                          diagramIndex: Int,
                          parents: java.util.ArrayList[CompoundSpiderDiagram],
                          childIndices: java.util.ArrayList[java.lang.Integer]): SpiderDiagram = {
-    
     if (diagramIndex == subDiagramIndex) {
       
       if ( (psd.getShadedZones -- psd.getPresentZones).isEmpty) {
@@ -43,45 +42,10 @@ class AddAllMissingZonesTransformer (target:  SubDiagramIndexArg) extends IdTran
       }else{
         SpiderDiagrams.createPrimarySD(commonSpiders,commonHabitats,commonShadedZones,commonPresentZones)
         }
-
-//      if(psd.isInstanceOf[CompleteCOPDiagram]){
-//        val cCop = psd.asInstanceOf[CompleteCOPDiagram]
-//         
-//            SpiderDiagrams.createCompleteCOPDiagram(
-//            cCop.getSpiders,
-//            cCop.getHabitats, 
-//            cCop.getShadedZones, 
-//            cCop.getPresentZones ++ ( cCop.getShadedZones -- cCop.getPresentZones), 
-//            cCop.getArrows,
-//            cCop.getSpiderLabels, 
-//            cCop.getCurveLabels,
-//            cCop.getArrowCardinalities,
-//            cCop.getSpiderComparators)
-//         
-//      }
-//      else{
-//       if(psd.isInstanceOf[LUCarCOPDiagram]){
-//         val lucarcop = psd.asInstanceOf[LUCarCOPDiagram]
-//            createLUCarCOPDiagram(
-//            lucarcop.getSpiders,
-//            lucarcop.getHabitats, 
-//            lucarcop.getShadedZones, 
-//            lucarcop.getPresentZones ++ (lucarcop.getShadedZones -- lucarcop.getPresentZones), 
-//            lucarcop.getArrows,
-//            lucarcop.getSpiderLabels, 
-//            lucarcop.getCurveLabels,
-//            lucarcop.getArrowCardinalities)
-//         
-//       }else{
-//         SpiderDiagrams.createPrimarySD(psd.getHabitats,psd.getShadedZones, 
-//             psd.getPresentZones ++  (psd.getShadedZones -- psd.getPresentZones))
-//       }
-//      
-//    }
       }else{
       null
     }
-    
   }
+  
   
 }

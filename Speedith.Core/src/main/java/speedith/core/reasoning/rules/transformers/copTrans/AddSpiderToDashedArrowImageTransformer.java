@@ -1,15 +1,18 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import speedith.core.lang.Arrow;
 import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.Operator;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
 import speedith.core.lang.Zones;
@@ -45,33 +48,24 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     	if (diagramIndex == indexOfParent) {
     		
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
-            InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
+            InferenceTargetChecks.assertOperandsAreUnitaryOrConceptDiagram(currentDiagram);
 
-    	    PrimarySpiderDiagram arrowDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, firstArrow);
-    	    PrimarySpiderDiagram  spiderDiagram= InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, firstArrow);
-    		
+    	    SpiderDiagram arrowDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, firstArrow);
+    	    SpiderDiagram  spiderDiagram= InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, firstArrow);
     	    
-    	    if((arrowDiagram instanceof CompleteCOPDiagram) && (spiderDiagram instanceof CompleteCOPDiagram)){
-    	    	
-    	    	CompleteCOPDiagram compArrowDiagram = (CompleteCOPDiagram) arrowDiagram;
-    	    	CompleteCOPDiagram compSpiderDiagram = (CompleteCOPDiagram) spiderDiagram;
-    	    	
-    	    	
-    	    	
-    	    	assertDiagramContainArrow(compArrowDiagram,firstArrow.getArrow());
-    	    	assertFirstArrowIsSuitable(compArrowDiagram);
-    	    	assertDiagramContainCurve(compArrowDiagram,curve.getContour());
-    	    	assertCurveIsSuitable(compArrowDiagram);
-    	    	
-    	    	
-    	    	assertDiagramContainArrow(compSpiderDiagram,secondArrow.getArrow());
-    	    	assertSecondArrowIsSuitable(compSpiderDiagram);
-    	    	
-    	    	if (compArrowDiagram.getSpiders().contains(secondArrow.getArrow().arrowTarget())){
-    	    		throw new TransformationException("The spider being added to the dashed arrow image cannot exists in the destination diagram.");
-    	    	}
-    	    	
-    	    	
+    	    InferenceTargetChecks.assertDiagramContainArrow(arrowDiagram,firstArrow.getArrow());
+    	    assertFirstArrowIsSuitable(arrowDiagram);
+    	    InferenceTargetChecks.assertDiagramContainCurve(arrowDiagram,curve.getContour());
+    	    InferenceTargetChecks.assertCurveIsNamed(arrowDiagram,curve.getContour());
+    	    
+    	    InferenceTargetChecks.assertDiagramContainArrow(spiderDiagram,secondArrow.getArrow());
+    	    assertSecondArrowIsSuitable(spiderDiagram);
+    	    
+    		assertSpiderNotInDestination(arrowDiagram,secondArrow.getArrow().arrowTarget());
+    		
+    		if(arrowDiagram instanceof CompleteCOPDiagram){
+    			CompleteCOPDiagram compArrowDiagram = (CompleteCOPDiagram) arrowDiagram;
+    			
     	    	String[] allPossibleZones = new String[compArrowDiagram.getAllContours().size()];
     	    	allPossibleZones = compArrowDiagram.getAllContours().toArray(allPossibleZones);
     	    	Region regionInsideArrowTarget = new Region(Zones.getZonesInsideAnyContour
@@ -84,93 +78,152 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     	    	}
     	    	Region nonShadedRegionInsideArrowTarget = new Region(nonShadedZonesInsideArrowTarget);
     	    	
-    	    	
-//    	    	ArrayList<Zone> zonesIniseArrowTarget = new ArrayList<Zone>();
-//    	    	String[] allPossibleZones = new String[compArrowDiagram.getAllContours().size()];
-//    	    	allPossibleZones = compArrowDiagram.getAllContours().toArray(allPossibleZones);
-//    	    	
-//    	    	
-//    	    	for (Zone zone: Zones.allZonesForContours(allPossibleZones)){
-//    	    		if((Zones.isZonePartOfThisContour(zone,firstArrow.getArrow().arrowTarget()))
-//    	    				&&(compArrowDiagram.getPresentZones().contains(zone))){
-//    	    			zonesIniseArrowTarget.add(zone);
-//    	    		}
-//    	    	}
-//    	    	
-//    	    	Region regionInsideArrowTarget = new Region(zonesIniseArrowTarget);
-    	    	
+    	    	if(spiderDiagram instanceof CompleteCOPDiagram){
+    	    		CompleteCOPDiagram compSpiderDiagram = (CompleteCOPDiagram) spiderDiagram;
+        	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
+        	    			compSpiderDiagram.getSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
+                    return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, compSpiderDiagram, firstArrow, indexOfParent);
+    	    	}else{
+    	    		ConceptDiagram cdSpiderDiagram = (ConceptDiagram) spiderDiagram;
+        	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
+        	    			cdSpiderDiagram.getAllSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
+                    return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, cdSpiderDiagram, firstArrow, indexOfParent);
 
-    	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
-    	    			compSpiderDiagram.getSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
-                return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, spiderDiagram, firstArrow, indexOfParent);
-    	    }else return currentDiagram;
+    	    	}
+
+    		}else if(arrowDiagram instanceof ConceptDiagram){
+    			ConceptDiagram cdArrowDiagram = (ConceptDiagram) arrowDiagram;
+    			CompleteCOPDiagram arrowTargetDiagram = (CompleteCOPDiagram) cdArrowDiagram.targetDiagram(firstArrow.getArrow());
+    			
+    	    	String[] allPossibleZones = new String[arrowTargetDiagram.getAllContours().size()];
+    	    	allPossibleZones = arrowTargetDiagram.getAllContours().toArray(allPossibleZones);
+    	    	Region regionInsideArrowTarget = new Region(Zones.getZonesInsideAnyContour
+    	    		(Zones.allZonesForContours(allPossibleZones),firstArrow.getArrow().arrowTarget()));
+    	    	ArrayList<Zone> nonShadedZonesInsideArrowTarget = new ArrayList<Zone>();
+    	    	for(Zone zone: regionInsideArrowTarget.sortedZones()){
+    	    		if(! arrowTargetDiagram.getShadedZones().contains(zone)){
+    	    			nonShadedZonesInsideArrowTarget.add(zone);
+    	    		}
+    	    	}
+    	    	Region nonShadedRegionInsideArrowTarget = new Region(nonShadedZonesInsideArrowTarget);
+    			
+    	    	if(spiderDiagram instanceof CompleteCOPDiagram){
+    	    		CompleteCOPDiagram compSpiderDiagram = (CompleteCOPDiagram) spiderDiagram;
+        	    	CompleteCOPDiagram transformedArrowTargetDiagram = (CompleteCOPDiagram) arrowTargetDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
+        	    			compSpiderDiagram.getSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
+        	    	SpiderDiagram cdArrowDiagramDelOldCop = cdArrowDiagram.deletePrimarySpiderDiagram(arrowTargetDiagram);
+        	    	if (cdArrowDiagramDelOldCop instanceof ConceptDiagram){
+            	    	SpiderDiagram cdArrowDiagramAddTransformedCop = ((ConceptDiagram) cdArrowDiagramDelOldCop).addPrimarySpiderDiagram(transformedArrowTargetDiagram);
+            	    	ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = 
+            	    			((ConceptDiagram)cdArrowDiagramAddTransformedCop).addArrows(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
+            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, compSpiderDiagram, firstArrow, indexOfParent);
+        	    	}else{
+        	    		ArrayList<PrimarySpiderDiagram> primaries = new ArrayList<PrimarySpiderDiagram>();
+        	    		primaries.add((CompleteCOPDiagram) cdArrowDiagramDelOldCop);
+        	    		primaries.add(transformedArrowTargetDiagram);
+        	    		TreeSet<Arrow> arrows = new TreeSet<Arrow>(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
+        	    		ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = SpiderDiagrams.createConceptDiagram(arrows, primaries);
+            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, compSpiderDiagram, firstArrow, indexOfParent);
+        	    	}
+    	    	}else{
+    	    		ConceptDiagram cdSpiderDiagram = (ConceptDiagram) spiderDiagram;
+    	    		CompleteCOPDiagram transformedArrowTargetDiagram = (CompleteCOPDiagram) arrowTargetDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
+    	    				cdSpiderDiagram.getAllSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
+    	    		SpiderDiagram cdArrowDiagramDelOldCop = cdArrowDiagram.deletePrimarySpiderDiagram(arrowTargetDiagram);
+        	    	if (cdArrowDiagramDelOldCop instanceof ConceptDiagram){
+            	    	SpiderDiagram cdArrowDiagramAddTransformedCop = ((ConceptDiagram) cdArrowDiagramDelOldCop).addPrimarySpiderDiagram(transformedArrowTargetDiagram);
+            	    	ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = 
+            	    			((ConceptDiagram)cdArrowDiagramAddTransformedCop).addArrows(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
+            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, cdSpiderDiagram, firstArrow, indexOfParent);
+        	    	}else{
+        	    		ArrayList<PrimarySpiderDiagram> primaries = new ArrayList<PrimarySpiderDiagram>();
+        	    		primaries.add((CompleteCOPDiagram) cdArrowDiagramDelOldCop);
+        	    		primaries.add(transformedArrowTargetDiagram);
+        	    		TreeSet<Arrow> arrows = new TreeSet<Arrow>(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
+        	    		ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = SpiderDiagrams.createConceptDiagram(arrows, primaries);
+            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, cdSpiderDiagram, firstArrow, indexOfParent);
+        	    		}
+    	    	}
+    			
+    		}else return currentDiagram;
     		
     	}else return null;
     }
     
     
     
-    
-    private void assertDiagramContainArrow(CompleteCOPDiagram currentDiagram, Arrow arrow) {
-        if (!currentDiagram.getArrows().contains(arrow)) {
-            throw new TransformationException("The diagram does not contain the arrow."+arrow.arrowTarget());
-        }
-    }
-    
-    private void assertDiagramContainCurve(CompleteCOPDiagram currentDiagram, String curve) {
-        if (!currentDiagram.getAllContours().contains(curve)) {
-            throw new TransformationException("The diagram does not contain the curve.");
-        }
-    }
-    
 
-    private void assertFirstArrowIsSuitable(CompleteCOPDiagram currentDiagram){
+    private void assertFirstArrowIsSuitable(SpiderDiagram currentDiagram){
     	if (! firstArrow.getArrow().arrowType().equals("dashed") ){
     		throw new TransformationException("The type of arrow must be dashed.");
     	}
     	
-    	if (currentDiagram.getArrowCardinalities().get(firstArrow.getArrow()) != null ){
-    		throw new TransformationException("The arrow should not have any cardinality.");
-    	}
+    	if(currentDiagram instanceof CompleteCOPDiagram){
+    		CompleteCOPDiagram currentCompCop = (CompleteCOPDiagram) currentDiagram;
+    		
+	    	if (currentCompCop.getArrowCardinalities().get(firstArrow.getArrow()) != null ){
+	    		throw new TransformationException("The arrow should not have any cardinality.");
+	    	}
+	    	
+	    	if (! currentCompCop.arrowSourceSpider(firstArrow.getArrow())){
+	    		throw new TransformationException("The source of arrow must be a spider.");
+	    	}
+	    	
+	    	String source = firstArrow.getArrow().arrowSource();
+	    	if ((currentCompCop.getSpiderLabels().get(source) == null) ||
+	    			(currentCompCop.getSpiderLabels().get(source) == "")){
+	    		throw new TransformationException("The source of arrow must be a named spider.");
+	    	}
+	    	
+	    	if (! currentCompCop.arrowTargetContour(firstArrow.getArrow())){
+	    		throw new TransformationException("The target of arrow must be a curve.");
+	    	}
+	    	
+	    	String target = firstArrow.getArrow().arrowTarget();
+	    	if ((currentCompCop.getCurveLabels().get(target) != null) &&
+	    			(currentCompCop.getCurveLabels().get(target) != "")){
+	    		throw new TransformationException("The target of arrow must be an unamed curve.");
+	    	}
+	    	
+	    	ContourRelations contourRelations = new ContourRelations(currentCompCop);
+	    	if(! contourRelations.contourContainsAnother(curve.getContour(), target)){
+	    		throw new TransformationException("The target of arrow must be contained in " + curve.getContour() +"." );}
+    	}else{
+    		ConceptDiagram currentCd = (ConceptDiagram) currentDiagram;
     	
-    	if (! currentDiagram.arrowSourceSpider(firstArrow.getArrow())){
-    		throw new TransformationException("The source of arrow must be a spider.");
-    	}
-    	
-    	String source = firstArrow.getArrow().arrowSource();
-    	if ((currentDiagram.getSpiderLabels().get(source) == null) ||
-    			(currentDiagram.getSpiderLabels().get(source) == "")){
-    		throw new TransformationException("The source of arrow must be a named spider.");
-    	}
-    	
-    	if (! currentDiagram.arrowTargetContour(firstArrow.getArrow())){
-    		throw new TransformationException("The target of arrow must be a curve.");
-    	}
-    	
-    	String target = firstArrow.getArrow().arrowTarget();
-    	if ((currentDiagram.getCurveLabels().get(target) != null) &&
-    			(currentDiagram.getCurveLabels().get(target) != "")){
-    		throw new TransformationException("The target of arrow must be an unamed curve.");
-    	}
-    	
-    	ContourRelations contourRelations = new ContourRelations(currentDiagram);
-    	if(! contourRelations.contourContainsAnother(curve.getContour(), target)){
-    		throw new TransformationException("The target of arrow must be contained in " + curve.getContour() +"." );
-    	}
-    	
-    	
+	    	if (! currentCd.arrowSourceSpider(firstArrow.getArrow())){
+	    		throw new TransformationException("The source of arrow must be a spider.");
+	    	}
+	    	
+	    	String source = firstArrow.getArrow().arrowSource();
+	    	if ((currentCd.getAllSpiderLabels().get(source) == null) ||
+	    			(currentCd.getAllSpiderLabels().get(source) == "")){
+	    		throw new TransformationException("The source of arrow must be a named spider.");
+	    	}
+	    	
+	    	if (! currentCd.arrowTargetContour(firstArrow.getArrow())){
+	    		throw new TransformationException("The target of arrow must be a curve.");
+	    	}
+	    	
+	    	String target = firstArrow.getArrow().arrowTarget();
+	    	if ((currentCd.getAllCurveLabels().get(target) != null) &&
+	    			(currentCd.getAllCurveLabels().get(target) != "")){
+	    		throw new TransformationException("The target of arrow must be an unamed curve.");
+	    	}
+	    	
+	    	
+	    	CompleteCOPDiagram arrowTargetDiagram = (CompleteCOPDiagram) currentCd.targetDiagram(firstArrow.getArrow());
+	    	ContourRelations contourRelations = new ContourRelations(arrowTargetDiagram);
+	    	if(! contourRelations.contourContainsAnother(curve.getContour(), target)){
+	    		throw new TransformationException("The target of arrow must be contained in " + curve.getContour() +"." );
+	    	}
+	    	}
     }
+    	
+    	
+        
     
-    
-    private void assertCurveIsSuitable(CompleteCOPDiagram currentDiagram){
-       	if ((currentDiagram.getCurveLabels().get(curve.getContour()) == null) ||
-    			(currentDiagram.getCurveLabels().get(curve.getContour()) == "")){
-    		throw new TransformationException("The chosen curve cannot be unamed.");
-    	}
-    }
-    
-    
-    private void assertSecondArrowIsSuitable(CompleteCOPDiagram currentDiagram){
+    private void assertSecondArrowIsSuitable(SpiderDiagram currentDiagram){
     	
     	if (! secondArrow.getArrow().arrowSource().equals(firstArrow.getArrow().arrowSource())){
     		throw new TransformationException("The arrows must have the same source.");
@@ -180,22 +233,63 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     		throw new TransformationException("The arrows must have the same label.");
     	}
 
-    	if (! currentDiagram.arrowTargetSpider(secondArrow.getArrow())){
-    		throw new TransformationException("The target of arrow must be a spider.");
+    	if(currentDiagram instanceof CompleteCOPDiagram){
+    		CompleteCOPDiagram currentCompCop = (CompleteCOPDiagram) currentDiagram;
+    		
+        	if (! currentCompCop.arrowTargetSpider(secondArrow.getArrow())){
+        		throw new TransformationException("The target of arrow must be a spider.");
+        	}
+        	
+        	//Every zone in the habitat of the spider has to be a part of the chosen curve.
+        	Region spiderHabitat = currentCompCop.getHabitats().get(secondArrow.getArrow().arrowTarget());
+        	for (Zone zone: spiderHabitat.sortedZones()){
+        		if(! Zones.isZonePartOfThisContour(zone, curve.getContour())){
+        			throw new TransformationException("The spider cannot have any feet outside" + curve.getContour() + ".");
+        		}
+        	}
+    		
+    		
+    	}else{
+    		ConceptDiagram currentCd = (ConceptDiagram) currentDiagram;
+    		
+        	if (! currentCd.arrowTargetSpider(secondArrow.getArrow())){
+        		throw new TransformationException("The target of arrow must be a spider.");
+        	}
+        	
+        	CompleteCOPDiagram arrowTargetDiagram = (CompleteCOPDiagram) currentCd.targetDiagram(secondArrow.getArrow());
+        	
+        	//Every zone in the habitat of the spider has to be a part of the chosen curve.
+        	Region spiderHabitat = arrowTargetDiagram.getHabitats().get(secondArrow.getArrow().arrowTarget());
+        	for (Zone zone: spiderHabitat.sortedZones()){
+        		if(! Zones.isZonePartOfThisContour(zone, curve.getContour())){
+        			throw new TransformationException("The spider cannot have any feet outside" + curve.getContour() + ".");
+        		}
+        	}
+    		
     	}
-    	
-    	//Every zone in the habitat of the spider has to be a part of the chosen curve.
-    	Region spiderHabitat = currentDiagram.getHabitats().get(secondArrow.getArrow().arrowTarget());
-    	for (Zone zone: spiderHabitat.sortedZones()){
-    		if(! Zones.isZonePartOfThisContour(zone, curve.getContour())){
-    			throw new TransformationException("The spider cannot have any feet outside" + curve.getContour() + ".");
-    		}
-    	}
+
     	
     }
    
     
 
+    private void assertSpiderNotInDestination(SpiderDiagram currentDiagram, String spider){
+    	
+    	if(currentDiagram instanceof CompleteCOPDiagram){
+    		CompleteCOPDiagram currentCompCop = (CompleteCOPDiagram) currentDiagram;
+	    	if (currentCompCop.getSpiders().contains(secondArrow.getArrow().arrowTarget())){
+	    		throw new TransformationException("The spider being added to the dashed arrow image cannot exists in the destination diagram.");
+	    	}
+    	}else{
+    		ConceptDiagram currentCd = (ConceptDiagram) currentDiagram;
+	    	if (currentCd.getAllSpiders().contains(secondArrow.getArrow().arrowTarget())){
+	    		throw new TransformationException("The spider being added to the dashed arrow image cannot exists in the destination diagram.");
+	    	}
+    		
+    	}
+    		
+    	
+    }
     
     
     

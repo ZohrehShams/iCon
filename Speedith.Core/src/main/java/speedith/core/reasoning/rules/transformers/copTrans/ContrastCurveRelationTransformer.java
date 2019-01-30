@@ -45,8 +45,8 @@ public class ContrastCurveRelationTransformer extends IdTransformer {
             PrimarySpiderDiagram newDiagramWithDisjointContour = null;
             PrimarySpiderDiagram newDiagramWithoutDisjointContour = null;
 
-            PrimarySpiderDiagram diagramWithDisjointContour = InferenceTargetExtraction.getSourceOperand(currentDiagram, indexOfParent, targetContours.get(0));
-            PrimarySpiderDiagram diagramWithoutDisjointContour = InferenceTargetExtraction.getTargetOperand(currentDiagram, indexOfParent, targetContours.get(0));
+            PrimarySpiderDiagram diagramWithDisjointContour = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, indexOfParent, targetContours.get(0));
+            PrimarySpiderDiagram diagramWithoutDisjointContour = (PrimarySpiderDiagram)InferenceTargetExtraction.getTargetOperand(currentDiagram, indexOfParent, targetContours.get(0));
 
             assertDiagramContainsTargetContours(diagramWithDisjointContour);
             assertDiagramContainsTargetContours(diagramWithoutDisjointContour);

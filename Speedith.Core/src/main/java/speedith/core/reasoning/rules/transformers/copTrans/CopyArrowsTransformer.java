@@ -32,8 +32,8 @@ public class CopyArrowsTransformer extends IdTransformer {
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-            PrimarySpiderDiagram diagramWithArrow = InferenceTargetExtraction.getSourceOperand(currentDiagram, indexOfParent, targetArrows.get(0));
-            PrimarySpiderDiagram diagramWithoutArrow = InferenceTargetExtraction.getTargetOperand(currentDiagram, indexOfParent, targetArrows.get(0));
+            PrimarySpiderDiagram diagramWithArrow = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, indexOfParent, targetArrows.get(0));
+            PrimarySpiderDiagram diagramWithoutArrow = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, indexOfParent, targetArrows.get(0));
             
             PrimarySpiderDiagram temp1= diagramWithoutArrow;
             PrimarySpiderDiagram temp2= diagramWithArrow;

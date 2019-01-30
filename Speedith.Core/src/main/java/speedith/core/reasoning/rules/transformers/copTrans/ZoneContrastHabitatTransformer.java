@@ -38,8 +38,8 @@ public class ZoneContrastHabitatTransformer extends IdTransformer {
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
     		
-    	    PrimarySpiderDiagram diagramWithShadedZone = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetZones.get(0));
-    	    PrimarySpiderDiagram diagramWithExtraSpiders = InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetZones.get(0));
+    	    PrimarySpiderDiagram diagramWithShadedZone = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetZones.get(0));
+    	    PrimarySpiderDiagram diagramWithExtraSpiders = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetZones.get(0));
     		
     	    if (!diagramWithShadedZone.getAllContours().equals(diagramWithExtraSpiders.getAllContours())) {
     	        throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The unitary diagrams do not contain the same contours.");

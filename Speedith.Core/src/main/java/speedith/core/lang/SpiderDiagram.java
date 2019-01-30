@@ -327,7 +327,7 @@ public abstract class SpiderDiagram implements Iterable<SpiderDiagram>, SpiderDi
     }
 
     public int getParentIndexOf(final int childIndex) {
-        return visit(new DiagramVisitor<Integer>() {
+    	return visit(new DiagramVisitor<Integer>() {
             private static final int PARENT_NOT_YET_NDETERMINED = -2;
             private static final int HAS_NO_PARENT = -1;
             public int parentIndex = PARENT_NOT_YET_NDETERMINED;
@@ -340,10 +340,14 @@ public abstract class SpiderDiagram implements Iterable<SpiderDiagram>, SpiderDi
             public void end() {
             }
 
+            
+            //Instead of changing the size of parents, the function now checks the size of parentsIndices, because for ConcepDiagrams not situated in a compound diagram,
+            //the concept diagram cann't be added to the parents array that is of type CompoundSpiderDaigram.
             @Override
             public void visit(SpiderDiagram subDiagram, int subDiagramIndex, ArrayList<CompoundSpiderDiagram> parents, ArrayList<Integer> childIndices, ArrayList<Integer> parentIndices) {
-                if (subDiagramIndex == childIndex) {
-                    if (parents == null || parents.size() < 1) {
+            	if (subDiagramIndex == childIndex) {
+//            		if (parents == null || parents.size() < 1) {
+                    if (parents == null || parentIndices.size() < 1) {
                         parentIndex = HAS_NO_PARENT;
                     } else {
                         parentIndex = parentIndices.get(parentIndices.size() - 1);

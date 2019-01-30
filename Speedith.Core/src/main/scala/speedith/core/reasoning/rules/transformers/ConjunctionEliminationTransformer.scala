@@ -26,9 +26,9 @@ case class ConjunctionEliminationTransformer(compundDiagramIndex : Int, childDia
     }
 
      if(InferenceTargetExtraction.isLeftOperand(childDiagramIndexArg, compundDiagramIndex)) {
-       currentDiagram.getOperand(0)
-     } else {
        currentDiagram.getOperand(1)
+     } else {
+       currentDiagram.getOperand(0)
      }
 
 

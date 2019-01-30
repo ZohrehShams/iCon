@@ -421,16 +421,14 @@ public class SpiderDiagrams {
   }
 
   public static ConceptDiagram createConceptDiagram( Collection<Arrow> arrows,ArrayList<PrimarySpiderDiagram> primaries, boolean copy) {
-	  if(copy){
-		  if (arrows == null || arrows instanceof TreeSet ) {
+		  if (arrows == null || arrows instanceof TreeSet)  {
+
 			  return new ConceptDiagram(primaries, arrows == null ? null : (TreeSet<Arrow>) arrows); 
 		  }else{
 			  return new ConceptDiagram(primaries, arrows); 
 		  }
-	  }else
-		  return null;
+
   }
-  
   
   
   
@@ -450,15 +448,12 @@ public class SpiderDiagrams {
   
 
   public static CarCDiagram createCarCDiagram( Collection<Arrow> arrows,Map<Arrow,Cardinality> arrowCardinalities,ArrayList<PrimarySpiderDiagram> primaries, boolean copy) {
-	  if(copy){
 		  if ((arrows == null || arrows instanceof TreeSet )&&(arrowCardinalities == null || arrowCardinalities instanceof TreeMap) ) {
 			  return new CarCDiagram(primaries, arrows == null ? null : (TreeSet<Arrow>) arrows,
 					  arrowCardinalities == null ? null : (TreeMap<Arrow,Cardinality>) arrowCardinalities); 
 		  }else{
 			  return new CarCDiagram(primaries, arrows,arrowCardinalities); 
 		  }
-	  }else
-		  return null;
   }
 
 

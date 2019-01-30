@@ -23,6 +23,7 @@ import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.copIns.AddSpiderToDashedArrowImageInstruction;
 import speedith.core.reasoning.rules.instructions.copIns.SelectArrowsInstruction;
 import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderToDashedArrowImageTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderToDashedArrowImageTransformer;
 import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderToSolidArrowImageTransformer;
 
 /**

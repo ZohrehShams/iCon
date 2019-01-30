@@ -67,7 +67,7 @@ public class DashedToInverseArrowTransformer extends IdTransformer {
     	    			compCop.getSpiderLabels().get(oldArrow.arrowSource()));
    
         		//Add the new Arrow. 
-        		String newLabel = "-" + oldArrow.arrowLabel();
+        		String newLabel = oldArrow.arrowLabel() + "-" ;
         		Arrow newArrow = new Arrow(oldArrow.arrowTarget(),"unnamedCurve","solid",newLabel);
         		CompleteCOPDiagram compCopNoSpiderUnCurveSpiderArrow = (CompleteCOPDiagram) compCopNoSpiderUnCurveSpider.addArrow(newArrow);
             	

@@ -17,14 +17,16 @@ tokens {
     SD_BINARY   =   'BinarySD';    // The 'binar spider diagram'.
     SD_UNARY    =    'UnarySD';    // The 'unary spider diagram'.
     SD_NULL     =     'NullSD';    // The 'null spider diagram'.
-    SD_FALSE    =    'FalseSD';  // The 'false spider diagram'.
+    SD_FALSE    =    'FalseSD';    // The 'false spider diagram'.
     COP         =        'COP';    // Zohreh: The 'class and object property diagram'.
     LUCOP       =      'LUCOP';    // Zohreh: The 'COP' that allows a combination of labelled and unlabelled spiders and curves.
     LUCarCOP    =   'LUCarCOP';    // Zohreh: The 'LUCOP' that allows cardinality for arrows.
     CompleteCOP ='CompleteCOP';    // Zohreh: The 'LUCarCOP' that allows equality and unknown equality between individuals.
     PD          =         'PD';    // Zohreh: The 'property diagram'
-    CD_BINARY   =   'BinaryCD';    // Zohreh: The 'binar concept diagram'
-    CD_Car_BINARY = 'BinaryCarCD'; // Zohreh: The 'binar concept diagram' that allows cardinality for arrows.
+    CD_BINARY   =   'BinaryCD';    // Zohreh: The 'binary concept diagram'
+    CD_Car_BINARY = 'BinaryCarCD'; // Zohreh: The 'binary concept diagram' that allows cardinality for arrows.
+    CD          =   'CD';          // Zohreh: The 'concept diagram'
+    CD_Car      = 'CarCD';         // Zohreh: The 'concept diagram' that allows cardinality for arrows.
 }
 
 @parser::header {
@@ -90,6 +92,8 @@ spiderDiagram
     |    'PD'^ '{'! (keyValue (','! keyValue)*)? '}'! 
     |    'BinaryCD'^ '{'! (keyValue (','! keyValue)*)? '}'!
     |    'BinaryCarCD'^ '{'! (keyValue (','! keyValue)*)? '}'!
+    |    'CD'^ '{'! (keyValue (','! keyValue)*)? '}'!
+    |    'CarCD'^ '{'! (keyValue (','! keyValue)*)? '}'!
     ;
 
 keyValues

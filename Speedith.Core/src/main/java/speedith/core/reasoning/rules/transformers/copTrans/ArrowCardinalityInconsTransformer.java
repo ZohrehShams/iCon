@@ -42,8 +42,8 @@ public class ArrowCardinalityInconsTransformer extends IdTransformer{
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-    	    PrimarySpiderDiagram arrowCurveDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetArrow);
-    	    PrimarySpiderDiagram  arrowSpiderDiagram= InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetArrow);
+    	    PrimarySpiderDiagram arrowCurveDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, targetArrow);
+    	    PrimarySpiderDiagram  arrowSpiderDiagram= (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, targetArrow);
     		
     	    
     	    if((arrowCurveDiagram instanceof CompleteCOPDiagram) && (arrowSpiderDiagram instanceof CompleteCOPDiagram)){

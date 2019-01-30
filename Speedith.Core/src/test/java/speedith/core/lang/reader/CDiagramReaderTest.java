@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.LUCarCOPDiagram;
 import static speedith.core.reasoning.util.unitary.TestConceptDiagrams.*;
@@ -33,7 +34,31 @@ public class CDiagramReaderTest {
 					+ "arrows=[(\"A\",\"D\",\"solid\",\"R\")],spiderLabels=[],curveLabels=[(\"A\",\"A\"),(\"B\",\"B\"),(\"C\",\"C\")], "
 							+ "arrowCar=[((\"A\",\"D\",\"solid\",\"R\"),(\">=\",\"3\"))]}, cd_arrows = [(\"X\",\"A\",\"dashed\",\"R\")] }";
 
+	public static final String CD_AddSpiderToDashedArrowImage = "BinarySD {operator = \"op &\",arg1= BinaryCD "
+			+ "{cd_arrows=[(\"s\",\"u\",\"dashed\",\"R\")], cd_arg1 = CompleteCOP {spiders = [\"s\"], habitats = [(\"s\", [([\"A\"], [])])], "
+			+ "sh_zones = [], present_zones = [([\"A\"], []), ([], [\"A\"])], arrows = [], spiderLabels = [(\"s\", \"s\")], "
+			+ "curveLabels = [(\"A\", \"A\")], arrowCar = [], spiderEquality = []}, cd_arg2 = CompleteCOP {spiders = [], habitats = [], "
+			+ "sh_zones = [([\"u\"],[\"C\"])], present_zones = [([\"C\"], [\"u\"]), ([\"C\",\"u\"], []),([],[\"C\",\"u\"])], arrows = [], "
+			+ "spiderLabels = [], curveLabels = [(\"C\",\"C\")], arrowCar = [],spiderEquality = []}},arg2=BinaryCD "
+			+ "{cd_arrows=[(\"s\",\"t\",\"dashed\",\"R\")], cd_arg1 = CompleteCOP {spiders = [\"s\"], habitats = [(\"s\", [([\"N\"], [])])], "
+			+ "sh_zones = [], present_zones = [([\"N\"], []), ([], [\"N\"])], arrows = [], spiderLabels = [(\"s\", \"s\")], "
+			+ "curveLabels = [(\"N\", \"N\")], arrowCar = [], spiderEquality = []}, cd_arg2 = CompleteCOP {spiders = [\"t\"], "
+			+ "habitats = [(\"t\", [([\"C\"], [])])], sh_zones = [], present_zones = [([\"C\"], []), ([], [\"C\"])], arrows = [], "
+			+ "spiderLabels = [(\"t\", \"t\")], curveLabels = [(\"C\", \"C\")], arrowCar = [], spiderEquality = []}}}";
 	
+	public static final String CD_AddSpiderToDashedArrowImage_Result = "BinarySD {operator = \"op &\",arg1= BinaryCD "
+			+ "{cd_arrows=[(\"s\",\"u\",\"dashed\",\"R\")], cd_arg1 = CompleteCOP {spiders = [\"s\"], habitats = [(\"s\", [([\"A\"], [])])], "
+			+ "sh_zones = [], present_zones = [([\"A\"], []), ([], [\"A\"])], arrows = [], spiderLabels = [(\"s\", \"s\")], "
+			+ "curveLabels = [(\"A\", \"A\")], arrowCar = [], spiderEquality = []}, cd_arg2 = CompleteCOP {spiders = [\"t\"], habitats = [(\"t\", [([\"C\",\"u\"], [])])], "
+			+ "sh_zones = [([\"u\"],[\"C\"])], present_zones = [([\"C\"], [\"u\"]), ([\"C\",\"u\"], []),([],[\"C\",\"u\"])], arrows = [], "
+			+ "spiderLabels = [(\"t\",\"t\")], curveLabels = [(\"C\",\"C\")], arrowCar = [],spiderEquality = []}},arg2=BinaryCD "
+			+ "{cd_arrows=[(\"s\",\"t\",\"dashed\",\"R\")], cd_arg1 = CompleteCOP {spiders = [\"s\"], habitats = [(\"s\", [([\"N\"], [])])], "
+			+ "sh_zones = [], present_zones = [([\"N\"], []), ([], [\"N\"])], arrows = [], spiderLabels = [(\"s\", \"s\")], "
+			+ "curveLabels = [(\"N\", \"N\")], arrowCar = [], spiderEquality = []}, cd_arg2 = CompleteCOP {spiders = [\"t\"], "
+			+ "habitats = [(\"t\", [([\"C\"], [])])], sh_zones = [], present_zones = [([\"C\"], []), ([], [\"C\"])], arrows = [], "
+			+ "spiderLabels = [(\"t\", \"t\")], curveLabels = [(\"C\", \"C\")], arrowCar = [], spiderEquality = []}}}";
+			
+			
 	public CDiagramReaderTest() {
     }
 
@@ -66,6 +91,17 @@ public class CDiagramReaderTest {
         assertEquals(sd, sd2);
     }
 
+    @Test
+    public void testReadSpiderDiagram_Reader_Compound() throws Exception {
+    	
+    	CompoundSpiderDiagram sd = (CompoundSpiderDiagram) SpiderDiagramsReader.readSpiderDiagram(CD_AddSpiderToDashedArrowImage);
+        
+        String str1 = sd.toString();
+        CompoundSpiderDiagram sd2 = (CompoundSpiderDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
+        assertEquals(str1, sd2.toString());
+        
+        assertEquals(sd, sd2);
+    }
 
         
     

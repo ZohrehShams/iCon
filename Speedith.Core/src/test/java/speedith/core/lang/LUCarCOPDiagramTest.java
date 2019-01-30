@@ -2,6 +2,7 @@ package speedith.core.lang;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.sevenLabArrowLUCarCOP;
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.sevenLabArrowLUCarCOP2;
 

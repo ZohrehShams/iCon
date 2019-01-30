@@ -29,8 +29,11 @@ package speedith.core.reasoning.args;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.reasoning.InferenceRule;
+import speedith.core.reasoning.RuleApplicationException;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Along with the {@link SubgoalIndexArg subgoal index} this class also
@@ -71,4 +74,38 @@ public class SubDiagramIndexArg extends SubgoalIndexArg implements RuleArg, Seri
         return subDiagramIndex;
     }
     // </editor-fold>
+    
+    public static SubDiagramIndexArg getSubDiagramIndexArgFrom(RuleArg ruleArg) throws RuleApplicationException {
+        if (!(ruleArg instanceof SubDiagramIndexArg)) {
+            throw new RuleApplicationException("The selected argument is not a COP diagram.");
+        }
+        return (SubDiagramIndexArg)ruleArg;
+    }
+    
+    
+    public static int assertSameSubDiagramIndices(int previousSubDiagramIndex, SubDiagramIndexArg subArg) throws RuleApplicationException {
+        if (previousSubDiagramIndex != -1 && previousSubDiagramIndex != subArg.getSubDiagramIndex()) {
+            throw new RuleApplicationException("The COPs must be from the same concept diagram.");
+        } else {
+            previousSubDiagramIndex = subArg.getSubDiagramIndex();
+        }
+        return previousSubDiagramIndex;
+    }
+    
+    public static ArrayList<SubDiagramIndexArg> getSubDiagramIndexArgsFrom(MultipleRuleArgs multipleRuleArgs) throws RuleApplicationException {
+        ArrayList<SubDiagramIndexArg> subDiagramIndexArgs = new ArrayList<>();
+        int subDiagramIndex = -1;
+        int goalIndex = -1;
+        for (RuleArg ruleArg : multipleRuleArgs) {
+        	SubDiagramIndexArg subDiagramIndexArg = getSubDiagramIndexArgFrom(ruleArg);
+            subDiagramIndex = assertSameSubDiagramIndices(subDiagramIndex, subDiagramIndexArg);
+            goalIndex = assertSameGoalIndices(goalIndex,subDiagramIndexArg);
+            subDiagramIndexArgs.add(subDiagramIndexArg);
+        }
+        return subDiagramIndexArgs;
+    }
+    
+    
+    
+    
 }

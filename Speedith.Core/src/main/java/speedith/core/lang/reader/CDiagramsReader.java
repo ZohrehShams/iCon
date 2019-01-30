@@ -30,17 +30,12 @@ import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.FalseSpiderDiagram;
 import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.LUCarCOPDiagram;
-import speedith.core.lang.PDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
 import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.Zone;
-
-
-
-
 
 public class CDiagramsReader extends SpiderDiagramsReader{
 
@@ -333,6 +328,7 @@ public class CDiagramsReader extends SpiderDiagramsReader{
     public static class CDTranslator extends GeneralSDTranslator<ConceptDiagram> {
 
         public static final CDTranslator BinaryTranslator = new CDTranslator(SpiderDiagramsParser.CD_BINARY);
+        public static final CDTranslator NaryTranslator = new CDTranslator(SpiderDiagramsParser.CD);
 
         public CDTranslator(int headTokenType) {
             super(headTokenType);
@@ -377,10 +373,10 @@ public class CDiagramsReader extends SpiderDiagramsReader{
     public static class CDCarTranslator extends GeneralSDTranslator<CarCDiagram> {
 
         public static final CDCarTranslator BinaryTranslator = new CDCarTranslator(SpiderDiagramsParser.CD_Car_BINARY);
+        public static final CDCarTranslator NaryTranslator = new CDCarTranslator(SpiderDiagramsParser.CD_Car);
 
         public CDCarTranslator(int headTokenType) {
             super(headTokenType);
-          //Zohreh: this could have been an instance of LUCarCOP
             addDefaultAttribute(SDTranslator.Instance);
             addMandatoryAttribute(CDTextArrowsAttribute,  new ListTranslator<>(ArrowTranslator.Instance));
             addMandatoryAttribute(CDTextArrowCardinalitiesAttribute,  ArrowCardinalityTranslator.Instance);
@@ -421,37 +417,37 @@ public class CDiagramsReader extends SpiderDiagramsReader{
     
 
     
-    private static class PDTranslator extends  GeneralSDTranslator<LUCarCOPDiagram>{
-    	
-        public static final PDTranslator Instance = new PDTranslator();
-
-        private PDTranslator() {
-            super(SpiderDiagramsParser.PD);
-            addMandatoryAttribute(SDTextSpidersAttribute, ListTranslator.StringListTranslator);
-            addMandatoryAttribute(SDTextHabitatsAttribute, HabitatTranslator.Instance);
-            addMandatoryAttribute(SDTextShadedZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
-            addOptionalAttribute(SDTextPresentZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
-            addMandatoryAttribute(SDTextArrowsAttribute,  new ListTranslator<>(ArrowTranslator.Instance));
-            addMandatoryAttribute(SDTextSpiderLabelsAttribute,  LabelTranslator.Instance);
-            addMandatoryAttribute(SDTextCurveLabelsAttribute,  LabelTranslator.Instance);
-            addMandatoryAttribute(SDTextArrowCardinalitiesAttribute,  ArrowCardinalityTranslator.Instance);
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        PDiagram createSD(Map<String, Entry<Object, CommonTree>> attributes, CommonTree mainNode) throws ReadingException {
-            Entry<Object, CommonTree> presentZonesAttribute = attributes.get(SDTextPresentZonesAttribute);
-            return PDiagram.createPDiagram((Collection<String>) attributes.get(SDTextSpidersAttribute).getKey(),
-            		(Map<String, Region>) attributes.get(SDTextHabitatsAttribute).getKey(),
-                    (Collection<Zone>) attributes.get(SDTextShadedZonesAttribute).getKey(),
-                    presentZonesAttribute == null ? null : (Collection<Zone>) presentZonesAttribute.getKey(),
-                    (Collection<Arrow>) attributes.get(SDTextArrowsAttribute).getKey(),
-                    (Map<String, String>) attributes.get(SDTextSpiderLabelsAttribute).getKey(),
-                    (Map<String, String>) attributes.get(SDTextCurveLabelsAttribute).getKey(),
-                    (Map<Arrow, Cardinality>) attributes.get(SDTextArrowCardinalitiesAttribute).getKey()
-                    );
-        }
-    }
+//    private static class PDTranslator extends  GeneralSDTranslator<LUCarCOPDiagram>{
+//    	
+//        public static final PDTranslator Instance = new PDTranslator();
+//
+//        private PDTranslator() {
+//            super(SpiderDiagramsParser.PD);
+//            addMandatoryAttribute(SDTextSpidersAttribute, ListTranslator.StringListTranslator);
+//            addMandatoryAttribute(SDTextHabitatsAttribute, HabitatTranslator.Instance);
+//            addMandatoryAttribute(SDTextShadedZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
+//            addOptionalAttribute(SDTextPresentZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
+//            addMandatoryAttribute(SDTextArrowsAttribute,  new ListTranslator<>(ArrowTranslator.Instance));
+//            addMandatoryAttribute(SDTextSpiderLabelsAttribute,  LabelTranslator.Instance);
+//            addMandatoryAttribute(SDTextCurveLabelsAttribute,  LabelTranslator.Instance);
+//            addMandatoryAttribute(SDTextArrowCardinalitiesAttribute,  ArrowCardinalityTranslator.Instance);
+//        }
+//
+//        @Override
+//        @SuppressWarnings("unchecked")
+//        PDiagram createSD(Map<String, Entry<Object, CommonTree>> attributes, CommonTree mainNode) throws ReadingException {
+//            Entry<Object, CommonTree> presentZonesAttribute = attributes.get(SDTextPresentZonesAttribute);
+//            return PDiagram.createPDiagram((Collection<String>) attributes.get(SDTextSpidersAttribute).getKey(),
+//            		(Map<String, Region>) attributes.get(SDTextHabitatsAttribute).getKey(),
+//                    (Collection<Zone>) attributes.get(SDTextShadedZonesAttribute).getKey(),
+//                    presentZonesAttribute == null ? null : (Collection<Zone>) presentZonesAttribute.getKey(),
+//                    (Collection<Arrow>) attributes.get(SDTextArrowsAttribute).getKey(),
+//                    (Map<String, String>) attributes.get(SDTextSpiderLabelsAttribute).getKey(),
+//                    (Map<String, String>) attributes.get(SDTextCurveLabelsAttribute).getKey(),
+//                    (Map<Arrow, Cardinality>) attributes.get(SDTextArrowCardinalitiesAttribute).getKey()
+//                    );
+//        }
+//    }
     
     
     

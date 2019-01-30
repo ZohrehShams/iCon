@@ -15,8 +15,8 @@ case class CopySpiderTransformer(compoundDiagramIndex: Int, spiderArg: SpiderArg
     assertIsConjunction(currentDiagram)
     assertOperandsAreUnitary(currentDiagram)
 
-    val diagramWithSpider = getSourceOperand(currentDiagram, compoundDiagramIndex, spiderArg)
-    val diagramWithoutSpider = getTargetOperand(currentDiagram, compoundDiagramIndex, spiderArg)
+    val diagramWithSpider = getSourceOperand(currentDiagram, compoundDiagramIndex, spiderArg).asInstanceOf[PrimarySpiderDiagram]
+    val diagramWithoutSpider = getTargetOperand(currentDiagram, compoundDiagramIndex, spiderArg).asInstanceOf[PrimarySpiderDiagram]
 
     assertSpiderIsInSourceDiagram(diagramWithSpider)
     copySpider(diagramWithSpider, diagramWithoutSpider)

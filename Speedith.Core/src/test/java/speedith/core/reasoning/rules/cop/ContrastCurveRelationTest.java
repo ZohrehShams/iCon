@@ -25,8 +25,6 @@ public class ContrastCurveRelationTest {
     	SpiderDiagram sd = SpiderDiagramsReader.readSpiderDiagram(B2XYSwap);
     	Goals targetOfInference = Goals.createGoalsFrom(sd);
 
-    	
-
         RuleApplicationResult applicationResult = contrastCurveRelation.applyForwards(new MultipleRuleArgs(new ContourArg(0, 1, "X"),new ContourArg(0, 1, "Y")), targetOfInference);
         
         SpiderDiagram expectedGoal = SpiderDiagramsReader.readSpiderDiagram(B2XYEmpX);

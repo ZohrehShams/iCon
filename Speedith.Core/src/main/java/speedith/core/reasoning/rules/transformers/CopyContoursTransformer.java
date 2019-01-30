@@ -31,8 +31,8 @@ public class CopyContoursTransformer extends IdTransformer {
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-            PrimarySpiderDiagram diagramWithContour = InferenceTargetExtraction.getSourceOperand(currentDiagram, indexOfParent, targetContours.get(0));
-            PrimarySpiderDiagram diagramWithoutContour = InferenceTargetExtraction.getTargetOperand(currentDiagram, indexOfParent, targetContours.get(0));
+            PrimarySpiderDiagram diagramWithContour = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, indexOfParent, targetContours.get(0));
+            PrimarySpiderDiagram diagramWithoutContour = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, indexOfParent, targetContours.get(0));
 
             assertDiagramContainsTargetContours(diagramWithContour);
 

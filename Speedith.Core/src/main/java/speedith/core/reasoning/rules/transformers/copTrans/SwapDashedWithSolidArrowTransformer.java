@@ -1,37 +1,28 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import speedith.core.lang.Arrow;
-import speedith.core.lang.Cardinality;
 import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCOPDiagram;
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
-import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
-import speedith.core.reasoning.args.SpiderArg;
+import speedith.core.lang.Zones;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.util.unitary.AddCurve;
-import speedith.core.reasoning.util.unitary.DeleteCurve;
 
-public class InverseToDashedArrowTransformer extends IdTransformer {
+public class SwapDashedWithSolidArrowTransformer extends IdTransformer {
 	
 	private ArrowArg arrowArg;
-	private SpiderArg spiderArg;
     private final boolean applyForward;
 
-    public InverseToDashedArrowTransformer(ArrowArg arrowArg, SpiderArg spiderArg,boolean applyForward) {
+    public SwapDashedWithSolidArrowTransformer(ArrowArg arrowArg,boolean applyForward) {
     	this.arrowArg = arrowArg;
-    	this.spiderArg = spiderArg;
     	this.applyForward = applyForward;
     }
     
@@ -48,24 +39,38 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
         		CompleteCOPDiagram compCop = (CompleteCOPDiagram) psd;
         		assertDiagramContainTargetArrow(compCop);
         		assertSuitabilityOfArrow(compCop);
-        		assertDiagramContainTargetSpider(compCop);
-        		assertSuitabilityOfSpider(compCop);
-
-        		
-        		//Delete the curve that is the target of the arrow. This will automatically delete the arrow.
-        		ArrayList<String> newCurves = new ArrayList<String>();
+ 
+        		//Delete the spider that is the target of the arrow. This will automatically delete the arrow.
         		Arrow oldArrow = arrowArg.getArrow();
-        		newCurves.add(oldArrow.arrowTarget());
-        		DeleteCurve deleteCurve = new DeleteCurve(compCop,newCurves);
-        		CompleteCOPDiagram compCopNoCurve = (CompleteCOPDiagram) deleteCurve.deletingCurve();
+        		CompleteCOPDiagram compCopNoSpider = (CompleteCOPDiagram) compCop.deleteSpider(oldArrow.arrowTarget());
         		
+        		
+        		//Adding the unnamed curve (it uses introduce contour principle).
+        		ArrayList<String> newCurves = new ArrayList<String>();
+        		newCurves.add("unnamedCurve");
+        		AddCurve addCurve = new AddCurve(compCopNoSpider,newCurves);
+        		CompleteCOPDiagram compCopNoSpiderUnCurve = (CompleteCOPDiagram) addCurve.addingCurve();
+        		
+        		//Adding back the deleted spider such that the habitat is the new unnamed curve.
+    	    	ArrayList<Zone> zonesIniseArrowTarget = new ArrayList<Zone>();
+    	    	String[] allPossibleZones = new String[compCopNoSpiderUnCurve.getAllContours().size()];
+    	    	allPossibleZones = compCopNoSpiderUnCurve.getAllContours().toArray(allPossibleZones);
+    	    	for (Zone zone: Zones.allZonesForContours(allPossibleZones)){
+    	    		if((Zones.isZonePartOfThisContour(zone,"unnamedCurve"))
+    	    				&&(compCopNoSpiderUnCurve.getPresentZones().contains(zone))){
+    	    			zonesIniseArrowTarget.add(zone);
+    	    		}
+    	    	}
+    	    	Region regionInsideUnnamedCurve = new Region(zonesIniseArrowTarget);
+    	    	CompleteCOPDiagram compCopNoSpiderUnCurveSpider= (CompleteCOPDiagram) 
+    	    			compCopNoSpiderUnCurve.addLUSpider(oldArrow.arrowTarget(), regionInsideUnnamedCurve, 
+    	    			compCop.getSpiderLabels().get(oldArrow.arrowTarget()));
+   
         		//Add the new Arrow. 
-        		//String newLabel = oldArrow.arrowLabel().substring(1);
-        		String newLabel = oldArrow.arrowLabel().substring(0, oldArrow.arrowLabel().length() - 1);
-        		Arrow newArrow = new Arrow(spiderArg.getSpider(),oldArrow.arrowSource(),"dashed",newLabel);
-        		CompleteCOPDiagram compCopNoCurveArrow = (CompleteCOPDiagram) compCopNoCurve.addArrow(newArrow);
+        		Arrow newArrow = new Arrow(oldArrow.arrowSource(),"unnamedCurve","solid",oldArrow.arrowLabel());
+        		CompleteCOPDiagram compCopNoSpiderUnCurveSpiderArrow = (CompleteCOPDiagram) compCopNoSpiderUnCurveSpider.addArrow(newArrow);
             	
-            	return compCopNoCurveArrow;
+            	return compCopNoSpiderUnCurveSpiderArrow;
         	}
         	else return psd;
     	}
@@ -91,16 +96,12 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
         }
     }
     
-    private void assertDiagramContainTargetSpider(CompleteCOPDiagram currentDiagram) {
-        if (!currentDiagram.getSpiders().contains(spiderArg.getSpider())) {
-            throw new TransformationException("The target diagram does not contain the target spider.");
-        }
-    }
     
     
     private void assertSuitabilityOfArrow(CompleteCOPDiagram currentDiagram){
-    	if (! arrowArg.getArrow().arrowType().equals("solid")){
-    		throw new TransformationException("The arrow has to be solid.");
+    	
+    	if (! arrowArg.getArrow().arrowType().equals("dashed")){
+    		throw new TransformationException("The arrow has to be dashed.");
     	}
     	
     	if (!currentDiagram.arrowSourceSpider(arrowArg.getArrow())){
@@ -112,13 +113,14 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
 			throw new TransformationException("The source of the arrow must be a named spider.");
 		}
     	
-    	if (!currentDiagram.arrowTargetContour(arrowArg.getArrow())){
-    		throw new TransformationException("The target of arrow has to be a curve.");
+    	if (!currentDiagram.arrowTargetSpider(arrowArg.getArrow())){
+    		throw new TransformationException("The target of arrow has to be a spider.");
     	}
     	
-    	if (! arrowArg.getArrow().arrowLabel().endsWith("-")){
-    		throw new TransformationException("The arrow has to have an inverse label.");
-    	}
+    	if ((currentDiagram.getSpiderLabels().get(arrowArg.getArrow().arrowTarget()) == null) ||
+				(currentDiagram.getSpiderLabels().get(arrowArg.getArrow().arrowTarget()).equals("")) ){
+			throw new TransformationException("The target of the arrow must be a named spider.");
+		}
     	
     	if (currentDiagram.getArrowCardinalities().get(arrowArg.getArrow()) != null){
     		throw new TransformationException("The arrow should not have any cardinality.");
@@ -127,17 +129,7 @@ public class InverseToDashedArrowTransformer extends IdTransformer {
     }
 
    
-    private void assertSuitabilityOfSpider(CompleteCOPDiagram currentDiagram){
-    	
-        if (currentDiagram.getSpiderHabitat(spiderArg.getSpider()).getZonesCount() > 1) {
-            throw new TransformationException("The spider is not single foot.");
-        }
-        
-    	Zone theSingleHabitat = currentDiagram.getSpiderHabitat(spiderArg.getSpider()).sortedZones().first();
-    	if (! theSingleHabitat.getInContours().contains(arrowArg.getArrow().arrowTarget())){
-    		throw new TransformationException("The target spider is not in the curve that is the target of selected arrow.");
-    	}
-    }
+
     
 
 

@@ -43,8 +43,8 @@ public class DeleteSpiderFeetTransformer extends IdTransformer{
             InferenceTargetChecks.assertIsConjunction(currentDiagram);
             InferenceTargetChecks.assertOperandsAreUnitary(currentDiagram);
 
-    	    PrimarySpiderDiagram extraFeetSpiderDiagram = InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, spiderFeet);
-    	    PrimarySpiderDiagram  singleCurveHabitatSpiderDiagram = InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, spiderFeet);
+    	    PrimarySpiderDiagram extraFeetSpiderDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getSourceOperand(currentDiagram, diagramIndex, spiderFeet);
+    	    PrimarySpiderDiagram  singleCurveHabitatSpiderDiagram = (PrimarySpiderDiagram) InferenceTargetExtraction.getTargetOperand(currentDiagram, diagramIndex, spiderFeet);
     		
     	    
     	    if((extraFeetSpiderDiagram instanceof CompleteCOPDiagram) && (singleCurveHabitatSpiderDiagram instanceof CompleteCOPDiagram)){
