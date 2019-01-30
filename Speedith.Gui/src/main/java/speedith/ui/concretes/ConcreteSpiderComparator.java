@@ -2,6 +2,8 @@ package speedith.ui.concretes;
 
 import java.awt.geom.Line2D;
 
+import icircles.concreteDiagram.ConcreteSpiderFoot;
+import speedith.ui.abstracts.AbstractArrow;
 import speedith.ui.abstracts.AbstractSpiderComparator;
 
 public class ConcreteSpiderComparator {
@@ -11,6 +13,13 @@ public class ConcreteSpiderComparator {
     private double xt;
     private double yt;
     private AbstractSpiderComparator asc;
+
+    
+    public ConcreteSpiderComparator(AbstractSpiderComparator asc){
+    	this.asc = asc;
+    }
+    
+    
     
     public ConcreteSpiderComparator(double xs, double ys, double xt, double yt, AbstractSpiderComparator asc) {
         this.xs = xs;
@@ -44,6 +53,9 @@ public class ConcreteSpiderComparator {
     public AbstractSpiderComparator get_asc(){
     	return asc;
     }
+    
+   
+    
     
     
     public double getLabelXPosition() {

@@ -57,8 +57,6 @@ public class CirclesPanel extends JPanel {
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         int labelHeight = 0;
         if (desc != null && !desc.isEmpty()) {
-        	//zohreh
-            //setBorder(BorderFactory.createLineBorder(Color.black));
             JLabel jl = new JLabel(desc);
             Font f = new Font("Dialog", Font.PLAIN, 12);
             if (desc.length() > 24) {
@@ -78,7 +76,6 @@ public class CirclesPanel extends JPanel {
         	dp = new DiagramPanel(diagram, failureMessage, useColors);
         else
         	dp = new DiagramPanel(size, failureMessage);
-        //dp.setBorder(BorderFactory.createLineBorder(Color.black));
     	
         this.setPreferredSize(new Dimension(size, size + labelHeight));
         dp.setPreferredSize(new Dimension(size, size + labelHeight));

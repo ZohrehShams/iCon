@@ -3,6 +3,7 @@ package speedith.ui.concretes;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.Point;
 import org.apache.log4j.Logger;
@@ -18,6 +19,9 @@ public class ConcreteArrow implements Cloneable{
     Line2D.Double arrow;
     Point midpoint;
     
+    private Ellipse2D.Double source;
+    private Ellipse2D.Double target;
+    
     double x_s;
     double y_s;
     double x_t;
@@ -31,7 +35,12 @@ public class ConcreteArrow implements Cloneable{
     
     Area shape;
     
+    public ConcreteArrow(AbstractArrow aa){
+    	this.aa = aa;
+    }
     
+    
+    // Can go start?
     public ConcreteArrow(double xs, double ys, double xt, double yt, AbstractArrow aa) {
         this.x_s = xs;
         this.y_s = ys;
@@ -43,8 +52,7 @@ public class ConcreteArrow implements Cloneable{
     }
 
     
-    
-    private Line2D.Double makeArrow(double xs, double ys, double xt, double yt) {
+    public Line2D.Double makeArrow(double xs, double ys, double xt, double yt) {
         return new Line2D.Double(xs, ys, xt, yt);
     }
     
@@ -61,14 +69,6 @@ public class ConcreteArrow implements Cloneable{
         return makeArrow(x_s*scale, y_s*scale, x_t*scale, y_t*scale);
     }
 
-
-//    public Line2D.Double getScaledArrow() {
-//        return makeArrow(x_s, y_s, x_t, y_t);
-//    }
-   
-    public Line2D.Double getMyArrow(double x_s, double y_s, double x_t, double y_t) {
-        return makeArrow(x_s, y_s, x_t, y_t);
-    }
     
     public double getLabelXPosition() {
         return (x_s + x_t)  / 2;
@@ -77,6 +77,7 @@ public class ConcreteArrow implements Cloneable{
     public double getLabelYPosition() {
     	return (y_s + y_t)  / 2;
     }
+    // Can go end?
     
     public double get_xs(){
     	return x_s;
@@ -92,6 +93,29 @@ public class ConcreteArrow implements Cloneable{
     
     public double get_yt(){
     	return y_t;
+    }
+    
+    
+    public void setSource(Ellipse2D.Double source) {
+        this.source = source;
+        this.x_s = source.x + (source.getWidth()/2);
+        this.y_s = source.y;
+    }
+
+    
+    public void setTarget(Ellipse2D.Double target) {
+        this.target = target;
+        this.x_t = target.x + (target.getWidth()/2);
+        this.y_t = target.y + target.getHeight();
+    }
+    
+    
+    public Ellipse2D.Double getSource() {
+        return source;
+    }
+
+    public Ellipse2D.Double getTarget() {
+        return target;
     }
     
     

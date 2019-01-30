@@ -1,21 +1,37 @@
 package speedith.ui;
 
-import icircles.abstractDescription.*;
-import icircles.concreteDiagram.ConcreteDiagram;
-import icircles.util.CannotDrawException;
+import static speedith.i18n.Translations.i18n;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.*;
-import javax.swing.JPanel;
-import speedith.core.lang.*;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import icircles.abstractDescription.AbstractBasicRegion;
+import icircles.abstractDescription.AbstractCurve;
+import icircles.abstractDescription.AbstractDescription;
+import icircles.abstractDescription.AbstractShape;
+import icircles.abstractDescription.AbstractSpider;
+import icircles.util.CannotDrawException;
+import speedith.core.lang.Arrow;
+import speedith.core.lang.COPDiagram;
+import speedith.core.lang.CarCDiagram;
+import speedith.core.lang.Cardinality;
+import speedith.core.lang.CompleteCOPDiagram;
+import speedith.core.lang.ConceptDiagram;
+import speedith.core.lang.LUCOPDiagram;
+import speedith.core.lang.LUCarCOPDiagram;
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
+import speedith.core.lang.SpiderComparator;
+import speedith.core.lang.Zone;
 import speedith.ui.abstracts.AbstractArrow;
 import speedith.ui.abstracts.AbstractSpiderComparator;
 import speedith.ui.abstracts.CDAbstractDescription;
 import speedith.ui.abstracts.COPAbstractDescription;
 import speedith.ui.abstracts.CompleteCOPAbstractDescription;
-import speedith.ui.concretes.ConcreteCDiagram;
-import speedith.ui.concretes.ConcreteCOPDiagram;
-
-import static speedith.i18n.Translations.i18n;
 
 public class COPDiagramVisualisation extends DiagramVisualisation{
     
@@ -27,8 +43,6 @@ public class COPDiagramVisualisation extends DiagramVisualisation{
 
     public static AbstractDescription getAbstractDescription(PrimarySpiderDiagram psd) throws CannotDrawException {
 
-    	
-    	
     	PrimarySpiderDiagram temp1 = psd;
     	PrimarySpiderDiagram temp2 = psd;
     	PrimarySpiderDiagram temp3 = psd;
@@ -105,9 +119,10 @@ public class COPDiagramVisualisation extends DiagramVisualisation{
          
         //psd has to be instance of COPDiagram to use this class for generating abstract description. 
 		COPDiagram cop = (COPDiagram) psd;
-		COPAbstractDescription copAd = new COPAbstractDescription(abstractContours, allVisibleZones, shadedHabitatZones); 
+		COPAbstractDescription copAd = new COPAbstractDescription(abstractContours, allVisibleZones, shadedHabitatZones);
+		copAd.setDots((TreeSet<String>) cop.getDots());
 		CompleteCOPAbstractDescription compAd = new CompleteCOPAbstractDescription(abstractContours, allVisibleZones, shadedHabitatZones); 
-
+		compAd.setDots((TreeSet<String>) cop.getDots());
         
         if (psd.getHabitatsCount() > 0) {
             SortedMap<String, Region> habitats = psd.getHabitats();

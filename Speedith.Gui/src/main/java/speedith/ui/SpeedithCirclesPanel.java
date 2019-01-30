@@ -62,6 +62,8 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
      */
     private int highlightMode = SelectionStep.None;
     private static final double HIGHLIGHT_CONTOUR_TOLERANCE = 6;
+//    private static final double HIGHLIGHT_ARROW_TOLERANCE = 1;
+    
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -69,7 +71,7 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
         this(null);
     }
 
-    public SpeedithCirclesPanel(ConcreteDiagrams diagram) {
+    public SpeedithCirclesPanel(ConcreteDiagram diagram) {
         super(diagram);
         // Register mouse listeners
         CirclesPanelMouseHandler mouseHandler = new CirclesPanelMouseHandler();
@@ -164,69 +166,53 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
     protected void fireSpiderClickedEvent(ConcreteSpiderFoot foot, MouseEvent clickInfo) {
         DiagramClickListener[] ls = listenerList.getListeners(DiagramClickListener.class);
         if (ls != null && ls.length > 0) {
-        	//Zohreh: the if condition is added
-        	if (getDiagram() instanceof ConcreteDiagram){
                 SpiderClickedEvent e = new SpiderClickedEvent(this, (ConcreteDiagram) getDiagram(), clickInfo, this.toDiagramCoordinates(clickInfo.getPoint()), foot);
                 for (int i = 0; i < ls.length; i++) {
                     ls[i].spiderClicked(e);
                 }
-        	}
         }
     }
 
     protected void fireZoneClickedEvent(ConcreteZone zone, MouseEvent clickInfo) {
         DiagramClickListener[] ls = listenerList.getListeners(DiagramClickListener.class);
         if (ls != null && ls.length > 0) {
-        	//Zohreh: the if condition is added
-        	if (getDiagram() instanceof ConcreteDiagram){
                 ZoneClickedEvent e = new ZoneClickedEvent(this, (ConcreteDiagram) getDiagram(), clickInfo, this.toDiagramCoordinates(clickInfo.getPoint()), zone);
                 for (int i = 0; i < ls.length; i++) {
                     ls[i].zoneClicked(e);
                 }
-        	}
         }
     }
 
     protected void fireContourClickedEvent(CircleContour contour, MouseEvent clickInfo) {
         DiagramClickListener[] ls = listenerList.getListeners(DiagramClickListener.class);
         if (ls != null && ls.length > 0) {
-        	//Zohreh: the if condition is added
-        	if (getDiagram() instanceof ConcreteDiagram){
                 ContourClickedEvent e = new ContourClickedEvent(this, (ConcreteDiagram) getDiagram(), clickInfo, this.toDiagramCoordinates(clickInfo.getPoint()), contour);
                 for (int i = 0; i < ls.length; i++) {
                     ls[i].contourClicked(e);
                 }	
-        	}
         }
     }
     
     
-    //Zohreh 
+    
     protected void fireArrowClickedEvent(ConcreteArrow arrow, MouseEvent clickInfo) {
         DiagramClickListener[] ls = listenerList.getListeners(DiagramClickListener.class);
         if (ls != null && ls.length > 0) {
-        	//Zohreh: the if condition is added
-        	if (getDiagram() instanceof ConcreteDiagram){
             	ArrowClickedEvent e = new ArrowClickedEvent(this, (ConcreteDiagram) getDiagram(), clickInfo, this.toDiagramCoordinates(clickInfo.getPoint()), arrow);
                 for (int i = 0; i < ls.length; i++) {
                     ls[i].arrowClicked(e);
                 }
-        		
-        	}
         }
     }
     
     
-    //Zohreh 
     protected void fireSpiderComparatorClickedEvent(ConcreteSpiderComparator spiderComparator, MouseEvent clickInfo) {
         DiagramClickListener[] ls = listenerList.getListeners(DiagramClickListener.class);
         if (ls != null && ls.length > 0) {
-        	if (getDiagram() instanceof ConcreteDiagram){
             	SpiderComparatorClickedEvent e = new SpiderComparatorClickedEvent(this, (ConcreteDiagram) getDiagram(), clickInfo, this.toDiagramCoordinates(clickInfo.getPoint()), spiderComparator);
                 for (int i = 0; i < ls.length; i++) {
                     ls[i].spiderComparatorClicked(e);
                 }
-        	}
         }
     }
     // </editor-fold>
@@ -242,24 +228,19 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
             	if (getDiagram() instanceof ConcreteDiagram){
             		Point p = toDiagramCoordinates(e.getPoint());
 
-//                  if ((getHighlightMode() & Contours) == Contours) {
                   CircleContour contour = ((ConcreteDiagram) getDiagram()).getCircleContourAtPoint(p, HIGHLIGHT_CONTOUR_TOLERANCE / getScaleFactor());
                   if (contour != null) {
                       fireContourClickedEvent(contour, e);
                       return;
                   }
-//                  }
 
-//                  if ((getHighlightMode() & Spiders) == Spiders) {
                   ConcreteSpiderFoot foot = ((ConcreteDiagram) getDiagram()).getSpiderFootAtPoint(p, getScaleFactor());
                   if (foot != null) {
                       fireSpiderClickedEvent(foot, e);
                       return;
                   }
-//                  }
                   
                   
-                  //Zohreh 
                   if(getDiagram() instanceof ConcreteCOPDiagram){
                	   ConcreteCOPDiagram ccopd =  (ConcreteCOPDiagram) getDiagram();
                       ConcreteArrow arrow = ccopd.getArrowAtPoint(p);
@@ -267,7 +248,6 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
                    	   fireArrowClickedEvent(arrow,e);
                    	   return;
                       }
-               	   
                   }
                   
                   
@@ -279,13 +259,12 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
                       	   return;
                          }
                      }
-
-
-//                  if ((getHighlightMode() & Zones) == Zones) {
+                  
+                  
+                  //This has to come last.
                   ConcreteZone zone = ((ConcreteDiagram) getDiagram()).getZoneAtPoint(p);
                   if (zone != null) {
                       fireZoneClickedEvent(zone, e);
-                      //return;
                   }
             		
             	}
@@ -306,8 +285,6 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
             setHighlightedZone(null);
             setHighlightedContour(null);
             setHighlightedFoot(null);
-            
-            //Zohreh
             setHighlightedArrow(null);
             setHighlightedSpiderComparator(null);
             
@@ -339,9 +316,9 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
                             return;
                         }
                     }
+                                        
                     
-                    
-                    //Zohreh
+                   // Check if the mouse hovers over an arrow:
                     if ((getHighlightMode() & SelectionStep.Arrows) == SelectionStep.Arrows) {
                     	ConcreteCOPDiagram ccopd =  (ConcreteCOPDiagram) getDiagram();
                         ConcreteArrow arrow = ccopd.getArrowAtPoint(p);
@@ -352,6 +329,7 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
                     }
                     
                     
+                    // Check if the mouse hovers over a spider comparator:
                     if ((getHighlightMode() & SelectionStep.SpiderComparators) == SelectionStep.SpiderComparators) {
                     	ConcreteCompleteCOPDiagram compCd =  (ConcreteCompleteCOPDiagram) getDiagram();
                         ConcreteSpiderComparator spiderComparator = compCd.getSpiderComparatorAtPoint(p);
@@ -361,7 +339,6 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
                         }
                     }
                     
-
                     // Check if the mouse hovers over a zone:
                     if ((getHighlightMode() & SelectionStep.Zones) == SelectionStep.Zones) {
                         ConcreteZone zone = ((ConcreteDiagram) getDiagram()).getZoneAtPoint(p);
@@ -371,12 +348,10 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
                         }
                     }
                     
-
-
-                    setHighlightedZone(null);
+                    
                     setHighlightedContour(null);
                     setHighlightedFoot(null);
-                    //Zohreh
+                    setHighlightedZone(null);
                     setHighlightedArrow(null);
                     setHighlightedSpiderComparator(null);
             		
@@ -386,5 +361,6 @@ public class SpeedithCirclesPanel extends ACirclesPanelEx {
         }
     }
     //</editor-fold>
+    
     
 }

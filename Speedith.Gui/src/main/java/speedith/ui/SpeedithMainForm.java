@@ -1439,9 +1439,14 @@ public class SpeedithMainForm extends javax.swing.JFrame {
   //Zohreh
   private ListModel<InfRuleListItem> getMyRulesList() {
 	    Set<String> knownInferenceRules = InferenceRules.getKnownInferenceRules(DiagramType.LUCOPDiagram);
-	    InfRuleListItem[] infRules = new InfRuleListItem[knownInferenceRules.size()];
+	    Set<String> knownInferenceRulesCD = InferenceRules.getKnownInferenceRules(DiagramType.ConceptDiagram);
+
+	    TreeSet<String> allKnownInferenceRulesCD = new TreeSet<String>(knownInferenceRules);
+	    allKnownInferenceRulesCD.addAll(knownInferenceRulesCD);
+	    
+	    InfRuleListItem[] infRules = new InfRuleListItem[allKnownInferenceRulesCD.size()];
 	    int i = 0;
-	    for (String providerName : knownInferenceRules) {
+	    for (String providerName : allKnownInferenceRulesCD) {
 	      infRules[i++] = new InfRuleListItem(InferenceRules.getProvider(providerName));
 	    }
 	    Arrays.sort(infRules);

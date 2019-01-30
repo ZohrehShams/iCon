@@ -81,24 +81,6 @@ public class SpiderDiagramClickEvent extends EventObject {
         this.subDiagramIndex = subDiagramIndex;
     }
     
-    
-    
-    public SpiderDiagramClickEvent(COPDiagramPanel source, SpiderDiagram diagram, DiagramClickEvent eventDetail, int subDiagramIndex) {
-        super(source);
-        if (source == null) {
-            throw new IllegalArgumentException("The argument 'source' must not be null.");
-        }
-        if (diagram == null) {
-            throw new IllegalArgumentException("The argument 'diagram' must not be null.");
-        }
-        if (subDiagramIndex < 0 || subDiagramIndex >= diagram.getSubDiagramCount()) {
-            throw new IllegalArgumentException(i18n("GERR_INDEX_OUT_OF_RANGE", "subDiagramIndex", "0", "diagram.getSubDiagramCount()"));
-        }
-        this.diagram = diagram;
-        this.detailedEvent = eventDetail;
-        this.subDiagramIndex = subDiagramIndex;
-    }
-
    
 
 

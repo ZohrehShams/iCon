@@ -254,6 +254,9 @@ public class ConcreteDiagram implements ConcreteDiagrams{
             for (CircleContour cc : getCircles()) {
                 double dist = Math.sqrt((p.x - cc.get_cx()) * (p.x - cc.get_cx())
                         + (p.y - cc.get_cy()) * (p.y - cc.get_cy()));
+//                System.out.println("d"+dist);
+//                System.out.println("r"+cc.get_radius());
+//                System.out.println("t"+tolerance);  
                 if (dist > cc.get_radius() - tolerance && dist < cc.get_radius() + tolerance) {
                     return cc;
                 }

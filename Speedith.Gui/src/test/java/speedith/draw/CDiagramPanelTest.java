@@ -203,7 +203,7 @@ public class CDiagramPanelTest extends JFrame{
     }
 
     private void onExample2() {
-        boundaryPanel.setDiagram(getExampleA());
+        boundaryPanel.setDiagram(getExampleB());
         setArrowPanel();
         setTitle("OntologyVisualiser" + ": ObjectSomeValuesFrom(op CE)");
     }
@@ -238,14 +238,15 @@ public class CDiagramPanelTest extends JFrame{
         }
     }
 
-//    private static Diagram getExampleB() {
-//        try {
-//            return DiagramsReader.readConceptDiagram(OBJECT_SOME_VALUE);
-//        } catch (Exception ex) {
-//            throw new RuntimeException();
-//        }
-//    }
-//
+    private static ConceptDiagram getExampleB() {
+        try {
+            return fourCarCDThreePrimaries;
+        } catch (Exception ex) {
+            throw new RuntimeException();
+        }
+    }
+    
+
 //    private static Diagram getExampleC() {
 //        try {
 //            return DiagramsReader.readConceptDiagram(CLASS_EXPRESSION);

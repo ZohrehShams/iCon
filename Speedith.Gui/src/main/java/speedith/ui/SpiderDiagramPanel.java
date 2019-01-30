@@ -32,22 +32,30 @@
  */
 package speedith.ui;
 
+import static speedith.i18n.Translations.i18n;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Iterator;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import icircles.util.CannotDrawException;
 import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.ConceptDiagram;
+import speedith.core.lang.FalseSpiderDiagram;
 import speedith.core.lang.NullSpiderDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.core.reasoning.args.selection.SelectionStep;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Iterator;
-
-import static speedith.i18n.Translations.i18n;
 
 /**
  * This panel displays all types of {@link SpiderDiagram spider diagrams}.
@@ -124,6 +132,7 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
                 try {
                     drawDiagram();
                 } catch (Exception ex) {
+                	ex.printStackTrace();
                     drawErrorLabel();
                 }
             } else {
@@ -173,7 +182,6 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
             setDiagram(null);
         } else {
             setDiagram(SpiderDiagramsReader.readSpiderDiagram(diagram));
-            //setDiagram(COPDiagramReader.readSpiderDiagram(diagram));
         }
     }
 
@@ -355,12 +363,35 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
                 drawPrimaryDiagram((PrimarySpiderDiagram) diagram);
             } else if (diagram instanceof NullSpiderDiagram) {
                 drawNullSpiderDiagram();
-            } else {
+            } else if(diagram instanceof ConceptDiagram){
+            	drawCDiagramWithoutArrows((ConceptDiagram) diagram);
+            }else
+            
+            {
                 throw new IllegalArgumentException(i18n("SD_PANEL_UNKNOWN_DIAGRAM_TYPE"));
             }
         }
     }
 
+    
+    
+    private void drawCDiagramWithoutArrows(ConceptDiagram cd) throws CannotDrawException {
+        if (cd != null && cd.getPrimaryCount() > 0) {
+            int gridx = 0, nextSubdiagramIndex = 1;
+            diagrams.setLayout(new GridBagLayout());
+
+            // Now start adding the panels of operand diagrams onto the surface
+            Iterator<PrimarySpiderDiagram> sdIter = cd.getPrimaries().iterator();
+            nextSubdiagramIndex = addSpiderDiagramPanel(nextSubdiagramIndex, sdIter.next(), gridx);
+            while (sdIter.hasNext()) {
+                //addOperatorPanel(csd, ++gridx);
+                nextSubdiagramIndex = addSpiderDiagramPanel(nextSubdiagramIndex, sdIter.next(), ++gridx);
+            }
+        } else {
+            throw new AssertionError(speedith.core.i18n.Translations.i18n("GERR_ILLEGAL_STATE"));
+        }
+    }
+    
 
     private void drawInfixDiagram(CompoundSpiderDiagram csd) throws CannotDrawException {
         if (csd != null && csd.getOperandCount() > 0) {
@@ -413,7 +444,7 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
      * registered listener will invoke the {@link SpiderDiagramPanel#addSpiderDiagramClickListener(speedith.ui.SpiderDiagramClickListener)
      * spider diagram click event} of this panel.
      */
-    //Zohreh
+    //Zohreh: Arrows and SpiderComparators can be clicked now. FlaseSpiderDiagramPanel is also added. 
     private JPanel registerSubdiagramClickListener(JPanel diagramPanel, final int subdiagramIndex) {
         if (diagramPanel instanceof SpeedithCirclesPanel) {
             SpeedithCirclesPanel cp = (SpeedithCirclesPanel) diagramPanel;
@@ -449,7 +480,7 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
                     fireSpiderDiagramClicked(subdiagramIndex + e.getSubDiagramIndex(), e.getDetailedEvent());
                 }
             });
-        } else if (diagramPanel instanceof NullSpiderDiagramPanel) {
+        } else if ((diagramPanel instanceof NullSpiderDiagramPanel) || (diagramPanel instanceof FalseSpiderDiagramPanel)) {
             diagramPanel.setFont(getFont());
             diagramPanel.addMouseListener(new MouseListener() {
 
@@ -532,10 +563,15 @@ public class SpiderDiagramPanel extends javax.swing.JPanel {
     }
 
 
+    //Zohreh: It accommodates FalseSpiderDiagram now. 
     private void drawNullSpiderDiagram() {
         diagrams.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new java.awt.GridBagConstraints();
-        diagrams.add(registerSubdiagramClickListener(new NullSpiderDiagramPanel(getFont()), 0), gbc);
+        if (diagram instanceof FalseSpiderDiagram){
+        	diagrams.add(registerSubdiagramClickListener(new FalseSpiderDiagramPanel(getFont()), 0), gbc);
+        }
+        else{
+        	diagrams.add(registerSubdiagramClickListener(new NullSpiderDiagramPanel(getFont()), 0), gbc);}
     }
 
     /**

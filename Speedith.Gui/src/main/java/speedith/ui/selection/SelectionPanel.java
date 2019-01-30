@@ -143,8 +143,8 @@ public class SelectionPanel extends javax.swing.JPanel {
         diagramAndSelectionPanel = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         
-        //Zohreh
-        spiderDiagramPanel = new speedith.ui.COPDiagramPanel();
+
+        spiderDiagramPanel = new speedith.ui.SpiderDiagramPanel();
         selectionPanel = new javax.swing.JPanel();
         selectionLabel = new javax.swing.JLabel();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
@@ -339,8 +339,7 @@ public class SelectionPanel extends javax.swing.JPanel {
     private javax.swing.JList selectionList;
     private javax.swing.JPanel selectionPanel;
     
-    //Zohreh
-    private speedith.ui.COPDiagramPanel spiderDiagramPanel;
+    private speedith.ui.SpiderDiagramPanel spiderDiagramPanel;
     private javax.swing.JLabel stepInstructionMessage;
     private javax.swing.JLabel stepNumber;
     // End of variables declaration//GEN-END:variables

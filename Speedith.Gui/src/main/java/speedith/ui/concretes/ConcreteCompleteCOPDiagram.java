@@ -2,8 +2,11 @@ package speedith.ui.concretes;
 
 import java.awt.Point;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
+import java.util.TreeSet;
+
 import icircles.concreteDiagram.CircleContour;
 import icircles.concreteDiagram.ConcreteSpider;
 import icircles.concreteDiagram.ConcreteZone;
@@ -29,6 +32,14 @@ public class ConcreteCompleteCOPDiagram extends ConcreteCOPDiagram {
 		this.spiderComparators=spiderComparators;
 	}
 	
+	
+	//This constructor is used for when there are no curves. 
+    public ConcreteCompleteCOPDiagram(ArrayList<ConcreteArrow> arrows, TreeSet<String> dots,ArrayList<ConcreteSpiderComparator> spiderComparators) {
+        super(arrows, dots);
+        this.spiderComparators=spiderComparators;
+    }
+    
+    
     public ArrayList<ConcreteSpiderComparator> getConSpiderComparators() {
         return spiderComparators;
     }

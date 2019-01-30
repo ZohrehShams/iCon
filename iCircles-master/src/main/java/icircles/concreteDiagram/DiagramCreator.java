@@ -228,7 +228,7 @@ public class DiagramCreator {
         // build some feet
         Rectangle2D.Double box = CircleContour.makeBigOuterBox(circles);
         RecompositionStep last_step = null;
-              
+        
         if (r_steps != null && r_steps.size() > 0) {
             last_step = r_steps.get(r_steps.size() - 1);
         }

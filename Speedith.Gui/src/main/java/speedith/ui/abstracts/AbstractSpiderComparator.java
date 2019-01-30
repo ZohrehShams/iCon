@@ -33,7 +33,7 @@ public class AbstractSpiderComparator implements Comparable<AbstractSpiderCompar
 	public String getAbsQuality(){
 		return m_quality;
 	}
-	
+
 
 	@Override
 	public int compareTo(AbstractSpiderComparator other) {

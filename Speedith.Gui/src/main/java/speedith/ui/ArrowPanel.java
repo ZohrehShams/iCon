@@ -88,7 +88,7 @@ public class ArrowPanel extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
     	
-    	System.out.println("you are cming here at all?");
+    	//System.out.println("you are cming here at all?");
     	
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;

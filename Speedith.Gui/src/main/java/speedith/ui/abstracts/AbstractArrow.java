@@ -45,6 +45,30 @@ public class AbstractArrow implements Comparable<AbstractArrow>{
 		return m_target; 
 	}
 
+	public String getSourceString(){
+		String id;
+		if (get_start() instanceof AbstractSpider){
+			AbstractSpider absSpider = (AbstractSpider) get_start();
+			id = absSpider.getName();
+		}else{
+			AbstractCurve absCurve = (AbstractCurve) get_start();
+			id = absCurve.getLabel();
+		}
+		return id;
+	}
+	
+	
+	public String getTargetString(){
+		String id;
+		if (get_end() instanceof AbstractSpider){
+			AbstractSpider absSpider = (AbstractSpider) get_end();
+			id = absSpider.getName();
+		}else{
+			AbstractCurve absCurve = (AbstractCurve) get_end();
+			id = absCurve.getLabel();
+		}
+		return id;
+	}
 	
 	
 	public String get_type() {
@@ -140,95 +164,19 @@ public class AbstractArrow implements Comparable<AbstractArrow>{
 			if (v != 0) return v;
 			
 			v = this.m_label.compareTo(other.m_label);
-			if (v != 0) return v;
-			
-			
-//			if((get_start() instanceof AbstractSpider) && (get_end() instanceof AbstractSpider))
-//			{
-//			v = this.m_source.compareTo(other.m_source);
-//			if (v != 0) return v;
-//			
-//			v = this.m_target.compareTo(other.m_target);
-//			if (v != 0) return v;
-//			
-//			v = this.m_type.compareTo(other.m_type);
-//			if (v != 0) return v;
-//			
-//			v = this.m_label.compareTo(other.m_label);
-//			if (v != 0) return v;}
-//			
-//			
-//			if((get_start() instanceof AbstractCurve) && (get_end() instanceof AbstractCurve))
-//			{
-//			v = this.m_source.compareTo(other.m_source);
-//			if (v != 0) return v;
-//			
-//			v = this.m_target.compareTo(other.m_target);
-//			if (v != 0) return v;
-//			
-//			v = this.m_type.compareTo(other.m_type);
-//			if (v != 0) return v;
-//			
-//			v = this.m_label.compareTo(other.m_label);
-//			if (v != 0) return v;}
-//			
-//			
-//			if((get_start() instanceof AbstractSpider) && (get_end() instanceof AbstractCurve))
-//			{
-//			v = this.m_source.compareTo(other.m_source);
-//			if (v != 0) return v;
-//			
-//			v = this.m_target.compareTo(other.m_target);
-//			if (v != 0) return v;
-//			
-//			v = this.m_type.compareTo(other.m_type);
-//			if (v != 0) return v;
-//			
-//			v = this.m_label.compareTo(other.m_label);
-//			if (v != 0) return v;}
-//			
-//			
-//			if((get_start() instanceof AbstractCurve) && (get_end() instanceof AbstractSpider))
-//			{
-//			v = this.m_source.compareTo(other.m_source);
-//			if (v != 0) return v;
-//			
-//			v = this.m_target.compareTo(other.m_target);
-//			if (v != 0) return v;
-//			
-//			v = this.m_type.compareTo(other.m_type);
-//			if (v != 0) return v;
-//			
-//			v = this.m_label.compareTo(other.m_label);
-//			if (v != 0) return v;}
-			
-			
+			if (v != 0) return v;			
 		}
 		
 		return 1;
 		//Zohreh: If I get in trouble for comparison of two arrow when they don't have the same start let's say, 
-		// I can say retun 1 is start is curve and -1 if start is spider
+		// I can say return 1 is start is curve and -1 if start is spider
 	}
     
 
 
 
 
-	//Zohreh: I'm not so sure if I need the brackets, I guess it has to do with how these are passed to the diagram panels?
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append('(');
-		sb.append(m_source);
-        sb.append(", ");
-        sb.append(m_target);
-        sb.append(", ");
-        sb.append(m_type);
-        sb.append(", ");
-        sb.append(m_label);
-        sb.append(')');
-		return sb.toString();
-	}
+
 	
 	
 

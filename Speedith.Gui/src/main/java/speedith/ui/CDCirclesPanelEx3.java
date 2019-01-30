@@ -135,7 +135,7 @@ public class CDCirclesPanelEx3 extends javax.swing.JPanel {
 
     private void drawDiagram() throws CannotDrawException {
         if (diagram != null) {
-            arrows = new HashSet<>();
+        	arrows = new HashSet<>();
             circleMap = new HashMap<>();
             Set<ConcreteCOPDiagram> COPs;
             this.setBorder(new EmptyBorder(20, 20, 20, 20));

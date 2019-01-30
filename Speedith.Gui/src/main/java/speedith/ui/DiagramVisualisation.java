@@ -215,17 +215,17 @@ public class DiagramVisualisation {
             throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "sd"));
         } else {
             if (sd instanceof PrimarySpiderDiagram) {
-                //return getSpiderDiagramPanel((PrimarySpiderDiagram) sd, size);
-                return new COPDiagramPanel((PrimarySpiderDiagram) sd);
+                return new SpiderDiagramPanel(sd);
             } else if (sd instanceof CompoundSpiderDiagram) {
-//                return new SpiderDiagramPanel(sd);
-                return new COPDiagramPanel(sd);
+                return new SpiderDiagramPanel(sd);
             } else if (sd instanceof NullSpiderDiagram) {
             	if(sd instanceof FalseSpiderDiagram){
             		return new FalseSpiderDiagramPanel();
             	}
                 return new NullSpiderDiagramPanel();
-            } else {
+            } else if(sd instanceof ConceptDiagram){
+            	return new SpiderDiagramPanel(sd);
+            }else {
                 throw new AssertionError(i18n("GERR_ILLEGAL_STATE"));
             }
         }
@@ -255,7 +255,7 @@ public class DiagramVisualisation {
         return new SpeedithCirclesPanel(cd);
     }
 
-    //Zohreh: This now copes with COP 
+    //Zohreh: This now copes with COPs. 
     static SpeedithCirclesPanel getSpiderDiagramPanel(PrimarySpiderDiagram diagram, int size) throws CannotDrawException {
     	AbstractDescription ad = null;
     	ConcreteDiagram cd = null;
@@ -301,6 +301,8 @@ public class DiagramVisualisation {
         }
         return AbstractBasicRegion.get(inContours);
     }
+    
+    
 
     protected static void addFeetForZone(TreeSet<AbstractBasicRegion> feet, HashMap<String, AbstractCurve> contourMap, Zone foot) {
         feet.add(constructABR(foot, contourMap));

@@ -58,9 +58,7 @@ public class SubgoalPanel extends javax.swing.JPanel {
 
         lblSubdiagramIndex = new javax.swing.JLabel();
         
-        //Zohreh
-        //spiderDiagramPanel1 = new speedith.ui.SpiderDiagramPanel();
-        spiderDiagramPanel1 = new speedith.ui.COPDiagramPanel();
+        spiderDiagramPanel1 = new speedith.ui.SpiderDiagramPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -91,9 +89,7 @@ public class SubgoalPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblSubdiagramIndex;
     
-    //Zohreh
-    //private speedith.ui.SpiderDiagramPanel spiderDiagramPanel1;
-    private speedith.ui.COPDiagramPanel spiderDiagramPanel1;
+    private speedith.ui.SpiderDiagramPanel spiderDiagramPanel1;
     // End of variables declaration//GEN-END:variables
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">

@@ -1,6 +1,5 @@
 package speedith.draw;
  
-import speedith.ui.COPDiagramPanel;
 import speedith.ui.SpiderDiagramPanel;
 
 import javax.swing.*;
@@ -11,21 +10,14 @@ import java.awt.event.ActionListener;
 public class LotsOfDiagramsForm extends javax.swing.JFrame {
     private final DiagramTestPortfolio diagramTestPortfolio = new DiagramTestPortfolio();
     
-    //Zohreh
-    //private SpiderDiagramPanel spiderDiagramPanel;
-    //private OCOPMainDiagramPanel spiderDiagramPanel;
-    private COPDiagramPanel spiderDiagramPanel;
+    private SpiderDiagramPanel spiderDiagramPanel;
     
     private int spiderDiagramIndex = -1;
 
     public LotsOfDiagramsForm() {
         setLayout(new BorderLayout());
 
-        //Zohreh
-        //spiderDiagramPanel = new SpiderDiagramPanel();
-        //spiderDiagramPanel = new OCOPMainDiagramPanel();
-        spiderDiagramPanel = new COPDiagramPanel();
-
+        spiderDiagramPanel = new SpiderDiagramPanel();
         
         add(spiderDiagramPanel, BorderLayout.CENTER);
 
