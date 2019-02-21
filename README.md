@@ -23,7 +23,9 @@ these, you can build iCon at any time.
 2. You might need to add Scala: Right-clic on Speedith.Core module -> Add Framework support -> Scala. Then in the same module mark src/main/scala as Sources Root.
 3. Entry point is Speedith.Gui/src/main/java/speedith/Main
 
-If it complains about i18/strings resources, then Build -> rebuild project
+If it complains about i18/strings resources, then Build -> rebuild project.
+
+To regenerate "generated antlr3 sources" open Maven tool window and execute plugin antlr3.
 
 ## Building iCon
 
