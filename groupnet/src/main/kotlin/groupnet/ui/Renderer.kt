@@ -1,5 +1,6 @@
 package groupnet.ui
 
+import groupnet.ConApp
 import groupnet.euler.Curve
 import groupnet.euler.EulerDiagram
 import groupnet.euler.Zone
@@ -74,8 +75,8 @@ class Renderer : Pane() {
         val imageView = ImageView(snapshot)
 
         imageView.isPreserveRatio = true
-        //imageView.fitHeightProperty().bind(GroupNetApp.getInstance().stage.heightProperty().subtract(100))
-        //imageView.fitWidthProperty().bind(GroupNetApp.getInstance().stage.widthProperty().subtract(100))
+        imageView.fitHeightProperty().bind(ConApp.getInstance().stage.heightProperty().subtract(100))
+        imageView.fitWidthProperty().bind(ConApp.getInstance().stage.widthProperty().subtract(100))
 
         rootSceneGraph.children += imageView
 

@@ -16,6 +16,12 @@ public class ConApp extends Application {
     private static ConApp instance;
     private static Renderer renderer;
 
+    private Stage stage;
+
+    public Stage getStage() {
+        return stage;
+    }
+
     public static ConApp getInstance() {
         return instance;
     }
@@ -26,6 +32,7 @@ public class ConApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage = stage;
         instance = this;
         renderer = new Renderer();
 

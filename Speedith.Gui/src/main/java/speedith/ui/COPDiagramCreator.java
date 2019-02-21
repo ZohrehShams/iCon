@@ -4,7 +4,9 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
+import groupnet.GroupNetProxy;
 import icircles.concreteDiagram.*;
 import icircles.decomposition.DecompositionStrategy;
 import icircles.recomposition.RecompositionStrategy;
@@ -37,6 +39,7 @@ public class COPDiagramCreator extends DiagramCreator{
 	
 	@Override
 	public ConcreteDiagram createDiagram(int size) throws CannotDrawException {
+		GroupNetProxy.drawEulerDiagram(m_initial_diagram.getCopyOfZones().stream().map(z -> z.toString() + " ").collect(Collectors.joining()));
 		
 //		if(m_initial_diagram instanceof CompleteCOPAbstractDescription){
 //			CompleteCOPAbstractDescription complete_cop_initial_diagram  = (CompleteCOPAbstractDescription) m_initial_diagram;
