@@ -1,6 +1,5 @@
 package speedith.core.reasoning.rules;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import speedith.core.lang.DiagramType;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.reasoning.*;

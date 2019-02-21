@@ -50,7 +50,7 @@ public class CirclesSVGGenerator {
      *
      * @return An SVGDocument DOM structure representing the SVG.
      */
-    public SVGDocument toSVG() {
+    /*public SVGDocument toSVG() {
         // Get a DOMImplementation.
         DOMImplementation domImpl =
             SVGDOMImplementation.getDOMImplementation();
@@ -114,7 +114,7 @@ public class CirclesSVGGenerator {
         }
 
         return document;
-    }
+    }*/
 
     /**
      * Converts a Java Color into a HTML color code.
@@ -181,23 +181,23 @@ public class CirclesSVGGenerator {
 
     @Override
     public String toString() {
-        Document document = toSVG();
-
-        // Use the old transformer method as we cannot be guaranteed that
-        // the underlying JDK supports DOM level 3.
-        try {
-            Source source = new DOMSource(document.getDocumentElement());
-            StringWriter stringWriter = new StringWriter();
-            Result result = new StreamResult(stringWriter);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer();
-            transformer.transform(source, result);
-            return stringWriter.getBuffer().toString();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        }
+//        Document document = toSVG();
+//
+//        // Use the old transformer method as we cannot be guaranteed that
+//        // the underlying JDK supports DOM level 3.
+//        try {
+//            Source source = new DOMSource(document.getDocumentElement());
+//            StringWriter stringWriter = new StringWriter();
+//            Result result = new StreamResult(stringWriter);
+//            TransformerFactory factory = TransformerFactory.newInstance();
+//            Transformer transformer = factory.newTransformer();
+//            transformer.transform(source, result);
+//            return stringWriter.getBuffer().toString();
+//        } catch (TransformerConfigurationException e) {
+//            e.printStackTrace();
+//        } catch (TransformerException e) {
+//            e.printStackTrace();
+//        }
         return null;
     }
 }
