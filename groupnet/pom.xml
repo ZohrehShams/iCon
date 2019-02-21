@@ -12,8 +12,15 @@
     <artifactId>groupnet</artifactId>
 
     <properties>
+        <maven.compiler.version>3.8.0</maven.compiler.version>
+
         <kotlin.version>1.3.21</kotlin.version>
         <javafx.version>11</javafx.version>
+
+        <jgrapht.version>0.9.1</jgrapht.version>
+        <javageom.version>0.11.1</javageom.version>
+        <combinatorics.version>3.3.0</combinatorics.version>
+        <simplify.version>1.0.0</simplify.version>
     </properties>
 
     <dependencies>
@@ -24,9 +31,39 @@
         </dependency>
 
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>${jgrapht.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>math.geom2d</groupId>
+            <artifactId>javaGeom</artifactId>
+            <version>${javageom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.goebl</groupId>
+            <artifactId>simplify</artifactId>
+            <version>${simplify.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.dpaukov</groupId>
+            <artifactId>combinatoricslib3</artifactId>
+            <version>${combinatorics.version}</version>
         </dependency>
     </dependencies>
 
@@ -60,6 +97,15 @@
                 </executions>
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
