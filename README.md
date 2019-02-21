@@ -1,40 +1,35 @@
 # iCon 2
 
---------------------------------------------------------------------------------
+iCon is a diagrammatic theorem prover for [conceptDiagrams] that builds on [Speedith](https://github.com/speedith/speedith).
 
-iCon is a diagrammatic theorem prover for [conceptDiagrams] that builds on Speedith (https://github.com/speedith/speedith).
-
-
---------------------------------------------------------------------------------
 
 # Licence
 
 iCon is licenced under the MIT licence. Please read [LICENCE.md](LICENCE.md) for more information.
 
---------------------------------------------------------------------------------
-
 # Developer's Guide to _iCon_ #
-
---------------------------------------------------------------------------------
 
 ## General Requirements
 
 These requirements have to be checked only once. After you make sure you have
-these, you can build Speedith at any time.
+these, you can build iCon at any time.
 
 *   Maven (see [installation instructions](https://maven.apache.org/))
-
 *   Java 8
 
---------------------------------------------------------------------------------
+## Building iCon (IntelliJ)
+
+1. New -> Project from existing sources (select iCon top-level dir) -> Maven (Search projects recursively, import automatically) -> Next (3 times) -> JDK 1.8 -> Finish
+2. You might need to add Scala: Right-clic on Speedith.Core module -> Add Framework support -> Scala. Then in the same module mark src/main/scala as Sources Root.
+3. Entry point is Speedith.Gui/src/main/java/speedith/Main
+
+If it complains about i18/strings resources, then Build -> rebuild project
 
 ## Building iCon
 
 Use Maven to build Speedith (in the root directory of your cloned iCon repository):
 
     mvn install
-
---------------------------------------------------------------------------------
 
 ## Running iCon
 
