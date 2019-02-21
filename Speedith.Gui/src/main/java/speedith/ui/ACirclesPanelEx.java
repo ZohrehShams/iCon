@@ -1,15 +1,20 @@
 package speedith.ui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
+import icircles.abstractDescription.AbstractBasicRegion;
+import icircles.concreteDiagram.*;
+import icircles.gui.CirclesPanelEx;
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.batik.svggen.SVGGraphics2DIOException;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import speedith.ui.concretes.ConcreteArrow;
+import speedith.ui.concretes.ConcreteCOPDiagram;
+import speedith.ui.concretes.ConcreteCompleteCOPDiagram;
+import speedith.ui.concretes.ConcreteSpiderComparator;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -20,29 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JPanel;
-
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-
-import icircles.abstractDescription.AbstractBasicRegion;
-import icircles.concreteDiagram.CircleContour;
-import icircles.concreteDiagram.ConcreteDiagram;
-import icircles.concreteDiagram.ConcreteSpider;
-import icircles.concreteDiagram.ConcreteSpiderFoot;
-import icircles.concreteDiagram.ConcreteSpiderLeg;
-import icircles.concreteDiagram.ConcreteZone;
-import icircles.gui.CirclesPanelEx;
-import speedith.ui.concretes.ConcreteArrow;
-import speedith.ui.concretes.ConcreteCOPDiagram;
-import speedith.ui.concretes.ConcreteCompleteCOPDiagram;
-import speedith.ui.concretes.ConcreteSpiderComparator;
-
-public class ACirclesPanelEx extends JPanel{
-	/**
+public class ACirclesPanelEx extends JPanel {
+    /**
      * This stroke is used to draw contours if no special stroke is specified
      * for them.
      */
@@ -51,13 +35,13 @@ public class ACirclesPanelEx extends JPanel{
      * This stroke is used to draw highlighted legs, outlines, and contours.
      */
     protected static final BasicStroke HIGHLIGHT_STROKE = new BasicStroke(3.5f);
-    
-    
+
+
     final static float dash1[] = {10.0f};
-    final static BasicStroke dashed = new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER,
-    		10.0f, dash1, 0.0f);
-    
-    
+    final static BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+            10.0f, dash1, 0.0f);
+
+
     protected static final Color HIGHLIGHT_LEG_COLOUR = Color.BLUE;
     protected static final Color HIGHLIGHTED_FOOT_COLOUR = Color.RED;
     protected static final Color HIGHLIGHT_STROKE_COLOUR = Color.RED;
@@ -75,27 +59,27 @@ public class ACirclesPanelEx extends JPanel{
     /**
      * The diagram that will actually be drawn in this panel.
      */
-    
+
     protected ConcreteDiagram diagram;
     /**
      * The scale that should be applied to the circles in this diagram (due to
      * the resizing of this panel).
      */
     protected double scaleFactor = 1;
-    
+
     protected AffineTransform trans = new AffineTransform();
-    
+
     protected AffineTransform tx = new AffineTransform();
-    
+
     private CircleContour highlightedContour = null;
     private ConcreteZone highlightedZone = null;
     private ConcreteSpiderFoot highlightedFoot = null;
     private ConcreteArrow highlightedArrow = null;
     private ConcreteSpiderComparator highlightedSpiderComparator = null;
-//    protected static HashMap<CircleContour,Ellipse2D.Double> concreteToCanvasCircles;
-    private HashMap<ConcreteSpiderFoot,Ellipse2D.Double> concreteSpiderToCanvas;
-    private  HashMap<String,Ellipse2D.Double> spiderCircleToCanvas;
-//    protected  HashMap<ConcreteArrow,Line2D.Double> arrowToCanvas;
+    //    protected static HashMap<CircleContour,Ellipse2D.Double> concreteToCanvasCircles;
+    private HashMap<ConcreteSpiderFoot, Ellipse2D.Double> concreteSpiderToCanvas;
+    private HashMap<String, Ellipse2D.Double> spiderCircleToCanvas;
+    //    protected  HashMap<ConcreteArrow,Line2D.Double> arrowToCanvas;
     private int offsetX = 0;
     private int width;
     private int height;
@@ -110,19 +94,11 @@ public class ACirclesPanelEx extends JPanel{
         initComponents();
         resetDiagram(diagram);
         resizeContents();
-        spiderCircleToCanvas =   new HashMap<String,Ellipse2D.Double>();
-        concreteSpiderToCanvas = new HashMap<ConcreteSpiderFoot,Ellipse2D.Double>();
+        spiderCircleToCanvas = new HashMap<String, Ellipse2D.Double>();
+        concreteSpiderToCanvas = new HashMap<ConcreteSpiderFoot, Ellipse2D.Double>();
 //        arrowToCanvas = new HashMap<ConcreteArrow,Line2D.Double>();
     }
 
-    /**
-     * Creates new panel with no diagram.
-     */
-    public ACirclesPanelEx() {
-        this(null);
-    }
-    
-    
     ACirclesPanelEx(ConcreteDiagram diagram, int width, int height, int offsetX) {
         this.domImpl = GenericDOMImplementation.getDOMImplementation();
         this.svgNS = "http://www.w3.org/2000/svg";
@@ -136,11 +112,11 @@ public class ACirclesPanelEx extends JPanel{
         this.highlightedContour = null;
         this.highlightedZone = null;
         this.highlightedFoot = null;
-        this.spiderCircleToCanvas = new HashMap<String,Ellipse2D.Double>();
-        this.concreteSpiderToCanvas = new HashMap<ConcreteSpiderFoot,Ellipse2D.Double>();
+        this.spiderCircleToCanvas = new HashMap<String, Ellipse2D.Double>();
+        this.concreteSpiderToCanvas = new HashMap<ConcreteSpiderFoot, Ellipse2D.Double>();
 
 //        this.arrowToCanvas = new HashMap<ConcreteArrow,Line2D.Double>();
-        
+
         this.initComponents();
         this.resetDiagram(diagram);
         this.resizeContents();
@@ -172,7 +148,7 @@ public class ACirclesPanelEx extends JPanel{
      * nicely.
      *
      * @return the factor by which the {@link ConcreteDiagram drawn concrete
-     *         diagram} is scaled.
+     * diagram} is scaled.
      */
     public final double getScaleFactor() {
         return scaleFactor;
@@ -201,7 +177,7 @@ public class ACirclesPanelEx extends JPanel{
      *
      * @param p the coordinates which to convert.
      * @return the coordinates of the corresponding point in the coordinate
-     *         system of the {@link CirclesPanelEx#getDiagram() displayed diagram}.
+     * system of the {@link CirclesPanelEx#getDiagram() displayed diagram}.
      */
     public Point toDiagramCoordinates(Point p) {
         p.x -= getCenteringTranslationX();
@@ -210,9 +186,8 @@ public class ACirclesPanelEx extends JPanel{
         p.y /= scaleFactor;
         return p;
     }
-    
-    
-    
+
+
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -222,20 +197,20 @@ public class ACirclesPanelEx extends JPanel{
             g2d.clearRect(0, 0, getWidth(), getHeight());
             super.paint(g);
         } else {
-        	
+
             super.paint(g);
-            
+
             g2d.setBackground(Color.white);
             g2d.clearRect(0, 0, getWidth(), getHeight());
-                      
+
             // This centers the diagram onto the drawing area.
             g.translate(getCenteringTranslationX(), getCenteringTranslationY());
-            
-            
+
+
             // Draw shaded zones:
             g.setColor(Color.lightGray);
-            ArrayList<ConcreteZone> shadedZones  = diagram.getShadedZones();
-            if(shadedZones != null){
+            ArrayList<ConcreteZone> shadedZones = diagram.getShadedZones();
+            if (shadedZones != null) {
                 for (ConcreteZone z : diagram.getShadedZones()) {
                     if (z.getColor() != null) {
                         g.setColor(z.getColor());
@@ -249,12 +224,12 @@ public class ACirclesPanelEx extends JPanel{
                     // shape.
                     Area a = z.getShape(diagram.getBox());
                     g2d.fill(a.createTransformedArea(trans));
-                }            	
+                }
             }
 
 
             // Draw the highlighted zone:
-            if (getHighlightedZone() != null) { 
+            if (getHighlightedZone() != null) {
                 Color oldColour = g2d.getColor();
                 g2d.setColor(HIGHLIGHT_ZONE_COLOUR);
                 g2d.fill(getHighlightedZone().getShape(diagram.getBox()).createTransformedArea(trans));
@@ -264,31 +239,31 @@ public class ACirclesPanelEx extends JPanel{
             // Draw contours:
             g2d.setStroke(DEFAULT_CONTOUR_STROKE);
             ArrayList<CircleContour> circles = diagram.getCircles();
-            
-            if(circles != null){
+
+            if (circles != null) {
                 for (CircleContour cc : circles) {
 
-                	Ellipse2D.Double tmpCircle = new Ellipse2D.Double();
-                	
+                    Ellipse2D.Double tmpCircle = new Ellipse2D.Double();
+
                     Color col = cc.color();
-                    
-                    if(cc.ac.getLabel().startsWith("-")){
-                    	col = Color.WHITE;
+
+                    if (cc.ac.getLabel().startsWith("-")) {
+                        col = Color.WHITE;
                     }
-                    
+
                     if (col == null) {
                         col = Color.black;
                     }
                     g.setColor(col);
-                    
-                    
-                    transformCircle(scaleFactor, cc.getCircle(), tmpCircle);   
-                    
+
+
+                    transformCircle(scaleFactor, cc.getCircle(), tmpCircle);
+
                     String name = cc.ac.getLabel();
-                    spiderCircleToCanvas.put(name,tmpCircle);
-                    
+                    spiderCircleToCanvas.put(name, tmpCircle);
+
                     g2d.draw(tmpCircle);
-                                    
+
                     if (cc.ac.getLabel() == null) {
                         continue;
                     }
@@ -315,29 +290,29 @@ public class ACirclesPanelEx extends JPanel{
                     //Zohreh: Instead of printing the unique identifier of curves (unlike for spiders, they are called labels!) 
                     //we print the curve names, that they are not null.                
                     if (cc.ac.getName() != null) {
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
+                        g.setFont(new Font("Helvetica", Font.BOLD, 18));
                         g2d.drawString(cc.ac.getName(),
-                                (int) (cc.getLabelXPosition() * trans.getScaleX()) + 5 ,
+                                (int) (cc.getLabelXPosition() * trans.getScaleX()) + 5,
                                 (int) (cc.getLabelYPosition() * trans.getScaleY()) + 5);
-                    }   
-                }  
+                    }
+                }
             }
-            
+
             // Draw the highlighted circle contour
-          if (getHighlightedContour() != null) {
-              // Reset the stroke and the colour of the highlighted outline.
-              g2d.setColor(HIGHLIGHT_STROKE_COLOUR);
-              g2d.setStroke(HIGHLIGHT_STROKE);
-              g2d.draw(spiderCircleToCanvas.get(getHighlightedContour().ac.getLabel()));
-          }
-            
+            if (getHighlightedContour() != null) {
+                // Reset the stroke and the colour of the highlighted outline.
+                g2d.setColor(HIGHLIGHT_STROKE_COLOUR);
+                g2d.setStroke(HIGHLIGHT_STROKE);
+                g2d.draw(spiderCircleToCanvas.get(getHighlightedContour().ac.getLabel()));
+            }
+
 
             ConcreteSpider highlightedSpider = getHighlightedFoot() == null ? null : getHighlightedFoot().getSpider();
             g.setColor(Color.black);
             ArrayList<ConcreteSpider> spiders = diagram.getSpiders();
-            if(spiders != null) {
+            if (spiders != null) {
                 for (ConcreteSpider s : diagram.getSpiders()) {
-                	
+
                     // Reset the stroke and the colour if the spider is highlighted.
                     Color oldColor = null;
                     Stroke oldStroke = null;
@@ -356,49 +331,49 @@ public class ACirclesPanelEx extends JPanel{
 //                                (int) (leg.to.getY() * scaleFactor));
 //                    }
 
-                    for (ConcreteSpiderFoot foot : s.feet) { 
-                    	Ellipse2D.Double tmpCircleSpider = new Ellipse2D.Double();
+                    for (ConcreteSpiderFoot foot : s.feet) {
+                        Ellipse2D.Double tmpCircleSpider = new Ellipse2D.Double();
                         foot.getBlob(tmpCircleSpider);
                         Color oldColor2 = g2d.getColor();
                         translateCircleCentre(scaleFactor, tmpCircleSpider, tmpCircleSpider);
-                        
+
                         //This is to avoid placing the spiders outside all contours too close to  contours. 
 //                        if (s.get_feet().size() == 1 && s.as.get_feet().first().getNumContours() == 0) {
 //                            translateCircleCenter(tmpCircleSpider, tmpCircleSpider, 0, 30);  
 //                        }
-                        for (AbstractBasicRegion abr : s.as.get_feet()){
-                        	if(abr.getNumContours() == 0){
-                        		translateCircleCenter(tmpCircleSpider, tmpCircleSpider, 0, 30); 
-                        	}
+                        for (AbstractBasicRegion abr : s.as.get_feet()) {
+                            if (abr.getNumContours() == 0) {
+                                translateCircleCenter(tmpCircleSpider, tmpCircleSpider, 0, 30);
+                            }
                         }
-                        spiderCircleToCanvas.put(s.as.getName() , tmpCircleSpider);
+                        spiderCircleToCanvas.put(s.as.getName(), tmpCircleSpider);
                         concreteSpiderToCanvas.put(foot, tmpCircleSpider);
 
-                        
+
                         if (getHighlightedFoot() == foot) {
                             oldColor2 = g2d.getColor();
                             g2d.setColor(HIGHLIGHTED_FOOT_COLOUR);
                             scaleCircleCentrally(tmpCircleSpider, HIGHLIGHTED_FOOT_SCALE);
                         }
                         g2d.fill(tmpCircleSpider);
-                        
+
                         if (getHighlightedFoot() == foot) {
                             g2d.setColor(oldColor2);
                         }
                     }
-                    
+
                     for (ConcreteSpiderLeg leg : s.legs) {
-                    	g2d.draw(new Line2D.Double(concreteSpiderToCanvas.get(leg.from).getCenterX(),
-                    			concreteSpiderToCanvas.get(leg.from).getCenterY(),
-                    			concreteSpiderToCanvas.get(leg.to).getCenterX(),
-                    			concreteSpiderToCanvas.get(leg.to).getCenterY()));
+                        g2d.draw(new Line2D.Double(concreteSpiderToCanvas.get(leg.from).getCenterX(),
+                                concreteSpiderToCanvas.get(leg.from).getCenterY(),
+                                concreteSpiderToCanvas.get(leg.to).getCenterX(),
+                                concreteSpiderToCanvas.get(leg.to).getCenterY()));
                     }
-                    
+
                     //Printing the spiders labels.
                     if (s.as.getLabel() != null) {
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
-                    	g2d.drawString(s.as.getLabel(),
-                                (int) ((spiderCircleToCanvas.get(s.as.getName()).x) - 7) ,
+                        g.setFont(new Font("Helvetica", Font.BOLD, 18));
+                        g2d.drawString(s.as.getLabel(),
+                                (int) ((spiderCircleToCanvas.get(s.as.getName()).x) - 7),
                                 (int) spiderCircleToCanvas.get(s.as.getName()).y);
                     }
 
@@ -413,11 +388,11 @@ public class ACirclesPanelEx extends JPanel{
 
 
             //Draw arrows and spider comparators 
-            if (diagram instanceof ConcreteCOPDiagram){
-            	ConcreteCOPDiagram copDiagram = (ConcreteCOPDiagram) diagram;
-            	ConcreteSpider dotSpider = null;
-            
-            	
+            if (diagram instanceof ConcreteCOPDiagram) {
+                ConcreteCOPDiagram copDiagram = (ConcreteCOPDiagram) diagram;
+                ConcreteSpider dotSpider = null;
+
+
                 if (copDiagram.getDots() != null && copDiagram.getDots().size() > 0) {
                     List<String> dots = new ArrayList<>(copDiagram.getDots());
                     int numDots = dots.size();
@@ -428,24 +403,24 @@ public class ACirclesPanelEx extends JPanel{
                         spiderCircleToCanvas.put(dotName, dotCircle);
                         g2d.fill(dotCircle);
                         currentXPos += 100;
-                        
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
-                    	g2d.drawString(dotName,
-                                (int) ((spiderCircleToCanvas.get(dotName).x) - 7) ,
+
+                        g.setFont(new Font("Helvetica", Font.BOLD, 18));
+                        g2d.drawString(dotName,
+                                (int) ((spiderCircleToCanvas.get(dotName).x) - 7),
                                 (int) spiderCircleToCanvas.get(dotName).y);
-        
+
                     }
                 }
-                
-            	
-            	for (ConcreteArrow a : copDiagram.getArrows()){
-            		Line2D.Double tmpArrow = new Line2D.Double();
-            		if(a.aa.get_type().equals("solid")){
-            			g2d.setStroke(DEFAULT_CONTOUR_STROKE);
-            		}else{
-            			g2d.setStroke(dashed);
-            		}
-            		
+
+
+                for (ConcreteArrow a : copDiagram.getArrows()) {
+                    Line2D.Double tmpArrow = new Line2D.Double();
+                    if (a.aa.get_type().equals("solid")) {
+                        g2d.setStroke(DEFAULT_CONTOUR_STROKE);
+                    } else {
+                        g2d.setStroke(dashed);
+                    }
+
                     String source = a.aa.getSourceString();
                     String target = a.aa.getTargetString();
                     if (spiderCircleToCanvas.containsKey(source)) {
@@ -454,86 +429,84 @@ public class ACirclesPanelEx extends JPanel{
                     if (spiderCircleToCanvas.containsKey(target)) {
                         a.setTarget(spiderCircleToCanvas.get(target));
                     }
-                    
-                    g2d.setColor(Color.black); 
+
+                    g2d.setColor(Color.black);
                     tmpArrow = a.initArrow();
                     g2d.draw(tmpArrow);
-                    
-            		
-            		double dy = tmpArrow.y2  - tmpArrow.y1;
-            		double dx = tmpArrow.x2  - tmpArrow.x1;
-            		
-            		double phi = Math.toRadians(40);
-            		
-            		int barb = 15;
-            		
-            		double theta = Math.atan2(dy, dx);
-            		
-            		double x, y, rho = theta + phi;
-            		
-                    for(int j = 0; j < 2; j++)
-                    {
+
+
+                    double dy = tmpArrow.y2 - tmpArrow.y1;
+                    double dx = tmpArrow.x2 - tmpArrow.x1;
+
+                    double phi = Math.toRadians(40);
+
+                    int barb = 15;
+
+                    double theta = Math.atan2(dy, dx);
+
+                    double x, y, rho = theta + phi;
+
+                    for (int j = 0; j < 2; j++) {
                         x = tmpArrow.x2 - barb * Math.cos(rho);
                         y = tmpArrow.y2 - barb * Math.sin(rho);
                         g2d.draw(new Line2D.Double(tmpArrow.x2, tmpArrow.y2, x, y));
                         rho = theta - phi;
                     }
-            		
+
                     if (a.aa.getLabel() != null) {
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
-                    	if (a.aa.getCardinality() == null){
+                        g.setFont(new Font("Helvetica", Font.BOLD, 18));
+                        if (a.aa.getCardinality() == null) {
                             g2d.drawString(a.aa.getLabel(),
-                                    (int) ((tmpArrow.getX1()+tmpArrow.getX2())/2 + 3),
-                                    (int) ((tmpArrow.getY1()+tmpArrow.getY2())/2 -3));
-                    	}else{
-                            g2d.drawString(a.aa.getLabel()+a.aa.getCardinality().toString(),
-                                    (int) ((tmpArrow.getX1()+tmpArrow.getX2())/2 + 3),
-                                    (int) ((tmpArrow.getY1()+tmpArrow.getY2())/2 -3));       		
-                    	}
-                    }  		
-            	}
-            	
+                                    (int) ((tmpArrow.getX1() + tmpArrow.getX2()) / 2 + 3),
+                                    (int) ((tmpArrow.getY1() + tmpArrow.getY2()) / 2 - 3));
+                        } else {
+                            g2d.drawString(a.aa.getLabel() + a.aa.getCardinality().toString(),
+                                    (int) ((tmpArrow.getX1() + tmpArrow.getX2()) / 2 + 3),
+                                    (int) ((tmpArrow.getY1() + tmpArrow.getY2()) / 2 - 3));
+                        }
+                    }
+                }
+
 
                 //Draw the highlighted arrows 
-                if (getHighlightedArrow()!= null) {
-              		g2d.setColor(Color.black);
-            		g2d.setStroke(HIGHLIGHT_STROKE);
-            		g2d.draw(getHighlightedArrow().initArrow());
+                if (getHighlightedArrow() != null) {
+                    g2d.setColor(Color.black);
+                    g2d.setStroke(HIGHLIGHT_STROKE);
+                    g2d.draw(getHighlightedArrow().initArrow());
                 }
-                
 
-                if(copDiagram instanceof ConcreteCompleteCOPDiagram){
-                	ConcreteCompleteCOPDiagram cCopDiagram = (ConcreteCompleteCOPDiagram) copDiagram;
-                	for (ConcreteSpiderComparator csc : cCopDiagram.getConSpiderComparators()){	
-                		int x1= (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable1().getName()).getX();
-                		int y1= (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable1().getName()).getY();
-                		int x2= (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable2().getName()).getX();
-                		int y2= (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable2().getName()).getY();
 
-                		if(csc.get_asc().getAbsQuality().equals("=")){
-                			g2d.drawString("=", ((x1+x2)/2) + 5, (y1+y2)/2);
-                			}else if(csc.get_asc().getAbsQuality().equals("?")){
-                    			g2d.drawString("=",(x1+x2)/2, (y1+y2)/2);
-                    			g2d.drawString("?",((x1+x2)/2) + 2, ((y1+y2)/2) - 8);
-                			}
-                		
-                        if (getHighlightedSpiderComparator()!= null) {
-                      		g2d.setColor(Color.black);
-                    		g2d.setStroke(HIGHLIGHT_STROKE);
-                    		g2d.drawString(getHighlightedSpiderComparator().get_asc().getAbsQuality(),((x1+x2)/2) + 5, (y1+y2)/2);
+                if (copDiagram instanceof ConcreteCompleteCOPDiagram) {
+                    ConcreteCompleteCOPDiagram cCopDiagram = (ConcreteCompleteCOPDiagram) copDiagram;
+                    for (ConcreteSpiderComparator csc : cCopDiagram.getConSpiderComparators()) {
+                        int x1 = (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable1().getName()).getX();
+                        int y1 = (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable1().getName()).getY();
+                        int x2 = (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable2().getName()).getX();
+                        int y2 = (int) spiderCircleToCanvas.get(csc.get_asc().getAbsComparable2().getName()).getY();
+
+                        if (csc.get_asc().getAbsQuality().equals("=")) {
+                            g2d.drawString("=", ((x1 + x2) / 2) + 5, (y1 + y2) / 2);
+                        } else if (csc.get_asc().getAbsQuality().equals("?")) {
+                            g2d.drawString("=", (x1 + x2) / 2, (y1 + y2) / 2);
+                            g2d.drawString("?", ((x1 + x2) / 2) + 2, ((y1 + y2) / 2) - 8);
                         }
-                		}
+
+                        if (getHighlightedSpiderComparator() != null) {
+                            g2d.setColor(Color.black);
+                            g2d.setStroke(HIGHLIGHT_STROKE);
+                            g2d.drawString(getHighlightedSpiderComparator().get_asc().getAbsQuality(), ((x1 + x2) / 2) + 5, (y1 + y2) / 2);
+                        }
+                    }
 
 
-                	
                 }
-            	
+
             }
         }
     }
 
 
-	@Override
+    @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
         resizeContents();
@@ -556,8 +529,8 @@ public class ACirclesPanelEx extends JPanel{
     }
 
     private void initComponents() {
-    	setBackground(new java.awt.Color(255, 255, 255));
-    	setLayout(null);
+        setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(null);
     }
 
     protected ConcreteZone getHighlightedZone() {
@@ -604,13 +577,13 @@ public class ACirclesPanelEx extends JPanel{
             repaint();
         }
     }
-    
-    
+
+
     protected ConcreteArrow getHighlightedArrow() {
         return highlightedArrow;
     }
-    
-    
+
+
     protected void setHighlightedArrow(ConcreteArrow arrow) {
         if (this.highlightedArrow != arrow) {
             setHighlightedZone(null);
@@ -621,12 +594,12 @@ public class ACirclesPanelEx extends JPanel{
             repaint();
         }
     }
-    
-    
+
+
     protected ConcreteSpiderComparator getHighlightedSpiderComparator() {
         return highlightedSpiderComparator;
     }
-    
+
     protected void setHighlightedSpiderComparator(ConcreteSpiderComparator spiderComparator) {
         if (this.highlightedSpiderComparator != spiderComparator) {
             setHighlightedZone(null);
@@ -665,18 +638,18 @@ public class ACirclesPanelEx extends JPanel{
 //            }
 //        }
 //    }
-    
-    
+
+
     private void resizeContents() {
         if (this.diagram != null) {
             int size = this.diagram.getSize();
             this.setScaleFactor(1.0D);
             if (size > 0 && getHeight() > 0 && getWidth() > 0) {
-                this.setScaleFactor((double)Math.min((float)this.getWidth() / (float)size, (float)(this.getHeight() - 80) / (float)size));
+                this.setScaleFactor((double) Math.min((float) this.getWidth() / (float) size, (float) (this.getHeight() - 80) / (float) size));
             }
         }
     }
-    
+
 
     /**
      * Compares the width and height of this panel and tries to scale the
@@ -695,8 +668,8 @@ public class ACirclesPanelEx extends JPanel{
         scaleCircle(scaleFactor, inCircle, outCircle);
 
     }
-    
-    
+
+
     /**
      * Translates the circle to match the scale factor. The changed
      * coordinates are written to the {@code outCircle} (without changing
@@ -713,14 +686,14 @@ public class ACirclesPanelEx extends JPanel{
      * coordinates are written to the {@code outCircle} (without changing
      * {@code inCircle}).
      */
-    
-    
+
+
     protected static void translateCircleCentre(double scaleFactor, Ellipse2D.Double inCircle, Ellipse2D.Double outCircle) {
         final double correctionFactor = (scaleFactor - 1) / 2;
         outCircle.x = inCircle.x * scaleFactor + inCircle.width * correctionFactor;
         outCircle.y = inCircle.y * scaleFactor + inCircle.height * correctionFactor;
     }
-    
+
     private static void translateCircleCenter(Ellipse2D.Double inCircle, Ellipse2D.Double outCircle, int amountX, int amountY) {
         outCircle.x = inCircle.x + amountX;
         outCircle.y = inCircle.y + amountY;
@@ -755,7 +728,7 @@ public class ACirclesPanelEx extends JPanel{
             repaint(shape.getBounds());
         }
     }
-    
+
     /**
      * Returns the horizontal centring translation of the diagram.
      */
@@ -775,14 +748,13 @@ public class ACirclesPanelEx extends JPanel{
     protected Graphics getComponentGraphics(Graphics g) {
         return svgGenerator;
     }
-    
-    
 
-    public HashMap<String,Ellipse2D.Double> getCircleMap(){
-    	return spiderCircleToCanvas;
+
+    public HashMap<String, Ellipse2D.Double> getCircleMap() {
+        return spiderCircleToCanvas;
     }
-    
-    
+
+
 //    private int getAdjustedOffsetX() {
 //        if (this.getWidth() == 0) {
 //            return offsetX;
@@ -798,8 +770,8 @@ public class ACirclesPanelEx extends JPanel{
 //            return this.getCenteringTranslationY() + getY();
 //        }
 //    }
-    
-    
+
+
     private int getAdjustedWidth() {
         if (this.getWidth() == 0) {
             return width;
@@ -807,7 +779,7 @@ public class ACirclesPanelEx extends JPanel{
             return this.getWidth();
         }
     }
-  
+
     private int getAdjustedHeight() {
         if (this.getWidth() == 0) {
             return height - 92;
@@ -815,7 +787,7 @@ public class ACirclesPanelEx extends JPanel{
             return this.getHeight();
         }
     }
-    
+
     private int getAdjustedCenteringOffsetX() {
         if (this.getWidth() == 0) {
             return 0;
@@ -831,10 +803,10 @@ public class ACirclesPanelEx extends JPanel{
             return this.getCenteringTranslationY();
         }
     }
-  
-    
-    protected HashMap<ConcreteSpiderFoot,Ellipse2D.Double> getConcreteSpiderToCanvas(){
-    	return concreteSpiderToCanvas;
+
+
+    protected HashMap<ConcreteSpiderFoot, Ellipse2D.Double> getConcreteSpiderToCanvas() {
+        return concreteSpiderToCanvas;
     }
 
 }
