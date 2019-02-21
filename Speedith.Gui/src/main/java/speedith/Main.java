@@ -30,6 +30,9 @@ import java.util.SortedSet;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
+
+import fx.ConApp;
+import javafx.application.Application;
 import org.apache.commons.cli.ParseException;
 import speedith.cli.CliOptions;
 import speedith.core.lang.DiagramType;
@@ -80,6 +83,7 @@ public class Main {
      * @param args the Command line arguments to Speedith.
      */
     public static void main(String[] args) {
+        new Thread(() -> Application.launch(ConApp.class)).start();
     	    	
         CliOptions clargs = new CliOptions();
         try {
