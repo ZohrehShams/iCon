@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
 
-import fx.ConApp;
+import groupnet.ConApp;
 import javafx.application.Application;
 import org.apache.commons.cli.ParseException;
 import speedith.cli.CliOptions;

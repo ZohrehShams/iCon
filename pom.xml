@@ -117,5 +117,6 @@
     <module>SpiderDrawer</module>
     <module>Speedith.Analyser</module>
      <module>iCircles-master</module>
+    <module>groupnet</module>
   </modules>
 </project>

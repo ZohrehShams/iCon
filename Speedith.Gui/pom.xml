@@ -7,6 +7,8 @@
 
     <name>Speedith GUI</name>
 
+
+
     <parent>
         <groupId>si.urbas</groupId>
         <artifactId>speedith-root</artifactId>
@@ -39,9 +41,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>11</version>
+            <groupId>si.urbas</groupId>
+            <artifactId>groupnet</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!--Test dependencies-->
@@ -125,6 +127,27 @@
                                 <descriptor>src/assembly/executableDistribution.xml</descriptor>
                             </descriptors>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
