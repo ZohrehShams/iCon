@@ -1,8 +1,7 @@
 package speedith.core.reasoning.util.unitary
 
 import speedith.core.lang._
-
-import speedith.core.reasoning.args.{ContourArg, SubDiagramIndexArg}
+import speedith.core.lang.cop.CompleteCOPDiagram;
 import speedith.core.reasoning.rules.util.ReasoningUtils
 
 import scala.collection.JavaConversions._

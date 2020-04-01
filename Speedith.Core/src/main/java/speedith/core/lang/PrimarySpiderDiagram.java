@@ -108,7 +108,7 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
      * @param presentZones the set of zones that should be drawn in the diagram
      * if possible (see {@link PrimarySpiderDiagram#getPresentZones()}).
      */
-    PrimarySpiderDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones, Collection<Zone> presentZones) {
+    protected PrimarySpiderDiagram(Collection<String> spiders, Map<String, Region> habitats, Collection<Zone> shadedZones, Collection<Zone> presentZones) {
         this(spiders == null ? null : new TreeSet<>(spiders),
                 habitats == null ? null : new TreeMap<>(habitats),
                 shadedZones == null ? null : new TreeSet<>(shadedZones),
@@ -175,9 +175,9 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
     * @author Zohreh Shams [zs315@cam.ac.uk]
     * Returns a modifiable set of spider habuitats.
     */
-    public TreeMap<String, Region> getHabitatsMod() {
-        return new TreeMap<String,Region> (spiderHabitatsMap);
-    }
+//    public TreeMap<String, Region> getHabitatsMod() {
+//        return new TreeMap<String,Region> (spiderHabitatsMap);
+//    }
     
 
     /**
@@ -199,15 +199,6 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
      */
     public SortedSet<Zone> getShadedZones() {
         return Collections.unmodifiableSortedSet(shadedZones);
-    }
-    
-    /**
-    * @author Zohreh Shams [zs315@cam.ac.uk]
-    * Returns a modifiable set of shaded zones.
-    */
-    public TreeSet<Zone> getShadedZonesMod() {
-    	//return new TreeSet<Zone>(getShadedZones());
-        return new TreeSet<Zone>(shadedZones);
     }
     
 
@@ -239,13 +230,6 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
     }
     
     
-    /**
-    * @author Zohreh Shams [zs315@cam.ac.uk]
-    * Returns a modifiable set of present zones.
-    */
-    public TreeSet<Zone> getPresentZonesMod() {
-        return new TreeSet<Zone>(presentZones);
-    }
     
 
     /**
@@ -271,16 +255,6 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
         return Collections.unmodifiableSortedSet(spiders);
     }
     
-    
-    /**
-    * @author Zohreh Shams [zs315@cam.ac.uk]
-    * returns a modifiable set of spiders
-    */
-    public TreeSet<String> getSpidersMod() {
-    	TreeSet<String> set = new TreeSet <String>( spiders );
-    	
-        return set;
-    }
     
 
     /**
@@ -358,6 +332,20 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
         }
         return count;
     }
+    
+    
+    public int getSingleFootSpiderCountInZone(Zone z) {
+        int count = 0;
+        if (getHabitatsCount() > 0) {
+            for (Region region : getHabitats().values()) {
+                if ((region.getZonesCount() ==1) && (region.contains(z))) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+    
 
     /**
      * Returns the spiders that have a foot in the given zone.
@@ -771,7 +759,7 @@ public class PrimarySpiderDiagram extends SpiderDiagram implements Serializable 
      * unmodifiable sorted set} of contours that are mentioned in a randomly
      * chosen zone of this primary spider diagram.
      */
-    SortedSet<String> getContours() {
+    public SortedSet<String> getContours() {
         extractContours();
         return Collections.unmodifiableSortedSet(contours);
     }

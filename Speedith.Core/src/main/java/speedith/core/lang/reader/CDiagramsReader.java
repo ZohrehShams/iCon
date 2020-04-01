@@ -1,17 +1,17 @@
 package speedith.core.lang.reader;
 
 import static speedith.core.i18n.Translations.i18n;
-import static speedith.core.lang.COPDiagram.SDTextArrowsAttribute;
-import static speedith.core.lang.CarCDiagram.CDTextArrowCardinalitiesAttribute;
-import static speedith.core.lang.CompleteCOPDiagram.SDTextSpiderComparatorAttribute;
-import static speedith.core.lang.ConceptDiagram.CDTextArrowsAttribute;
-import static speedith.core.lang.LUCOPDiagram.SDTextCurveLabelsAttribute;
-import static speedith.core.lang.LUCOPDiagram.SDTextSpiderLabelsAttribute;
-import static speedith.core.lang.LUCarCOPDiagram.SDTextArrowCardinalitiesAttribute;
 import static speedith.core.lang.PrimarySpiderDiagram.SDTextHabitatsAttribute;
 import static speedith.core.lang.PrimarySpiderDiagram.SDTextPresentZonesAttribute;
 import static speedith.core.lang.PrimarySpiderDiagram.SDTextShadedZonesAttribute;
 import static speedith.core.lang.PrimarySpiderDiagram.SDTextSpidersAttribute;
+import static speedith.core.lang.cop.COPDiagram.SDTextArrowsAttribute;
+import static speedith.core.lang.cop.CarCDiagram.CDTextArrowCardinalitiesAttribute;
+import static speedith.core.lang.cop.CompleteCOPDiagram.SDTextSpiderComparatorAttribute;
+import static speedith.core.lang.cop.ConceptDiagram.CDTextArrowsAttribute;
+import static speedith.core.lang.cop.LUCOPDiagram.SDTextCurveLabelsAttribute;
+import static speedith.core.lang.cop.LUCOPDiagram.SDTextSpiderLabelsAttribute;
+import static speedith.core.lang.cop.LUCarCOPDiagram.SDTextArrowCardinalitiesAttribute;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,21 +21,21 @@ import java.util.Map.Entry;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.COPDiagram;
-import speedith.core.lang.CarCDiagram;
-import speedith.core.lang.Cardinality;
-import speedith.core.lang.CompleteCOPDiagram;
-import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.FalseSpiderDiagram;
-import speedith.core.lang.LUCOPDiagram;
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
-import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.CarCDiagram;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.SpiderComparator;
 
 public class CDiagramsReader extends SpiderDiagramsReader{
 
@@ -416,40 +416,6 @@ public class CDiagramsReader extends SpiderDiagramsReader{
     
     
 
-    
-//    private static class PDTranslator extends  GeneralSDTranslator<LUCarCOPDiagram>{
-//    	
-//        public static final PDTranslator Instance = new PDTranslator();
-//
-//        private PDTranslator() {
-//            super(SpiderDiagramsParser.PD);
-//            addMandatoryAttribute(SDTextSpidersAttribute, ListTranslator.StringListTranslator);
-//            addMandatoryAttribute(SDTextHabitatsAttribute, HabitatTranslator.Instance);
-//            addMandatoryAttribute(SDTextShadedZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
-//            addOptionalAttribute(SDTextPresentZonesAttribute, new ListTranslator<>(ZoneTranslator.Instance));
-//            addMandatoryAttribute(SDTextArrowsAttribute,  new ListTranslator<>(ArrowTranslator.Instance));
-//            addMandatoryAttribute(SDTextSpiderLabelsAttribute,  LabelTranslator.Instance);
-//            addMandatoryAttribute(SDTextCurveLabelsAttribute,  LabelTranslator.Instance);
-//            addMandatoryAttribute(SDTextArrowCardinalitiesAttribute,  ArrowCardinalityTranslator.Instance);
-//        }
-//
-//        @Override
-//        @SuppressWarnings("unchecked")
-//        PDiagram createSD(Map<String, Entry<Object, CommonTree>> attributes, CommonTree mainNode) throws ReadingException {
-//            Entry<Object, CommonTree> presentZonesAttribute = attributes.get(SDTextPresentZonesAttribute);
-//            return PDiagram.createPDiagram((Collection<String>) attributes.get(SDTextSpidersAttribute).getKey(),
-//            		(Map<String, Region>) attributes.get(SDTextHabitatsAttribute).getKey(),
-//                    (Collection<Zone>) attributes.get(SDTextShadedZonesAttribute).getKey(),
-//                    presentZonesAttribute == null ? null : (Collection<Zone>) presentZonesAttribute.getKey(),
-//                    (Collection<Arrow>) attributes.get(SDTextArrowsAttribute).getKey(),
-//                    (Map<String, String>) attributes.get(SDTextSpiderLabelsAttribute).getKey(),
-//                    (Map<String, String>) attributes.get(SDTextCurveLabelsAttribute).getKey(),
-//                    (Map<Arrow, Cardinality>) attributes.get(SDTextArrowCardinalitiesAttribute).getKey()
-//                    );
-//        }
-//    }
-    
-    
     
     
     

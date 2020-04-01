@@ -44,19 +44,20 @@ public class ZoneContrastHabitatTransformer extends IdTransformer {
     	    if (!diagramWithShadedZone.getAllContours().equals(diagramWithExtraSpiders.getAllContours())) {
     	        throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The unitary diagrams do not contain the same contours.");
     	      }
-    	    if (!HabitatUtils.habitatsAreSingleZoned(diagramWithShadedZone) || !HabitatUtils.habitatsAreSingleZoned(diagramWithExtraSpiders)) {
-    	        throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The unitary diagrams contain spiders with multi-zoned habitats.");
-    	      }
+    	    
+//    	    if (!HabitatUtils.habitatsAreSingleZoned(diagramWithShadedZone) || !HabitatUtils.habitatsAreSingleZoned(diagramWithExtraSpiders)) {
+//    	        throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The unitary diagrams contain spiders with multi-zoned habitats.");
+//    	      }
     	    
     	    if(! diagramWithShadedZone.getShadedZones().contains(targetZones.get(0).getZone())){
     	    	throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The chosen zone should be"
     	    			+ "fully shaded");
     	    }
     	    
-    	    if (! (diagramWithExtraSpiders.getSpiderCountInZone(targetZones.get(0).getZone()) >
-    	    diagramWithShadedZone.getSpiderCountInZone(targetZones.get(0).getZone())))
+    	    if (! (diagramWithExtraSpiders.getSingleFootSpiderCountInZone(targetZones.get(0).getZone()) >
+    	    diagramWithShadedZone.getSingleFootSpiderCountInZone(targetZones.get(0).getZone())))
     	    		{
-    	    	throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The number of spiders in this zone is not less than its counterpart zone.");
+    	    	throw new TransformationException("Could not apply the 'ZoneContrastHabitat' rule. The number of single foot spiders in this zone is not less than its counterpart zone.");
     	    }
     	    
     	    return combineToFalse(diagramWithShadedZone,diagramWithExtraSpiders);

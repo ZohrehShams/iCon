@@ -36,6 +36,7 @@ import icircles.concreteDiagram.ConcreteSpiderFoot;
 import icircles.concreteDiagram.ConcreteSpiderLeg;
 import icircles.concreteDiagram.ConcreteZone;
 import icircles.gui.CirclesPanelEx;
+import speedith.ui.abstracts.AbstractArrow;
 import speedith.ui.concretes.ConcreteArrow;
 import speedith.ui.concretes.ConcreteCOPDiagram;
 import speedith.ui.concretes.ConcreteCompleteCOPDiagram;
@@ -92,10 +93,11 @@ public class ACirclesPanelEx extends JPanel{
     private ConcreteSpiderFoot highlightedFoot = null;
     private ConcreteArrow highlightedArrow = null;
     private ConcreteSpiderComparator highlightedSpiderComparator = null;
-//    protected static HashMap<CircleContour,Ellipse2D.Double> concreteToCanvasCircles;
-    private HashMap<ConcreteSpiderFoot,Ellipse2D.Double> concreteSpiderToCanvas;
     private  HashMap<String,Ellipse2D.Double> spiderCircleToCanvas;
-//    protected  HashMap<ConcreteArrow,Line2D.Double> arrowToCanvas;
+    private HashMap<ConcreteSpiderFoot,Ellipse2D.Double> concreteSpiderToCanvas;
+    // Since spiders can have multiple feet the string name of spider or circle should map to a list.
+    // The length of this list for curves and spider with single feet is always 1. 
+    private HashMap<String,List<Ellipse2D.Double>> spiderCircleToCanvasList;
     private int offsetX = 0;
     private int width;
     private int height;
@@ -112,6 +114,7 @@ public class ACirclesPanelEx extends JPanel{
         resizeContents();
         spiderCircleToCanvas =   new HashMap<String,Ellipse2D.Double>();
         concreteSpiderToCanvas = new HashMap<ConcreteSpiderFoot,Ellipse2D.Double>();
+        spiderCircleToCanvasList = new HashMap<String,List<Ellipse2D.Double>>();
 //        arrowToCanvas = new HashMap<ConcreteArrow,Line2D.Double>();
     }
 
@@ -138,6 +141,8 @@ public class ACirclesPanelEx extends JPanel{
         this.highlightedFoot = null;
         this.spiderCircleToCanvas = new HashMap<String,Ellipse2D.Double>();
         this.concreteSpiderToCanvas = new HashMap<ConcreteSpiderFoot,Ellipse2D.Double>();
+        this.spiderCircleToCanvasList = new HashMap<String,List<Ellipse2D.Double>>();
+
 
 //        this.arrowToCanvas = new HashMap<ConcreteArrow,Line2D.Double>();
         
@@ -266,11 +271,14 @@ public class ACirclesPanelEx extends JPanel{
             ArrayList<CircleContour> circles = diagram.getCircles();
             
             if(circles != null){
+            	int i = 1;
                 for (CircleContour cc : circles) {
 
                 	Ellipse2D.Double tmpCircle = new Ellipse2D.Double();
                 	
-                    Color col = cc.color();
+//                    Color col = cc.color();
+                    Color col = null;
+
                     
                     if(cc.ac.getLabel().startsWith("-")){
                     	col = Color.WHITE;
@@ -286,6 +294,10 @@ public class ACirclesPanelEx extends JPanel{
                     
                     String name = cc.ac.getLabel();
                     spiderCircleToCanvas.put(name,tmpCircle);
+                    
+                    List<Double> list = new ArrayList<>();
+                    spiderCircleToCanvasList.put(name,list);
+                    spiderCircleToCanvasList.get(name).add(tmpCircle);
                     
                     g2d.draw(tmpCircle);
                                     
@@ -314,12 +326,34 @@ public class ACirclesPanelEx extends JPanel{
 
                     //Zohreh: Instead of printing the unique identifier of curves (unlike for spiders, they are called labels!) 
                     //we print the curve names, that they are not null.                
+//                    if (cc.ac.getName() != null) {
+//                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
+//                        g2d.drawString(cc.ac.getName(),
+//                                (int) (cc.getLabelXPosition() * trans.getScaleX())  ,
+//                                (int) (cc.getLabelYPosition() * trans.getScaleY()));
+//                    } 
+                    
+                    
+                    //Zohreh: Instead of printing the unique identifier of curves (unlike for spiders, they are called labels!) 
+                    //we print the curve names, that they are not null.                
                     if (cc.ac.getName() != null) {
                     	g.setFont(new Font("Helvetica", Font.BOLD,  18));
-                        g2d.drawString(cc.ac.getName(),
-                                (int) (cc.getLabelXPosition() * trans.getScaleX()) + 5 ,
-                                (int) (cc.getLabelYPosition() * trans.getScaleY()) + 5);
-                    }   
+                    	//Defining alternating position for odd and even curve labels.
+                    	if(circles.indexOf(cc) % 2 == 0){
+                            g2d.drawString(cc.ac.getName(),
+                                    (int) (cc.getLabelXPosition() * trans.getScaleX())  ,
+                                    (int) (cc.getLabelYPosition() * trans.getScaleY()));   		
+                    	}else{
+                            g2d.drawString(cc.ac.getName(),
+                                    (int) (cc.getLabelXPosition() * trans.getScaleX())  ,
+                                    (int) (cc.getLabelYPosition() * trans.getScaleY()));   	
+                    	}
+                    	
+ 
+                    } 
+                    
+                    
+                   
                 }  
             }
             
@@ -355,7 +389,7 @@ public class ACirclesPanelEx extends JPanel{
 //                                (int) (leg.to.getX() * scaleFactor),
 //                                (int) (leg.to.getY() * scaleFactor));
 //                    }
-
+                    List<Double> list = new ArrayList<>();
                     for (ConcreteSpiderFoot foot : s.feet) { 
                     	Ellipse2D.Double tmpCircleSpider = new Ellipse2D.Double();
                         foot.getBlob(tmpCircleSpider);
@@ -368,11 +402,16 @@ public class ACirclesPanelEx extends JPanel{
 //                        }
                         for (AbstractBasicRegion abr : s.as.get_feet()){
                         	if(abr.getNumContours() == 0){
-                        		translateCircleCenter(tmpCircleSpider, tmpCircleSpider, 0, 30); 
+                        		translateCircleCenter(tmpCircleSpider, tmpCircleSpider, 0, 40); 
                         	}
                         }
                         spiderCircleToCanvas.put(s.as.getName() , tmpCircleSpider);
                         concreteSpiderToCanvas.put(foot, tmpCircleSpider);
+                        
+                        // If a spider has more than one feet, the name is mapped to more than one concrete circle, 
+                        // all of which are stored in a list.  
+                        spiderCircleToCanvasList.put(s.as.getName(), list);
+                        spiderCircleToCanvasList.get(s.as.getName()).add(tmpCircleSpider);
 
                         
                         if (getHighlightedFoot() == foot) {
@@ -396,10 +435,12 @@ public class ACirclesPanelEx extends JPanel{
                     
                     //Printing the spiders labels.
                     if (s.as.getLabel() != null) {
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
+                    	g.setFont(new Font("Helvetica", Font.BOLD,  16));
                     	g2d.drawString(s.as.getLabel(),
-                                (int) ((spiderCircleToCanvas.get(s.as.getName()).x) - 7) ,
-                                (int) spiderCircleToCanvas.get(s.as.getName()).y);
+                                (int) (spiderCircleToCanvas.get(s.as.getName()).x) - 1 ,
+                                (int) (spiderCircleToCanvas.get(s.as.getName()).y));
+                    	         // cls-int1 config
+//                                (int) (spiderCircleToCanvas.get(s.as.getName()).y) + 18 );
                     }
 
 
@@ -409,6 +450,8 @@ public class ACirclesPanelEx extends JPanel{
                         g2d.setStroke(oldStroke);
                     }
                 }
+//                System.out.println("spider" + spiderCircleToCanvas.size());
+//                System.out.println("conc" + concreteSpiderToCanvas.size());
             }
 
 
@@ -417,25 +460,57 @@ public class ACirclesPanelEx extends JPanel{
             	ConcreteCOPDiagram copDiagram = (ConcreteCOPDiagram) diagram;
             	ConcreteSpider dotSpider = null;
             
-            	
                 if (copDiagram.getDots() != null && copDiagram.getDots().size() > 0) {
-                    List<String> dots = new ArrayList<>(copDiagram.getDots());
-                    int numDots = dots.size();
-                    int currentXPos = getAdjustedWidth() / 2 - (19 * (numDots - 1)) - getAdjustedCenteringOffsetX();
-                    double y = getAdjustedHeight() / 2 - getAdjustedCenteringOffsetY();
-                    for (String dotName : dots) {
-                        Ellipse2D.Double dotCircle = new Ellipse2D.Double(currentXPos, y, 8, 8);
-                        spiderCircleToCanvas.put(dotName, dotCircle);
-                        g2d.fill(dotCircle);
-                        currentXPos += 100;
-                        
-                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
-                    	g2d.drawString(dotName,
-                                (int) ((spiderCircleToCanvas.get(dotName).x) - 7) ,
-                                (int) spiderCircleToCanvas.get(dotName).y);
-        
-                    }
+                	List<String> dots = new ArrayList<>(copDiagram.getDots());
+                	// This is to make sure that the diagrams with spiders only are placed in the middle of the canvas. 
+                	// But it's currently implemented for a diagram with only 2 dots. 
+                	if(dots.size() == 2){
+                        double currentXPos = getAdjustedWidth()/2 - getAdjustedCenteringOffsetX() -getAdjustedWidth()/4;
+                        double currentYPos = getAdjustedHeight()/2 - getAdjustedCenteringOffsetY();
+                        for (String dotName : dots) {
+                            Ellipse2D.Double dotCircle = new Ellipse2D.Double(currentXPos, currentYPos, 8, 8);
+                            spiderCircleToCanvas.put(dotName, dotCircle);
+                            
+                            List<Double> list = new ArrayList<>();
+                            spiderCircleToCanvasList.put(dotName, list);
+                            spiderCircleToCanvasList.get(dotName).add(dotCircle);
+                            
+                            g2d.fill(dotCircle);
+                            currentXPos += getAdjustedWidth()/2;
+                            
+                        	g.setFont(new Font("Helvetica", Font.BOLD,  18));
+                        	g2d.drawString(dotName,
+                                    (int) ((spiderCircleToCanvas.get(dotName).x) - 7) ,
+                                    (int) spiderCircleToCanvas.get(dotName).y);
+                            
+                            
+                        }
+                	}
                 }
+//                if (copDiagram.getDots() != null && copDiagram.getDots().size() > 0) {
+//                    List<String> dots = new ArrayList<>(copDiagram.getDots());
+//                    int numDots = dots.size();
+//                    int currentXPos = getAdjustedWidth() / 2 - (19 * (numDots - 1)) - getAdjustedCenteringOffsetX();
+//                    double y = getAdjustedHeight() / 2 - getAdjustedCenteringOffsetY();
+//                    for (String dotName : dots) {
+//                        Ellipse2D.Double dotCircle = new Ellipse2D.Double(currentXPos, y, 8, 8);
+//                        spiderCircleToCanvas.put(dotName, dotCircle);
+//                        
+//                        List<Double> list = new ArrayList<>();
+//                        spiderCircleToCanvasList.put(dotName, list);
+//                        spiderCircleToCanvasList.get(dotName).add(dotCircle);
+//
+//
+//                        g2d.fill(dotCircle);
+//                        currentXPos += 100;
+//                        
+//                    	g.setFont(new Font("Helvetica", Font.BOLD,  18));
+//                    	g2d.drawString(dotName,
+//                                (int) ((spiderCircleToCanvas.get(dotName).x) - 7) ,
+//                                (int) spiderCircleToCanvas.get(dotName).y);
+//        
+//                    }
+//                }
                 
             	
             	for (ConcreteArrow a : copDiagram.getArrows()){
@@ -445,14 +520,31 @@ public class ACirclesPanelEx extends JPanel{
             		}else{
             			g2d.setStroke(dashed);
             		}
+
             		
                     String source = a.aa.getSourceString();
                     String target = a.aa.getTargetString();
-                    if (spiderCircleToCanvas.containsKey(source)) {
-                        a.setSource(spiderCircleToCanvas.get(source));
+//                    if (spiderCircleToCanvas.containsKey(source)) {
+//                        a.setSource(spiderCircleToCanvas.get(source));
+//                    }
+//                    if (spiderCircleToCanvas.containsKey(target)) {
+//                        a.setTarget(spiderCircleToCanvas.get(target));
+//                    }
+                    
+                    //The size of a list that a string in spiderCircleToCanvasList maps two, is only bigger than 
+                    //one, if the string refers to a spider with multiple feet. So here by choosing the element
+                    // of the list we can control the source/terget of an arrow to be a specific feet. 
+                    if (spiderCircleToCanvasList.containsKey(source)) {
+                    	if (spiderCircleToCanvasList.get(source).size() > 1){
+                    		a.setSource(spiderCircleToCanvasList.get(source).get(0));
+                    	} else
+                    		a.setSource(spiderCircleToCanvasList.get(source).get(0));
                     }
-                    if (spiderCircleToCanvas.containsKey(target)) {
-                        a.setTarget(spiderCircleToCanvas.get(target));
+                    if (spiderCircleToCanvasList.containsKey(target)) {
+                    	if (spiderCircleToCanvasList.get(target).size() > 1){
+                    		a.setSource(spiderCircleToCanvasList.get(target).get(0));
+                    	} else
+                            a.setTarget(spiderCircleToCanvasList.get(target).get(0));
                     }
                     
                     g2d.setColor(Color.black); 
@@ -482,9 +574,13 @@ public class ACirclesPanelEx extends JPanel{
                     if (a.aa.getLabel() != null) {
                     	g.setFont(new Font("Helvetica", Font.BOLD,  18));
                     	if (a.aa.getCardinality() == null){
-                            g2d.drawString(a.aa.getLabel(),
-                                    (int) ((tmpArrow.getX1()+tmpArrow.getX2())/2 + 3),
-                                    (int) ((tmpArrow.getY1()+tmpArrow.getY2())/2 -3));
+                    		g2d.drawString(a.aa.getLabel(),
+                                    (int) ((tmpArrow.getX1()+tmpArrow.getX2())/2 + 5),
+//                                    (int) ((tmpArrow.getY1()+tmpArrow.getY2())/2 + 15));
+                                    // cls-avf config part1
+//                                    (int) ((tmpArrow.getY1()+tmpArrow.getY2())/2 - 5));
+                                   // cls-avf config part2
+                                    (int) ((tmpArrow.getY1()+tmpArrow.getY2())/2 - 7));
                     	}else{
                             g2d.drawString(a.aa.getLabel()+a.aa.getCardinality().toString(),
                                     (int) ((tmpArrow.getX1()+tmpArrow.getX2())/2 + 3),

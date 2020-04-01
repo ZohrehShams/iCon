@@ -2,7 +2,7 @@ package speedith.core.reasoning.args.selection;
 
 import static org.junit.Assert.*;
 
-import speedith.core.lang.Arrow;
+import speedith.core.lang.cop.Arrow;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.selection.copSelection.ArrowsSelectionStep;
 import speedith.core.reasoning.rules.instructions.TestArrowSelectionSequence;

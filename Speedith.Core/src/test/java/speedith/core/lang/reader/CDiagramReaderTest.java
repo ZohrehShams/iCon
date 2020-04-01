@@ -11,9 +11,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import speedith.core.lang.CompoundSpiderDiagram;
-import speedith.core.lang.ConceptDiagram;
-import speedith.core.lang.LUCarCOPDiagram;
+import speedith.core.lang.cop.CarCDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+
 import static speedith.core.reasoning.util.unitary.TestConceptDiagrams.*;
+
+import java.io.File;
+
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.*;
 
 public class CDiagramReaderTest {
@@ -104,6 +109,19 @@ public class CDiagramReaderTest {
     }
 
         
+    
+    @Test
+    public void testReadSpiderDiagram_Reader_CarCD() throws Exception {
+    	
+    	File fileResult = new File("../examples/CDs/SwapSpiderWithCardinalityCurveExpected.sdt");
+    	CarCDiagram cd1 = (CarCDiagram) CDiagramsReader.readSpiderDiagram(fileResult);
+    	        
+        String str1 = cd1.toString();
+        CarCDiagram cd2 = (CarCDiagram) SpiderDiagramsReader.readSpiderDiagram(str1);
+        assertEquals(str1, cd2.toString());
+        
+        assertEquals(cd1, cd2);
+    }
     
 
 }

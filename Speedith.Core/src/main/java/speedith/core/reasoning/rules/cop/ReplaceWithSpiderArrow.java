@@ -21,7 +21,7 @@ import speedith.core.reasoning.args.SpiderArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.SimpleInferenceRule;
 import speedith.core.reasoning.rules.instructions.copIns.SelectSingleArrowSingleSpiderInstruction;
-import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderArrowTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.ReplaceWithSpiderArrowTransformer;
 
 /**
  * This rule operates on primary and concept diagrams. Basically an arrow from a curve conveys a relation for all spiders
@@ -29,11 +29,11 @@ import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderArrowTransfo
  * make this explicit. The input to this rule is an arrow and a spider that the arrow has to be duplicated for.
  * @author Zohreh Shams
  */
-public class AddSpiderArrow extends SimpleInferenceRule<MultipleRuleArgs> 
+public class ReplaceWithSpiderArrow extends SimpleInferenceRule<MultipleRuleArgs> 
 implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable{
 
 	private static final long serialVersionUID = 5136262184836167681L;
-	public static final String InferenceRuleName = "add_spider_arrow";
+	public static final String InferenceRuleName = "replce_with_spider_arrow";
 	private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.LUCOPDiagram,DiagramType.ConceptDiagram);
 
 	@Override
@@ -56,13 +56,13 @@ implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, 
 	
 	@Override
 	public String getDescription(Locale locale) {
-		return Translations.i18n(locale, "ADD_SPIDER_ARROW_DESCRIPTION");
+		return Translations.i18n(locale, "REPLACE_WITH_SPIDER_ARROW_DESCRIPTION");
 	}
 	
 	
 	@Override
 	public String getPrettyName(Locale locale) {
-		return Translations.i18n(locale, "ADD_SPIDER_ARROW_PRETTY_NAME");
+		return Translations.i18n(locale, "REPLACE_WITH_SPIDER_ARROW_PRETTY_NAME");
 	}
 	
 	@Override
@@ -110,7 +110,7 @@ implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, 
     private RuleApplicationResult apply(ArrowArg targetArrow, SpiderArg targetSpider, Goals goals) throws RuleApplicationException {
         SpiderDiagram[] newSubgoals = goals.getGoals().toArray(new SpiderDiagram[goals.getGoalsCount()]);
         SpiderDiagram targetSubgoal = getSubgoal(targetArrow, goals);
-        newSubgoals[targetArrow.getSubgoalIndex()] = targetSubgoal.transform(new AddSpiderArrowTransformer(targetArrow, targetSpider,true));
+        newSubgoals[targetArrow.getSubgoalIndex()] = targetSubgoal.transform(new ReplaceWithSpiderArrowTransformer(targetArrow, targetSpider,true));
         return createRuleApplicationResult(newSubgoals);
     }
 

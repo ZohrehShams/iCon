@@ -5,7 +5,7 @@ import icircles.abstractDescription.AbstractCurve;
 import icircles.abstractDescription.AbstractDiagram;
 import icircles.abstractDescription.AbstractShape;
 import icircles.abstractDescription.AbstractSpider;
-import speedith.core.lang.Cardinality;
+import speedith.core.lang.cop.Cardinality;
 
 
 public class NewAbstractArrow implements Comparable<NewAbstractArrow>{

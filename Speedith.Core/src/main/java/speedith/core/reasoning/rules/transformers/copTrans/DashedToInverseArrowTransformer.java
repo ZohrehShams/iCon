@@ -2,10 +2,7 @@ package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
-import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
@@ -13,6 +10,9 @@ import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
 import speedith.core.lang.Zones;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.util.unitary.AddCurve;
 

@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static propity.util.Sets.equal;
 import static speedith.core.i18n.Translations.i18n;
@@ -17,6 +17,11 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
+
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.Zone;
 /**
  *COPDiagrams didn't allow labels for spiders. Assuming each spider has a unique name with which it is 
  *recognised, when we have both labelled and unlabelled spider, we need a label as well as name that helps 
@@ -27,7 +32,6 @@ import javax.swing.JOptionPane;
  */
 public class LUCOPDiagram extends COPDiagram {
 
-	//private static final long serialVersionUID = 2730965664523343438L;
 	private static final long serialVersionUID = -7446718786338357310L;
 	public static final String SDTextSpiderLabelsAttribute = "spiderLabels";
 	public static final String SDTextCurveLabelsAttribute = "curveLabels";
@@ -98,15 +102,6 @@ public class LUCOPDiagram extends COPDiagram {
 	public SortedMap<String,String> getCurveLabels() {
         return Collections.unmodifiableSortedMap(curveLabels);
     }
-	
-	
-	public TreeMap<String,String> getSpiderLabelsMod() {
-        return spiderLabels;
-    }
-	
-	public TreeMap<String,String> getCurveLabelsMod() {
-        return curveLabels;
-    }
 	    
 	
 	
@@ -117,39 +112,14 @@ public class LUCOPDiagram extends COPDiagram {
 	}
 	
 	
-//	@Override
-//	public PrimarySpiderDiagram addNewSpider(String spider, Region habitat) {
-//		  if (getSpidersMod().contains(spider)){
-//			  throw new IllegalArgumentException("The spider has to have a fresh label.");
-//		  } else return addLUSpider(spider,habitat,""); 
-//	}
 
-	
 	public LUCOPDiagram addLUSpider(String spiderName, Region habitat, String spiderLabel) {
-//		  if (spiderName == null || spiderName.isEmpty()){
-//        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
-//		  }
-		
-	      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
+	      TreeMap<String, Region> newHabitats = (getHabitats() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitats());
 	      newHabitats.put(spiderName, habitat);
 	      
-	      TreeMap<String, String> newSpiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
+	      TreeMap<String, String> newSpiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabels());
 	      newSpiderLabels.put(spiderName, spiderLabel);
-	      
-//	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
-//	      if (getSpidersMod() != null) {
-//	          if (getSpidersMod().contains(spiderName)) {
-//	              //newSpiders = getSpidersMod();
-//	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
-//	        	  //throw new IllegalArgumentException("The spider has to have a fresh name.");
-//	              
-//	          } else {
-//	              newSpiders.add(spiderName);
-//	          }
-//	      } else {
-//	          newSpiders = new TreeSet<>();
-//	          newSpiders.add(spiderName);
-//	      }
+
 	      TreeSet<String> newSpiders;
 	        if (spiders != null) {
 	            if (spiders.contains(spiderName)) {
@@ -178,7 +148,7 @@ public class LUCOPDiagram extends COPDiagram {
 	@Override
 	public COPDiagram deleteSpider(String... spiders) {
 		  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
-		  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+		  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitats());
 		  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
 		  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
 		  
@@ -284,13 +254,6 @@ public class LUCOPDiagram extends COPDiagram {
 		  return (super.checkValid()
 		             && areSpiderLabelsValid()
 		             && areCurveLabelsValid());
-//	      SortedSet<String> contours = getContours();
-//	      return areHabitatZonesValid(contours)
-//	             && areShadedZonesValid(contours)
-//	             && arePresentZonesValid(contours)
-//	             && areArrowsValid()
-//	             && areSpiderLabelsValid()
-//	             && areCurveLabelsValid();
 	  }   	
 	
 	

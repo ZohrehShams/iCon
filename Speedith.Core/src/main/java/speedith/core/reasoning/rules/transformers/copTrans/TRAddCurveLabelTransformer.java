@@ -9,16 +9,16 @@ import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.COPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
 import speedith.core.reasoning.ApplyStyle;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.args.ContourArg;
@@ -121,12 +121,12 @@ public class TRAddCurveLabelTransformer extends IdTransformer{
     		
     		
         	return LUCOPDiagram.createLUCOPDiagram(
-			lucop.getSpidersMod(), 
-			lucop.getHabitatsMod(), 
-			lucop.getShadedZonesMod(), 
-			lucop.getPresentZonesMod(),  
-    		lucop.getArrowsMod(),
-    		lucop.getSpiderLabelsMod(),
+			lucop.getSpiders(), 
+			lucop.getHabitats(), 
+			lucop.getShadedZones(), 
+			lucop.getPresentZones(),  
+    		lucop.getArrows(),
+    		lucop.getSpiderLabels(),
     		newCurveLabels);
     	}
     	

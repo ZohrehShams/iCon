@@ -20,7 +20,7 @@ class CopySpider extends SimpleInferenceRule[SpiderArg] with Serializable {
 
   def getInferenceName: String = "copy_spider"
 
-  def getApplicableTypes: java.util.Set[DiagramType] = Set(DiagramType.SpiderDiagram,DiagramType.LUCOPDiagram)
+  def getApplicableTypes: java.util.Set[DiagramType] = Set(DiagramType.SpiderDiagram)
 
   def getDescription(locale: Locale): String = Translations.i18n(locale, "COPY_SPIDER_DESCRIPTION")
 
@@ -41,7 +41,7 @@ class CopySpider extends SimpleInferenceRule[SpiderArg] with Serializable {
   def apply(args: SpiderArg, goals: Goals): RuleApplicationResult = {
     val newSubgoals = goals.getGoals.toSeq.toArray[SpiderDiagram]
     val targetSubgoal = SimpleInferenceRule.getSubgoal(args, goals)
-    val indexOfParent: Int = targetSubgoal.getParentIndexOf(args.getSubDiagramIndex)
+    val indexOfParent: Int = targetSubgoal.getParentIndexOf(args.getSubDiagramIndex) 
     newSubgoals(args.getSubgoalIndex) = targetSubgoal.transform(CopySpiderTransformer(indexOfParent, args))
     new RuleApplicationResult(Goals.createGoalsFrom(seqAsJavaList(newSubgoals)))
   }

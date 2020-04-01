@@ -2,7 +2,9 @@ package speedith.core.reasoning.util.unitary
 
 import speedith.core.lang.SpiderDiagrams.createPrimarySD
 import speedith.core.lang.SpiderDiagrams.createCompleteCOPDiagram
-import speedith.core.lang.{PrimarySpiderDiagram, Region, Zone, Zones,CompleteCOPDiagram}
+import speedith.core.lang.{PrimarySpiderDiagram, Region, Zone, Zones}
+import speedith.core.lang.cop.CompleteCOPDiagram
+
 import javax.swing.JOptionPane
 
 import scala.collection.JavaConversions._

@@ -294,7 +294,7 @@ public abstract class SpiderDiagram implements Iterable<SpiderDiagram>, SpiderDi
      */
     public abstract void toString(Appendable sb) throws IOException;
 
-    static void printString(Appendable sb, String str) throws IOException {
+    public static void printString(Appendable sb, String str) throws IOException {
         sb.append('"').append(str).append('"');
     }
 

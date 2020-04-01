@@ -80,7 +80,7 @@ public abstract class SelectionStep {
      * <span style="font-style:italic;">all elements of primary spider
      * diagrams</span> should be selectable.</p>
      */
-    public static final int AllPrimaryElements = Spiders | Zones | Contours | Arrows | SpiderComparators;
+    public static final int AllPrimaryElements = Spiders | Contours | Arrows | SpiderComparators;
     /**
      * This flag is used in {@link SelectionStep#getSelectableElements()} to
      * indicate which diagram elements should be selectable. <p>In this case

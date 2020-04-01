@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static org.junit.Assert.*;
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.*;

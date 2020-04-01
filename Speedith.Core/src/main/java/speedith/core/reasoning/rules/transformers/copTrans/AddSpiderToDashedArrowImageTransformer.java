@@ -3,10 +3,7 @@ package speedith.core.reasoning.rules.transformers.copTrans;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
-import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.Operator;
 import speedith.core.lang.PrimarySpiderDiagram;
@@ -16,11 +13,15 @@ import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
 import speedith.core.lang.Zones;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetChecks;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetExtraction;
 import speedith.core.reasoning.util.unitary.ContourRelations;
+import speedith.core.reasoning.util.unitary.ZoneTransfer;
 
 public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
 	
@@ -62,6 +63,7 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     	    assertSecondArrowIsSuitable(spiderDiagram);
     	    
     		assertSpiderNotInDestination(arrowDiagram,secondArrow.getArrow().arrowTarget());
+    		    		   		
     		
     		if(arrowDiagram instanceof CompleteCOPDiagram){
     			CompleteCOPDiagram compArrowDiagram = (CompleteCOPDiagram) arrowDiagram;
@@ -87,7 +89,7 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     	    		ConceptDiagram cdSpiderDiagram = (ConceptDiagram) spiderDiagram;
         	    	CompleteCOPDiagram transformedArrowDiagram = (CompleteCOPDiagram) compArrowDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
         	    			cdSpiderDiagram.getAllSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
-                    return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, cdSpiderDiagram, firstArrow, indexOfParent);
+                    return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedArrowDiagram, cdSpiderDiagram, firstArrow.getSubDiagramIndex(), indexOfParent);
 
     	    	}
 
@@ -109,40 +111,27 @@ public class AddSpiderToDashedArrowImageTransformer extends IdTransformer{
     			
     	    	if(spiderDiagram instanceof CompleteCOPDiagram){
     	    		CompleteCOPDiagram compSpiderDiagram = (CompleteCOPDiagram) spiderDiagram;
-        	    	CompleteCOPDiagram transformedArrowTargetDiagram = (CompleteCOPDiagram) arrowTargetDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
-        	    			compSpiderDiagram.getSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
-        	    	SpiderDiagram cdArrowDiagramDelOldCop = cdArrowDiagram.deletePrimarySpiderDiagram(arrowTargetDiagram);
-        	    	if (cdArrowDiagramDelOldCop instanceof ConceptDiagram){
-            	    	SpiderDiagram cdArrowDiagramAddTransformedCop = ((ConceptDiagram) cdArrowDiagramDelOldCop).addPrimarySpiderDiagram(transformedArrowTargetDiagram);
-            	    	ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = 
-            	    			((ConceptDiagram)cdArrowDiagramAddTransformedCop).addArrows(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
-            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, compSpiderDiagram, firstArrow, indexOfParent);
-        	    	}else{
-        	    		ArrayList<PrimarySpiderDiagram> primaries = new ArrayList<PrimarySpiderDiagram>();
-        	    		primaries.add((CompleteCOPDiagram) cdArrowDiagramDelOldCop);
-        	    		primaries.add(transformedArrowTargetDiagram);
-        	    		TreeSet<Arrow> arrows = new TreeSet<Arrow>(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
-        	    		ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = SpiderDiagrams.createConceptDiagram(arrows, primaries);
-            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, compSpiderDiagram, firstArrow, indexOfParent);
-        	    	}
+    	    		
+                	ArrayList<PrimarySpiderDiagram> transformedChildren = new ArrayList<>(cdArrowDiagram.getPrimaries());
+                	int indexOfTransformedChild = transformedChildren.indexOf(arrowTargetDiagram);
+                	CompleteCOPDiagram transformedChild = (CompleteCOPDiagram) arrowTargetDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
+      	    			compSpiderDiagram.getSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
+                	transformedChildren.set(indexOfTransformedChild, transformedChild);
+                	ConceptDiagram transformedConceptDiagram = SpiderDiagrams.createConceptDiagram(cdArrowDiagram.get_cd_Arrows(), transformedChildren, false);
+                	
+                	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedConceptDiagram, compSpiderDiagram, firstArrow.getSubDiagramIndex(), indexOfParent);
     	    	}else{
     	    		ConceptDiagram cdSpiderDiagram = (ConceptDiagram) spiderDiagram;
-    	    		CompleteCOPDiagram transformedArrowTargetDiagram = (CompleteCOPDiagram) arrowTargetDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
-    	    				cdSpiderDiagram.getAllSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
-    	    		SpiderDiagram cdArrowDiagramDelOldCop = cdArrowDiagram.deletePrimarySpiderDiagram(arrowTargetDiagram);
-        	    	if (cdArrowDiagramDelOldCop instanceof ConceptDiagram){
-            	    	SpiderDiagram cdArrowDiagramAddTransformedCop = ((ConceptDiagram) cdArrowDiagramDelOldCop).addPrimarySpiderDiagram(transformedArrowTargetDiagram);
-            	    	ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = 
-            	    			((ConceptDiagram)cdArrowDiagramAddTransformedCop).addArrows(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
-            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, cdSpiderDiagram, firstArrow, indexOfParent);
-        	    	}else{
-        	    		ArrayList<PrimarySpiderDiagram> primaries = new ArrayList<PrimarySpiderDiagram>();
-        	    		primaries.add((CompleteCOPDiagram) cdArrowDiagramDelOldCop);
-        	    		primaries.add(transformedArrowTargetDiagram);
-        	    		TreeSet<Arrow> arrows = new TreeSet<Arrow>(cdArrowDiagram.get_cd_Arrows_Primary(arrowTargetDiagram));
-        	    		ConceptDiagram cdArrowDiagramAddTransformedCopWithArrows = SpiderDiagrams.createConceptDiagram(arrows, primaries);
-            	    	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, cdArrowDiagramAddTransformedCopWithArrows, cdSpiderDiagram, firstArrow, indexOfParent);
-        	    		}
+    	    		
+                	ArrayList<PrimarySpiderDiagram> transformedChildren = new ArrayList<>(cdArrowDiagram.getPrimaries());
+                	int indexOfTransformedChild = transformedChildren.indexOf(arrowTargetDiagram);
+                	CompleteCOPDiagram transformedChild = (CompleteCOPDiagram) arrowTargetDiagram.addLUSpider(secondArrow.getArrow().arrowTarget(), nonShadedRegionInsideArrowTarget, 
+                			cdSpiderDiagram.getAllSpiderLabels().get(secondArrow.getArrow().arrowTarget()));
+                	transformedChildren.set(indexOfTransformedChild, transformedChild);
+                	ConceptDiagram transformedConceptDiagram = SpiderDiagrams.createConceptDiagram(cdArrowDiagram.get_cd_Arrows(), transformedChildren, false);
+                	
+                	return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, transformedConceptDiagram, cdSpiderDiagram, firstArrow.getSubDiagramIndex(), indexOfParent);
+
     	    	}
     			
     		}else return currentDiagram;

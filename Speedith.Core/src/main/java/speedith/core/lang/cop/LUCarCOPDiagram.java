@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static propity.util.Sets.equal;
 import static speedith.core.i18n.Translations.i18n;
@@ -15,6 +15,11 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
+
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.Zone;
 
 /**
  *LUCOPDiagrams didn't allow cardinality for arrows. LUCarCOPDiagram stands for a COP diagram that accommodate
@@ -93,16 +98,9 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 		  }
 	
 	
-	public SortedMap<Arrow,Cardinality> getArrowCardinalities() {
-	        return Collections.unmodifiableSortedMap(arrowCardinalities);
-	    }
-	
-	public TreeMap<Arrow, Cardinality> getArrowCardinalitiesMod() {
-        return arrowCardinalities;
-    }
-	
-	
-
+	 public SortedMap<Arrow,Cardinality> getArrowCardinalities() {
+		 return Collections.unmodifiableSortedMap(arrowCardinalities);
+     }
 	
 	
 	
@@ -129,32 +127,10 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 	  
 	  @Override
 	  public LUCOPDiagram addLUSpider(String spiderName, Region habitat, String spiderLabel) {
-//		  if (spiderName == null || spiderName.isEmpty()){
-//        	  JOptionPane.showMessageDialog(null,"The spider name cannot be null or empty.","Input error",JOptionPane.ERROR_MESSAGE);
-//		  }
-//		
-//	      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
-//	      newHabitats.put(spiderName, habitat);
-//	      
-//	      TreeMap<String, String> spiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
-//	      spiderLabels.put(spiderName, spiderLabel);
-//	      
-//	      TreeSet<String> newSpiders = new TreeSet<>(getSpidersMod()); 
-//	      
-//	      if (getSpidersMod() != null) {
-//	          if (getSpidersMod().contains(spiderName)) {
-//	        	  JOptionPane.showMessageDialog(null,"The spider has to have a fresh name.","Input error",JOptionPane.ERROR_MESSAGE);
-//	          } else {
-//	              newSpiders.add(spiderName);
-//	          }
-//	      } else {
-//	          newSpiders = new TreeSet<>();
-//	          newSpiders.add(spiderName);
-//	      }
-		  TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
+		  TreeMap<String, Region> newHabitats = (getHabitats() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitats());
 	      newHabitats.put(spiderName, habitat);
 	      
-	      TreeMap<String, String> newSpiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabelsMod());
+	      TreeMap<String, String> newSpiderLabels = (getSpiderLabels() == null) ? new TreeMap<String, String>() : new TreeMap<>(getSpiderLabels());
 	      newSpiderLabels.put(spiderName, spiderLabel);
 	      
 	      TreeSet<String> newSpiders;
@@ -186,7 +162,7 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 		@Override
 		public COPDiagram deleteSpider(String... spiders) {
 			  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
-			  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+			  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitats());
 			  TreeSet<Arrow> newArrows = new TreeSet<>(getArrows());
 			  TreeMap<String,String> newSpiderLabels = new TreeMap<>(getSpiderLabels());
 			  TreeMap<Arrow,Cardinality> newArrowCardinalities = new TreeMap<>(arrowCardinalities);
@@ -235,7 +211,7 @@ public class LUCarCOPDiagram extends LUCOPDiagram{
 		
 		
 		public LUCarCOPDiagram addArrowCardinality(Arrow arrow, Cardinality cardinality) {
-	    	TreeMap<Arrow,Cardinality> newArrowCardinalities = getArrowCardinalitiesMod();
+	    	TreeMap<Arrow,Cardinality> newArrowCardinalities = new TreeMap<Arrow,Cardinality>(getArrowCardinalities());
 	    	if (arrow != null){
 	    		newArrowCardinalities.put(arrow, cardinality);
 	    	}

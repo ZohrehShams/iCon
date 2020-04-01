@@ -1,6 +1,8 @@
 package speedith.core.reasoning.util.unitary
 
 import speedith.core.lang._
+import speedith.core.lang.cop.LUCarCOPDiagram;
+
 
 class SpiderTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: PrimarySpiderDiagram) {
 

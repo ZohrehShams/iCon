@@ -1,6 +1,10 @@
 package speedith.core.reasoning.rules.transformers.copTrans;
 
 import speedith.core.lang.*;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.CompleteCOPDiagram;
 import speedith.core.reasoning.ApplyStyle;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;

@@ -28,6 +28,9 @@ package speedith.core.lang;
 
 import java.util.ArrayList;
 
+import speedith.core.lang.cop.CDTransformer;
+import speedith.core.lang.cop.ConceptDiagram;
+
 /**
  * A simple convenience implementation of the {@link Transformer} interface. All
  * its methods return {@code null} (except for {@link IdTransformer#isDone()},

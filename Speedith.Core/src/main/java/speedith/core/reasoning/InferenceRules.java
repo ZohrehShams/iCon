@@ -30,6 +30,7 @@ import speedith.core.lang.DiagramType;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.rules.*;
 import speedith.core.reasoning.rules.cop.*;
+import speedith.core.reasoning.rules.cop.CopySpiderCD;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -104,7 +105,7 @@ public class InferenceRules {
         registerProvider(IncoherenceCurve.class);
         registerProvider(ZoneContrastHabitat.class);
         registerProvider(RemoveSpider.class);
-        registerProvider(AddSpiderArrow.class);
+        registerProvider(ReplaceWithSpiderArrow.class);
         registerProvider(RemoveArrow.class);
         registerProvider(AddSpiderToSolidArrowImage.class);
         registerProvider(DeleteSyntax.class);
@@ -123,6 +124,8 @@ public class InferenceRules {
         registerProvider(AddSpiderArrowTarget.class);
         registerProvider(ReverseArrowDirection.class);
         registerProvider(SwapDashedWithSolidArrow.class);
+        registerProvider(CopyCurves.class);
+        registerProvider(CopySpiderCD.class);
     }
 
     /**

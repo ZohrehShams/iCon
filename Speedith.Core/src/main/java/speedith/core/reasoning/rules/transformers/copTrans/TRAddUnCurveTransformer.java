@@ -5,9 +5,9 @@ import java.util.TreeMap;
 import javax.swing.JOptionPane;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
 import speedith.core.reasoning.args.copArgs.ZonesInOutArg;
 import speedith.core.reasoning.util.unitary.ZoneTransferSingle;
 
@@ -46,12 +46,12 @@ public class TRAddUnCurveTransformer extends IdTransformer{
         curveLabels.put(name,"");
         
     	return LUCOPDiagram.createLUCOPDiagram(
-    			transformedDiagram.getSpidersMod(), 
-    			transformedDiagram.getHabitatsMod(), 
-    			transformedDiagram.getShadedZonesMod(), 
-    			transformedDiagram.getPresentZonesMod(),  
-        		lucop.getArrowsMod(),
-        		lucop.getSpiderLabelsMod(),
+    			transformedDiagram.getSpiders(), 
+    			transformedDiagram.getHabitats(), 
+    			transformedDiagram.getShadedZones(), 
+    			transformedDiagram.getPresentZones(),  
+        		lucop.getArrows(),
+        		lucop.getSpiderLabels(),
         		curveLabels);
     		
     	}

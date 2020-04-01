@@ -1,6 +1,6 @@
 package speedith.core.reasoning.args.copArgs;
 
-import speedith.core.lang.SpiderComparator;
+import speedith.core.lang.cop.SpiderComparator;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.args.RuleArg;
 import speedith.core.reasoning.args.SubDiagramIndexArg;

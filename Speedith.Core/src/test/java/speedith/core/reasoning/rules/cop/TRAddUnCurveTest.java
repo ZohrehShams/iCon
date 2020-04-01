@@ -8,11 +8,11 @@ import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
 
-import speedith.core.lang.COPDiagram;
-import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
 import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.core.lang.reader.SpiderDiagramsReaderTest;
 import speedith.core.reasoning.Goals;

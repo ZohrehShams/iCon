@@ -29,6 +29,13 @@ package speedith.core.lang;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.CarCDiagram;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
+import speedith.core.lang.cop.SpiderComparator;
+
 import static speedith.core.i18n.Translations.i18n;
 
 /**

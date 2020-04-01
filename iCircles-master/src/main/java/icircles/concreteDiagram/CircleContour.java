@@ -140,13 +140,36 @@ public class CircleContour {
     public double getLabelXPosition() {
 //        return cx + 0.8 * radius;
     	  //Zohreh
-    	  return cx + 0.7 * radius;
+//    	  return cx + 0.7 * radius;
+    	  //cls-dw config
+//    	  return cx - 0.7 * radius;
+    	//cls-avf config part 1
+//    	  return cx - radius;
+      	//cls-avf config part 2
+//    	  return cx - 1.15 *radius;
+    	//cls-int 1 config
+    	return cx - 0.3 * radius ;
     	
     }
 
     public double getLabelYPosition() {
-        return cy - 0.75 * radius;
+//        return cy - 0.75 * radius;
+     	//cls-dw config and cls-int1 config
+    	return cy - 1.1 * radius;
+    	//cax-sco config
+//    	return cy - 1.02 * radius;
+    	//cls-maxc1 config
+//    	return cy + 10 * radius;
+     	//cls-avf config
+//    	return cy - 0.8 *radius;
     }
+    
+    
+    public double getLabelXAltPosition() {
+  	  return cx + 0.15 * radius;
+  	
+  }
+
     
 
     public int getMinX() {

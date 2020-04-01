@@ -15,18 +15,18 @@ import icircles.abstractDescription.AbstractDescription;
 import icircles.abstractDescription.AbstractShape;
 import icircles.abstractDescription.AbstractSpider;
 import icircles.util.CannotDrawException;
-import speedith.core.lang.Arrow;
-import speedith.core.lang.COPDiagram;
-import speedith.core.lang.CarCDiagram;
-import speedith.core.lang.Cardinality;
-import speedith.core.lang.CompleteCOPDiagram;
-import speedith.core.lang.ConceptDiagram;
-import speedith.core.lang.LUCOPDiagram;
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
-import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.CarCDiagram;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.SpiderComparator;
 import speedith.ui.abstracts.AbstractArrow;
 import speedith.ui.abstracts.AbstractSpiderComparator;
 import speedith.ui.abstracts.CDAbstractDescription;
@@ -48,7 +48,7 @@ public class COPDiagramVisualisation extends DiagramVisualisation{
     	PrimarySpiderDiagram temp3 = psd;
     	
         if (psd == null || !psd.isValid()) {
-            throw new CannotDrawException(i18n("DRAW_NOT_VALID_PSD"));
+        	throw new CannotDrawException(i18n("DRAW_NOT_VALID_PSD"));
         }
         
         SortedSet<String> contourStrings = psd.getAllContours();
@@ -141,7 +141,7 @@ public class COPDiagramVisualisation extends DiagramVisualisation{
         
 		
 		if (cop.getArrowsCount() > 0) {
-    		TreeSet<Arrow> arrows = cop.getArrowsMod();
+    		TreeSet<Arrow> arrows = new TreeSet<Arrow>(cop.getArrows());
 
     		for (Arrow arrow : arrows){
     			AbstractShape arrowSource,arrowTarget;
@@ -231,7 +231,7 @@ public class COPDiagramVisualisation extends DiagramVisualisation{
     	CDAbstractDescription cdAd = new CDAbstractDescription(abstractPrimaries);
     	
     	if (cd.getArrowCount() > 0){
-    		TreeSet<Arrow> cdArrows = cd.get_cd_ArrowsMod();
+    		TreeSet<Arrow> cdArrows = new TreeSet<Arrow>(cd.get_cd_Arrows());
     		
     		for (Arrow arrow : cdArrows){
     			AbstractShape arrowSource,arrowTarget;
@@ -262,14 +262,7 @@ public class COPDiagramVisualisation extends DiagramVisualisation{
     	}
     	return cdAd;
     }
-    
-    
-//    static CDCirclesPanelEx getSpiderDiagramPanel(ConceptDiagram diagram, int size) throws CannotDrawException {
-//    	final CDAbstractDescription ad = getAbstractDescription(diagram);
-//        ConcreteCDiagram cd = ConcreteCDiagram.makeConcreteDiagram(ad, size);        
-//        return new CDCirclesPanelEx(cd);
-//    }
-    
+        
     
 
 }

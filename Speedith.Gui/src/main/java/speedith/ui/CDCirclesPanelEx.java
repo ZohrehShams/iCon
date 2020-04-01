@@ -11,6 +11,7 @@ import java.awt.GridBagConstraints;
 	
 public class CDCirclesPanelEx extends JPanel{
 	
+	
     private javax.swing.JPanel diagrams; 
 	private ConcreteCDiagram diagram;
 	
@@ -20,6 +21,7 @@ public class CDCirclesPanelEx extends JPanel{
     
     
     public CDCirclesPanelEx(ConcreteCDiagram diagram) {
+    	System.out.println("A");
     	initComponents();
     	this.diagram =diagram;
     	try {

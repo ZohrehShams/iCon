@@ -15,7 +15,9 @@ import speedith.core.lang._
 import speedith.core.reasoning.ApplyStyle
 import speedith.core.reasoning.args.ContourArg
 import speedith.core.reasoning.rules.SimpleInferenceRule
-import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.LUCarCOPDiagram.createLUCarCOPDiagram;
 import scala.collection.JavaConversions._
 
 /**

@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.COPDiagram;
-import speedith.core.lang.Cardinality;
-import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
-import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.SpiderComparator;
 import speedith.core.reasoning.ApplyStyle;
 import speedith.core.reasoning.args.SpiderArg;
 

@@ -1,0 +1,4 @@
+CD {cd_arrows=[("y","unnamedCurve","solid","p-")], 
+cd_arg1 = CompleteCOP {spiders = ["y"], habitats = [("y", [([], [])])], sh_zones = [], present_zones = [([], [])],arrows = [], spiderLabels = [("y", "y")], curveLabels = [], arrowCar = [], spiderEquality = []},cd_arg2 = CompleteCOP {spiders = ["u"], habitats = [("u", [(["unnamedCurve"], [])])], sh_zones = [], present_zones = [(["unnamedCurve"], []), ([],["unnamedCurve"])],arrows = [], spiderLabels = [("u", "u")], curveLabels = [], arrowCar = [], spiderEquality = []}}
+
+

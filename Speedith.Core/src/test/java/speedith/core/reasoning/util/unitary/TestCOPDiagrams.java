@@ -1,7 +1,14 @@
 package speedith.core.reasoning.util.unitary;
 
 import speedith.core.lang.*;
-import speedith.core.lang.Comparator;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.Comparator;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.SpiderComparator;
 
 //import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.test;
 

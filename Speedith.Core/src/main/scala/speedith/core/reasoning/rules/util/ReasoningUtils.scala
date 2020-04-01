@@ -3,6 +3,12 @@ package speedith.core.reasoning.rules.util
 import java.util
 
 import speedith.core.lang._
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.CarCDiagram;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
 import speedith.core.reasoning.Goals
 import speedith.core.reasoning.automatic.wrappers.{PrimarySpiderDiagramOccurrence, CompoundSpiderDiagramOccurrence, SpiderDiagramOccurrence}
 import speedith.core.reasoning.util.unitary.CorrespondingRegions
@@ -37,26 +43,26 @@ object ReasoningUtils {
     case completeCop: CompleteCOPDiagram =>
       val allContours = completeCop.getAllContours.toSeq.asJava
       val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet
-      SpiderDiagrams.createCompleteCOPDiagram(completeCop.getSpidersMod, completeCop.getHabitatsMod, 
-          completeCop.getShadedZonesMod, possibleZones -- (completeCop.getShadedZones -- completeCop.getPresentZones), 
-          completeCop.getArrowsMod,completeCop.getSpiderLabels,completeCop.getCurveLabels,
+      SpiderDiagrams.createCompleteCOPDiagram(completeCop.getSpiders, completeCop.getHabitats, 
+          completeCop.getShadedZones, possibleZones -- (completeCop.getShadedZones -- completeCop.getPresentZones), 
+          completeCop.getArrows,completeCop.getSpiderLabels,completeCop.getCurveLabels,
           completeCop.getArrowCardinalities, completeCop.getSpiderComparators)
     case luCarcop: LUCarCOPDiagram =>
       val allContours = luCarcop.getAllContours.toSeq.asJava
       val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet
-      LUCarCOPDiagram.createLUCarCOPDiagram(luCarcop.getSpidersMod, luCarcop.getHabitatsMod, 
-          luCarcop.getShadedZonesMod, possibleZones -- (luCarcop.getShadedZones -- luCarcop.getPresentZones), 
-          luCarcop.getArrowsMod,luCarcop.getSpiderLabels,luCarcop.getCurveLabels,luCarcop.getArrowCardinalities)
+      LUCarCOPDiagram.createLUCarCOPDiagram(luCarcop.getSpiders, luCarcop.getHabitats, 
+          luCarcop.getShadedZones, possibleZones -- (luCarcop.getShadedZones -- luCarcop.getPresentZones), 
+          luCarcop.getArrows,luCarcop.getSpiderLabels,luCarcop.getCurveLabels,luCarcop.getArrowCardinalities)
     case lucop: LUCOPDiagram =>
       val allContours = lucop.getAllContours.toSeq.asJava
       val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet
-      LUCOPDiagram.createLUCOPDiagram(lucop.getSpidersMod, lucop.getHabitatsMod, 
-          lucop.getShadedZonesMod, possibleZones -- (lucop.getShadedZones -- lucop.getPresentZones), 
-          lucop.getArrowsMod,lucop.getSpiderLabels,lucop.getCurveLabels)
+      LUCOPDiagram.createLUCOPDiagram(lucop.getSpiders, lucop.getHabitats, 
+          lucop.getShadedZones, possibleZones -- (lucop.getShadedZones -- lucop.getPresentZones), 
+          lucop.getArrows,lucop.getSpiderLabels,lucop.getCurveLabels)
     case cop: COPDiagram =>
       val allContours = cop.getAllContours.toSeq.asJava
       val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet
-      COPDiagram.createCOPDiagram(cop.getSpidersMod, cop.getHabitatsMod, cop.getShadedZonesMod, possibleZones -- (cop.getShadedZones -- cop.getPresentZones), cop.getArrowsMod)
+      COPDiagram.createCOPDiagram(cop.getSpiders, cop.getHabitats, cop.getShadedZones, possibleZones -- (cop.getShadedZones -- cop.getPresentZones), cop.getArrows)
     case psd: PrimarySpiderDiagram =>
       val allContours = psd.getAllContours.toSeq.asJava
       val possibleZones: Set[Zone] = Zones.allZonesForContours(allContours: _*).toSet

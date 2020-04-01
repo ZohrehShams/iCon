@@ -2,16 +2,17 @@ package speedith.core.reasoning.rules.transformers.copTrans;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
-import speedith.core.lang.CompleteCOPDiagram;
+
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.Region;
-import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zones;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.SpiderComparator;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.args.copArgs.SpiderComparatorArg;
 

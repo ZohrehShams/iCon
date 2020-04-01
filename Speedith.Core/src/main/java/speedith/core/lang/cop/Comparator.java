@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import java.util.Collections;
 import java.util.HashMap;

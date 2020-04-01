@@ -6,9 +6,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import speedith.core.lang.COPDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.COPDiagram;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationResult;

@@ -1,0 +1,4 @@
+CD {cd_arrows=[("u","y","dashed","p")], 
+cd_arg1 = CompleteCOP {spiders = ["u"], habitats = [("u", [([], [])])], sh_zones = [], present_zones = [([], [])], arrows = [], spiderLabels = [("u", "u")], curveLabels = [], arrowCar = [], spiderEquality = []},cd_arg2 = CompleteCOP {spiders = ["y"], habitats = [("y", [([], [])])], sh_zones = [], present_zones = [([], [])],arrows = [], spiderLabels = [("y", "y")], curveLabels = [], arrowCar = [], spiderEquality = []}}
+
+

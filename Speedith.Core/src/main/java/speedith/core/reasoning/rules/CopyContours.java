@@ -29,12 +29,15 @@ package speedith.core.reasoning.rules;
 import speedith.core.i18n.Translations;
 import speedith.core.lang.DiagramType;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.core.reasoning.*;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;
+import speedith.core.reasoning.args.copArgs.ArrowArg;
 import speedith.core.reasoning.rules.instructions.SelectContoursInstruction;
 import speedith.core.reasoning.rules.transformers.CopyContoursTransformer;
+import speedith.core.reasoning.rules.transformers.copTrans.AddSpiderToDashedArrowImageTransformer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,8 +55,7 @@ public class CopyContours extends SimpleInferenceRule<MultipleRuleArgs> implemen
      */
     public static final String InferenceRuleName = "copy_contours";
 
-    //Zohreh
-    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram, DiagramType.LUCOPDiagram);
+    private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram);
     private static final long serialVersionUID = -3569161621056814002L;
 
 
@@ -108,12 +110,66 @@ public class CopyContours extends SimpleInferenceRule<MultipleRuleArgs> implemen
         return ContourArg.getContourArgsFrom(multipleRuleArgs);
     }
 
+    
+    
     private RuleApplicationResult apply(ArrayList<ContourArg> targetContours, Goals goals) throws RuleApplicationException {
         SpiderDiagram[] newSubgoals = goals.getGoals().toArray(new SpiderDiagram[goals.getGoalsCount()]);
         ContourArg inferenceTarget = targetContours.get(0);
         SpiderDiagram targetSubgoal = getSubgoal(inferenceTarget, goals);
-        int indexOfParent = targetSubgoal.getParentIndexOf(inferenceTarget.getSubDiagramIndex());
+        int indexOfParent = targetSubgoal.getParentIndexOf(inferenceTarget.getSubDiagramIndex());    
         newSubgoals[inferenceTarget.getSubgoalIndex()] = targetSubgoal.transform(new CopyContoursTransformer(indexOfParent, targetContours));
         return createRuleApplicationResult(newSubgoals);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

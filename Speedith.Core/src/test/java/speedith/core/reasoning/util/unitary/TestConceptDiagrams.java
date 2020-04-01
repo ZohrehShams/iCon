@@ -4,14 +4,14 @@ import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.Cardinality;
-import speedith.core.lang.Comparator;
 import speedith.core.lang.CompoundSpiderDiagram;
-import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.Operator;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.Comparator;
+import speedith.core.lang.cop.ConceptDiagram;
 
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.*;
 

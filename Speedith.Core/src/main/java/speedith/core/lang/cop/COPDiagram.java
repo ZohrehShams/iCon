@@ -1,15 +1,22 @@
-package speedith.core.lang;
-
-import propity.util.Sets;
-import speedith.core.lang.Region;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
-import java.util.Map.Entry;
+package speedith.core.lang.cop;
 
 import static propity.util.Sets.equal;
 import static speedith.core.i18n.Translations.i18n;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.Region;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.SpiderDiagrams;
+import speedith.core.lang.Zone;
 
 
 /**
@@ -76,10 +83,7 @@ public class COPDiagram extends PrimarySpiderDiagram {
         return Collections.unmodifiableSortedSet(arrows);
     }
     
-    public TreeSet<Arrow> getArrowsMod() {
-        return arrows;
-    }
-    
+
 	
     public boolean containsArrow(Arrow arrow) {
         return arrows.contains(arrow);
@@ -156,18 +160,17 @@ public class COPDiagram extends PrimarySpiderDiagram {
   
   @Override
   public PrimarySpiderDiagram addSpider(String spider, Region habitat) {
-      TreeMap<String, Region> newHabitats = (getHabitatsMod() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitatsMod());
+      TreeMap<String, Region> newHabitats = (getHabitats() == null) ? new TreeMap<String, Region>() : new TreeMap<>(getHabitats());
       newHabitats.put(spider, habitat);
-      TreeSet<String> newSpiders;
-      if (getSpidersMod() != null) {
-          if (getSpidersMod().contains(spider)) {
-              newSpiders = getSpidersMod();
+      TreeSet<String> newSpiders = new TreeSet<String>();
+      if (getSpiders() != null) {
+          if (getSpiders().contains(spider)) {
+              newSpiders = new TreeSet<String>(getSpiders());
           } else {
-              newSpiders = new TreeSet<>(getSpidersMod()); 
+              newSpiders = new TreeSet<>(getSpiders()); 
               newSpiders.add(spider);
           }
       } else {
-          newSpiders = new TreeSet<>();
           newSpiders.add(spider);
       }
       
@@ -181,9 +184,11 @@ public class COPDiagram extends PrimarySpiderDiagram {
   
   
   
+  
+  
   public COPDiagram deleteSpider(String... spiders) {
 	  TreeSet<String> newSpiders = new TreeSet<>(getSpiders());
-	  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitatsMod());
+	  TreeMap<String, Region> newHabitats = new TreeMap<>(getHabitats());
 	  TreeSet<Arrow> newArrows = new TreeSet<>(arrows);
 	  
 	  for(String spider : spiders){

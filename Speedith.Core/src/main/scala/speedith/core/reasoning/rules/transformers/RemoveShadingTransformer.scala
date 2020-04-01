@@ -3,13 +3,14 @@ package speedith.core.reasoning.rules.transformers
 
 import speedith.core.i18n.Translations._
 import speedith.core.lang._
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram.createLUCarCOPDiagram;
 import speedith.core.reasoning.rules.SimpleInferenceRule
 import speedith.core.reasoning.{ApplyStyle, RuleApplicationException}
 import speedith.core.reasoning.args.{SubDiagramIndexArg, ZoneArg}
 
 import scala.collection.JavaConversions._
-
-import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
 
 /**
   * Transforms the [[PrimarySpiderDiagram]] referenced by the given [[ZoneArg]] by

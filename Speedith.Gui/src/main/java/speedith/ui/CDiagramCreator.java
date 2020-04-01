@@ -99,8 +99,8 @@ public class CDiagramCreator{
     			}
     		}
     		CircleContour cc= mapAll.get(acPrime);
-    		xs = cc.get_cx();
-    		ys = cc.get_cy()-cc.get_radius();
+    		xs = cc.get_cx() + cc.get_radius();
+    		ys = cc.get_cy();
     	}else {if (aa.get_start() instanceof AbstractSpider){
     		
     		//System.out.println("You should come here for source.");
@@ -137,7 +137,7 @@ public class CDiagramCreator{
 
     		CircleContour cc= mapAll.get(acPrime);   		
     		xt = cc.get_cx();
-    		yt = cc.get_cy()+cc.get_radius();
+    		yt = cc.get_cy();
     	}else {if (aa.get_end() instanceof AbstractSpider){
     		//System.out.println("You should come here for target.");
     		AbstractSpider as = (AbstractSpider) aa.get_end();

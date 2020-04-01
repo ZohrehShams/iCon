@@ -1,6 +1,11 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import java.util.ArrayList;
+
+import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.TransformationException;
+import speedith.core.lang.Transformer;
 
 /**
  * An interface for the transformation of CD.

@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-import speedith.core.lang.Arrow;
 import speedith.core.lang.Operator;
 import speedith.core.lang.TransformationException;
+import speedith.core.lang.cop.Arrow;
 import speedith.core.reasoning.RuleApplicationInstruction;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.RuleArg;

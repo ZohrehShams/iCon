@@ -3,15 +3,15 @@ package speedith.core.reasoning.rules.transformers.copTrans;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.COPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
 import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.args.ZoneArg;
 
@@ -70,7 +70,7 @@ public class TRAddShadingTransformer extends IdTransformer{
         	int subDiagramIndex = target.getSubDiagramIndex();
         	
         	if (diagramIndex == subDiagramIndex) {
-        		if (!lucop.getPresentZonesMod().containsAll(getTargetZones())) {
+        		if (!lucop.getPresentZones().containsAll(getTargetZones())) {
         			throw new TransformationException("The zones to be shaded do not exist in the target diagram or it is already shaded.");
         			}
         		

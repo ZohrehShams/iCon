@@ -171,6 +171,8 @@ public class ProofTrace implements Proof {
     @Override
     public int getGoalsCount() {
         return goals.size();
+        //cls-avf part2 config
+//        return goals.size() + 3;
     }
 
     @Override

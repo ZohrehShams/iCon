@@ -1,9 +1,12 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static speedith.core.i18n.Translations.i18n;
 
 import java.io.IOException;
 import java.util.Objects;
+
+import speedith.core.lang.SpiderDiagram;
+
 import java.io.Serializable;
 /**
  * Type arrow as a new component of COP is created here.

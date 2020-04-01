@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static speedith.core.i18n.Translations.i18n;
 
@@ -13,6 +13,14 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.DiagramVisitor;
+import speedith.core.lang.PrimarySpiderDiagram;
+import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.SpiderDiagrams;
+import speedith.core.lang.Transformer;
+import speedith.core.reasoning.util.unitary.ZoneTransfer;
 
 
 /**
@@ -36,7 +44,7 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
 	private int hash;
 	
 	
-    ConceptDiagram(ArrayList<PrimarySpiderDiagram> primaries, TreeSet<Arrow> arrows) {
+    public ConceptDiagram(ArrayList<PrimarySpiderDiagram> primaries, TreeSet<Arrow> arrows) {
         if (primaries == null) {
             throw new IllegalArgumentException(i18n("GERR_NULL_ARGUMENT", "diagrmas"));
         }
@@ -45,7 +53,7 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
     }
     
     
-    ConceptDiagram(Collection<PrimarySpiderDiagram> primaries, Collection<Arrow> arrows) {
+    public ConceptDiagram(Collection<PrimarySpiderDiagram> primaries, Collection<Arrow> arrows) {
     	this(primaries == null ? null : new ArrayList<>(primaries),
     			arrows == null ? null : new TreeSet<>(arrows));
     }
@@ -67,12 +75,6 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
     public SortedSet<Arrow> get_cd_Arrows() {
         return Collections.unmodifiableSortedSet(cd_arrows);
     }
-    
-    
-    public TreeSet<Arrow> get_cd_ArrowsMod() {
-        return cd_arrows;
-    }
-    
     
     
     public int getArrowCount(){
@@ -212,6 +214,26 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
 		}
 		return null;
 	}
+	
+	
+	public PrimarySpiderDiagram targetDiagramForContour(String contour){
+		for (PrimarySpiderDiagram psd : primaries){
+			if(psd.getContours().contains(contour)){
+				return psd;
+			}
+		}
+		return null;
+	}
+	
+	
+	public PrimarySpiderDiagram targetDiagramForSpider(String spider){
+		for (PrimarySpiderDiagram psd : primaries){
+			if(psd.getSpiders().contains(spider)){
+				return psd;
+			}
+		}
+		return null;
+	}
 
 	
 
@@ -233,6 +255,17 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
 	    	}
 	    	return new ConceptDiagram(primaries,newCDArrows);
 	 }
+	
+	
+	public ConceptDiagram deleteArrow(Arrow arrow) {
+    	TreeSet<Arrow> newCDArrows = new TreeSet<Arrow>(get_cd_Arrows());
+    	if (arrow != null){
+    		if ((cd_arrows.contains(arrow)) && (valid_CD_Arrow(arrow))) {
+    			newCDArrows.remove(arrow);
+    		}
+    	}
+    	return new ConceptDiagram(primaries,newCDArrows);
+ }
 	
 	
 	public ConceptDiagram addArrows(TreeSet<Arrow> arrows) {
@@ -286,7 +319,8 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
     	}
 	}
 	
-	public SpiderDiagram addPrimarySpiderDiagram(PrimarySpiderDiagram psd){
+//	public SpiderDiagram addPrimarySpiderDiagram(PrimarySpiderDiagram psd){
+	public ConceptDiagram addPrimarySpiderDiagram(PrimarySpiderDiagram psd){
 		ArrayList<PrimarySpiderDiagram> newPrimaries = new ArrayList<PrimarySpiderDiagram>(getPrimaries());
 		if (! primaries.contains(psd)) {
 			newPrimaries.add(psd);
@@ -320,7 +354,7 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
 		for(int primaryIndex = 0; primaryIndex < cd.getPrimaryCount(); ++primaryIndex){
 			PrimarySpiderDiagram primary = cd.getPrimary(primaryIndex);
 			transformedCD = t.transform((PrimarySpiderDiagram) primary, subDiagramIndex+1, parents, childIndices);
-			
+
 			if (transformedCD != null && !transformedCD.equals(primary)){
 				if (transformedChildren == null) {
 					transformedChildren = new ArrayList<>(cd.primaries);
@@ -331,7 +365,9 @@ public class ConceptDiagram extends SpiderDiagram implements Serializable {
             if (t.isDone()) {
                 break;
             }
-            subDiagramIndex += cd.getSubDiagramCount();
+//            subDiagramIndex += cd.getSubDiagramCount();
+            subDiagramIndex += 1;
+
 		}
 		
 		return transformedChildren == null ? cd: SpiderDiagrams.createConceptDiagram(cd.get_cd_Arrows(), transformedChildren, false);}

@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static speedith.core.reasoning.util.unitary.TestConceptDiagrams.*;
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.*;
@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 
 import org.junit.Test;
+
+import speedith.core.lang.SpiderDiagram;
 
 public class ConceptDiagramTest {
 	

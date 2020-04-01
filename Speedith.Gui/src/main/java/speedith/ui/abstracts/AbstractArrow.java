@@ -6,8 +6,8 @@ import icircles.abstractDescription.AbstractCurve;
 import icircles.abstractDescription.AbstractDiagram;
 import icircles.abstractDescription.AbstractShape;
 import icircles.abstractDescription.AbstractSpider;
-import speedith.core.lang.Arrow;
-import speedith.core.lang.Cardinality;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.Cardinality;
 
 public class AbstractArrow implements Comparable<AbstractArrow>{
 	

@@ -21,8 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
-import speedith.core.lang.ConceptDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.lang.reader.SpiderDiagramsReader;
 import speedith.ui.ArrowPanel;

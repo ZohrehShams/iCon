@@ -1,9 +1,11 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static speedith.core.i18n.Translations.i18n;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import speedith.core.lang.SpiderDiagram;
 
 public class Cardinality implements Serializable{
 	

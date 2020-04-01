@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import speedith.core.lang.CompoundSpiderDiagram;
-import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.SubDiagramIndexArg;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetChecks;

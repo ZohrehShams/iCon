@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import icircles.util.CannotDrawException;
-import speedith.core.lang.ConceptDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.ui.abstracts.CDAbstractDescription;
 import speedith.ui.concretes.ConcreteArrow;
 import speedith.ui.concretes.ConcreteCDiagram;

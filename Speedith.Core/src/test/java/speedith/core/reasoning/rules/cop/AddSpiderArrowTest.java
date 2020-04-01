@@ -5,7 +5,7 @@ import static speedith.core.reasoning.util.unitary.TestConceptDiagrams.*;
 
 import org.junit.Test;
 
-import speedith.core.lang.Arrow;
+import speedith.core.lang.cop.Arrow;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.RuleApplicationException;
@@ -18,11 +18,11 @@ public class AddSpiderArrowTest {
 
     @Test
     public void test_apply_CD() throws RuleApplicationException, ReadingException {
-    	AddSpiderArrow addSpiderArrow = new AddSpiderArrow();
+    	ReplaceWithSpiderArrow replaceWithSpiderArrow = new ReplaceWithSpiderArrow();
     	
     	Goals targetOfInference = Goals.createGoalsFrom(twoCompCD);
 
-        RuleApplicationResult applicationResult = addSpiderArrow.applyForwards(new MultipleRuleArgs(new ArrowArg(0, 0, new Arrow("B","X","solid","R")),
+        RuleApplicationResult applicationResult = replaceWithSpiderArrow.applyForwards(new MultipleRuleArgs(new ArrowArg(0, 0, new Arrow("B","X","solid","R")),
         		new SpiderArg(0, 1, "t1")), targetOfInference);
         assertTrue(applicationResult.getGoals().getGoalAt(0).isSEquivalentTo(twoCompCDAddSpiderArrow));
     }

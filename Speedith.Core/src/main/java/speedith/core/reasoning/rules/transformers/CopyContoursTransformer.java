@@ -39,7 +39,8 @@ public class CopyContoursTransformer extends IdTransformer {
             return copyContours(diagramWithContour, diagramWithoutContour);
         }
         return null;
-    }
+    } 
+    
 
     @Override
     public SpiderDiagram transform(PrimarySpiderDiagram csd,
@@ -63,17 +64,18 @@ public class CopyContoursTransformer extends IdTransformer {
         try {
             PrimarySpiderDiagram transformedDiagram = new ZoneTransfer(diagramWithContour, diagramWithoutContour).transferContour(getTargetContours().get(0));
             return InferenceTargetExtraction.createBinaryDiagram(Operator.Conjunction, diagramWithContour, transformedDiagram, targetContours.get(0), indexOfParent);
-            //return transformedDiagram; 
         } catch (Exception e) {
-            throw new TransformationException("Could not copy the contour. " + e.getMessage(), e);
+        	throw new TransformationException("Could not copy the contour. " + e.getMessage(), e);
         }
     }
+    
 
     private void assertDiagramContainsTargetContours(PrimarySpiderDiagram currentDiagram) {
         if (!currentDiagram.getAllContours().containsAll(getTargetContours())) {
             throw new TransformationException("The target unitary diagram does not contain the target contour.");
         }
     }
+    
 
     private List<String> getTargetContours() {
         ArrayList<String> contours = new ArrayList<>();

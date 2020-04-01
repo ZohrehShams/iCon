@@ -1,10 +1,10 @@
 package speedith.core.reasoning.util.unitary
 
 import speedith.core.lang.SpiderDiagrams.createPrimarySD
+import speedith.core.lang.cop.LUCarCOPDiagram.createLUCarCOPDiagram;
 import speedith.core.lang.SpiderDiagrams.createCompleteCOPDiagram
-import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
-import speedith.core.lang.{PrimarySpiderDiagram, LUCarCOPDiagram, CompleteCOPDiagram, Region, Zone, Zones}
-
+import speedith.core.lang._
+import speedith.core.lang.cop._
 import scala.collection.JavaConversions._
 
 class ZoneTransfer(sourceDiagram: PrimarySpiderDiagram, destinationDiagram: PrimarySpiderDiagram) {

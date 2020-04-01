@@ -2,6 +2,9 @@ package speedith.core.lang.reader;
 
 import org.junit.*;
 import speedith.core.lang.*;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
 import speedith.core.reasoning.util.unitary.TestCOPDiagrams;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.equalTo;

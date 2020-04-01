@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import speedith.core.lang.DiagramType;
+import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.reasoning.BasicInferenceRule;
 import speedith.core.reasoning.ForwardRule;

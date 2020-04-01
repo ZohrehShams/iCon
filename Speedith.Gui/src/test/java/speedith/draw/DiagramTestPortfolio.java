@@ -1,8 +1,8 @@
 package speedith.draw;
 
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.reasoning.rules.transformers.CopyContoursTransformerTest;
 import speedith.core.reasoning.util.unitary.TestSpiderDiagrams;

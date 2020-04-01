@@ -3,11 +3,13 @@ package speedith.core.reasoning.rules.transformers
 
 
 import speedith.core.lang._
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram.createLUCarCOPDiagram;
 import speedith.core.reasoning.RuleApplicationException
 import speedith.core.reasoning.args.{SubDiagramIndexArg, ZoneArg}
 
 import scala.collection.JavaConversions._
-import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
 
 /**
  *

@@ -1,7 +1,9 @@
 package speedith.core.reasoning.rules.transformers.copTrans
 
 import speedith.core.lang._
-import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.LUCarCOPDiagram.createLUCarCOPDiagram;
 import scala.collection.JavaConversions._
 import java.util
 

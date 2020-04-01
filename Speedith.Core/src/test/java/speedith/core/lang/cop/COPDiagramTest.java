@@ -1,4 +1,4 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -14,6 +14,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.junit.Test;
+
+import speedith.core.lang.Region;
+import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
 
 
 

@@ -8,11 +8,11 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.COPDiagram;
-import speedith.core.lang.LUCOPDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.InferenceRules;
 import speedith.core.reasoning.RuleApplicationException;

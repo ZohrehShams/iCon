@@ -1,21 +1,19 @@
 package speedith.core.reasoning.rules.cop;
 
-import static org.junit.Assert.*;
-import static speedith.core.reasoning.util.unitary.TestConceptDiagrams.twoCompCDAddSpiderArrow;
-import speedith.core.lang.reader.CDiagramReaderTest;
-import speedith.core.lang.reader.CDiagramsReader;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import speedith.core.lang.Arrow;
 import speedith.core.lang.CompoundSpiderDiagram;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.reader.CDiagramReaderTest;
+import speedith.core.lang.reader.CDiagramsReader;
 import speedith.core.lang.reader.ReadingException;
 import speedith.core.reasoning.Goals;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.RuleApplicationResult;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.MultipleRuleArgs;
-import speedith.core.reasoning.args.SpiderArg;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 
 public class AddSpiderToDashedArrowImageTest {

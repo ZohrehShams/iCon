@@ -1,6 +1,6 @@
 package speedith.core.reasoning.args.copArgs;
 
-import speedith.core.lang.Arrow;
+import speedith.core.lang.cop.Arrow;
 import speedith.core.reasoning.RuleApplicationException;
 import speedith.core.reasoning.args.MultipleRuleArgs;
 import speedith.core.reasoning.args.RuleArg;

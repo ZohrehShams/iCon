@@ -27,9 +27,10 @@ public class SelectSubDiagramStep extends SelectionStep {
         return i18n(locale, "SELSTEP_SINGLE_SUBDIAGRAM_EXPLANATION");
     }
 
+    //Zohreh: Zone is not listed here because we now have diagrams that do not have any zones (spiders only diagrams). 
     @Override
     public int getSelectableElements() {
-        return All;
+        return Spiders | Contours | NullSpiderDiagrams | Arrows | SpiderComparators;
     }
 
     @Override

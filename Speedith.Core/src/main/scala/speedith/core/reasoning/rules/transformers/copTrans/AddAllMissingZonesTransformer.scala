@@ -1,11 +1,13 @@
 package speedith.core.reasoning.rules.transformers.copTrans
 
 import speedith.core.lang._
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram.createLUCarCOPDiagram;
 import speedith.core.reasoning.RuleApplicationException
 import speedith.core.reasoning.args.{SubDiagramIndexArg, ZoneArg}
 
 import scala.collection.JavaConversions._
-import speedith.core.lang.LUCarCOPDiagram.createLUCarCOPDiagram
 
 class AddAllMissingZonesTransformer (target:  SubDiagramIndexArg) extends IdTransformer {
   val subDiagramIndex = target.getSubDiagramIndex

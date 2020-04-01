@@ -22,9 +22,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import icircles.util.CannotDrawException;
-import speedith.core.lang.ConceptDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.ui.abstracts.CDAbstractDescription;
 import speedith.ui.concretes.ConcreteArrow;
 import speedith.ui.concretes.ConcreteCDiagram;
@@ -49,6 +49,7 @@ public class CDCirclesPanelEx3 extends javax.swing.JPanel {
      * Create new diagram panel with nothing displayed in it.
      */
     public CDCirclesPanelEx3() {
+    	System.out.println("B");
         initComponents();
         drawNoDiagramLabel();
         glassPanel = new ArrowPanel();

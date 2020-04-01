@@ -4,7 +4,6 @@ import static speedith.core.i18n.Translations.i18n;
 
 import java.util.ArrayList;
 
-import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
 import speedith.core.lang.Operator;
@@ -13,6 +12,7 @@ import speedith.core.lang.Region;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.TransformationException;
 import speedith.core.lang.Zones;
+import speedith.core.lang.cop.CompleteCOPDiagram;
 import speedith.core.reasoning.args.ContourArg;
 import speedith.core.reasoning.args.SpiderRegionArg;
 import speedith.core.reasoning.rules.transformers.util.InferenceTargetChecks;

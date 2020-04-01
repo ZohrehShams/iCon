@@ -99,12 +99,19 @@ public class ConcreteArrow implements Cloneable{
     public void setSource(Ellipse2D.Double source) {
         this.source = source;
         this.x_s = source.x + (source.getWidth()/2);
+//        this.y_s = source.y + source.getHeight();
+        
+        //cls-avf config
         this.y_s = source.y;
     }
 
     
     public void setTarget(Ellipse2D.Double target) {
         this.target = target;
+//        this.x_t = target.x + target.getWidth();
+//        this.y_t = target.y + (target.getHeight()/2);
+        
+        //cls-avf config
         this.x_t = target.x + (target.getWidth()/2);
         this.y_t = target.y + target.getHeight();
     }

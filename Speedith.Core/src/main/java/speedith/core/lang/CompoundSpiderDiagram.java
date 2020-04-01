@@ -26,6 +26,8 @@
  */
 package speedith.core.lang;
 
+import speedith.core.lang.cop.CDTransformer;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.core.reasoning.args.SubDiagramIndexArg;
 
 import java.io.IOException;
@@ -671,7 +673,8 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
             if (t.isDone()) {
                 break;
             }
-            subDiagramIndex += cd.getSubDiagramCount();
+//            subDiagramIndex += cd.getSubDiagramCount();
+            subDiagramIndex += 1;
 		}
 		
 		return transformedChildren == null ? cd: SpiderDiagrams.createConceptDiagram(cd.get_cd_Arrows(), transformedChildren, false);}
@@ -686,7 +689,7 @@ public class CompoundSpiderDiagram extends SpiderDiagram implements Serializable
         if (sd instanceof CompoundSpiderDiagram) {;
             return transform(t, (CompoundSpiderDiagram) sd, subDiagramIndex, parents, childIndices);
         } else if (sd instanceof PrimarySpiderDiagram) {
-            return t.transform((PrimarySpiderDiagram) sd, subDiagramIndex, parents, childIndices);
+        	return t.transform((PrimarySpiderDiagram) sd, subDiagramIndex, parents, childIndices);
         } else if(sd instanceof ConceptDiagram){
         	return transform(t, (ConceptDiagram) sd, subDiagramIndex, parents, childIndices);
         }else {

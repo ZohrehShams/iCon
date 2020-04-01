@@ -32,9 +32,9 @@ import icircles.concreteDiagram.CircleContour;
 import icircles.concreteDiagram.ConcreteZone;
 import java.util.ArrayList;
 
-import speedith.core.lang.Arrow;
-import speedith.core.lang.SpiderComparator;
 import speedith.core.lang.Zone;
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.SpiderComparator;
 import speedith.ui.concretes.ConcreteArrow;
 import speedith.ui.concretes.ConcreteSpiderComparator;
 

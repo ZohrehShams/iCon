@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import speedith.core.lang.Cardinality;
-import speedith.core.lang.Comparator;
-import speedith.core.lang.CompleteCOPDiagram;
 import speedith.core.lang.CompoundSpiderDiagram;
 import speedith.core.lang.IdTransformer;
-import speedith.core.lang.LUCOPDiagram;
-import speedith.core.lang.LUCarCOPDiagram;
 import speedith.core.lang.PrimarySpiderDiagram;
 import speedith.core.lang.SpiderDiagram;
 import speedith.core.lang.SpiderDiagrams;
 import speedith.core.lang.TransformationException;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.Comparator;
+import speedith.core.lang.cop.CompleteCOPDiagram;
+import speedith.core.lang.cop.LUCOPDiagram;
+import speedith.core.lang.cop.LUCarCOPDiagram;
 import speedith.core.reasoning.args.copArgs.ArrowArg;
 
 public class GeneraliseEqualityCardinalityTransformer extends IdTransformer{

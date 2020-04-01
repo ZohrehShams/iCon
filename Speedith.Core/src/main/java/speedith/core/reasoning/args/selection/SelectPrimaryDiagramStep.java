@@ -21,7 +21,8 @@ public class SelectPrimaryDiagramStep extends SelectSubDiagramStep {
 
     @Override
     public int getSelectableElements() {
-        return SelectionStep.AllPrimaryElements;
+//        return SelectionStep.AllPrimaryElements;
+    	return SelectionStep.Spiders | Contours | Arrows | SpiderComparators;
     }
 
 }

@@ -54,7 +54,7 @@ import java.util.Set;
 public class RemoveShading extends SimpleInferenceRule<MultipleRuleArgs>
         implements BasicInferenceRule<MultipleRuleArgs>, ForwardRule<MultipleRuleArgs>, Serializable {
 
-    public static final String InferenceRuleName = "Erase Shading";
+    public static final String InferenceRuleName = "EraseShading";
 
     private static final Set<DiagramType> applicableTypes = EnumSet.of(DiagramType.EulerDiagram, DiagramType.SpiderDiagram, DiagramType.LUCOPDiagram);
     private static final long serialVersionUID = -4093837815231375163L;

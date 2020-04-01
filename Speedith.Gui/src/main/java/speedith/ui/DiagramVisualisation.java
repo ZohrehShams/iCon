@@ -33,6 +33,8 @@ import java.util.Map.Entry;
 import java.util.*;
 import javax.swing.JPanel;
 import speedith.core.lang.*;
+import speedith.core.lang.cop.COPDiagram;
+import speedith.core.lang.cop.ConceptDiagram;
 import speedith.ui.concretes.ConcreteCOPDiagram;
 
 import static speedith.i18n.Translations.i18n;

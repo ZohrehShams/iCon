@@ -1,7 +1,11 @@
-package speedith.core.lang;
+package speedith.core.lang.cop;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+import speedith.core.lang.cop.Arrow;
+import speedith.core.lang.cop.Cardinality;
+import speedith.core.lang.cop.Comparator;
 
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.sevenLabArrowLUCarCOP;
 import static speedith.core.reasoning.util.unitary.TestCOPDiagrams.sevenLabArrowLUCarCOP2;
